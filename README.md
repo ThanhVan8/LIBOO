@@ -44,7 +44,7 @@ LIBOO is a library management web-app which allows users use various features of
   - Number of books being borrowed
   - List of readers overdue
 
-### 2. For librarians
+### 2. For readers
 
 - Sign in / Sign up
 - Search a book (by name, ISBN)
