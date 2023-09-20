@@ -1,5 +1,5 @@
 const Slip = require('../models/slip'); 
-const Reader = require('../models/reader');
+const User = require('../models/user');
 const { query } = require('express');
 const { where } = require('../models/book');
 
@@ -7,7 +7,10 @@ const slipController = {
     //ADD slip
     addSlip: async (req, res) => {
         try{
-            const newSlip = new Slip(req.body);
+            const newSlip = new Slip({
+                UserID: req.params.id,
+                borrowList: req.body.borrowList,
+            })
             const savedSlip = await newSlip.save();
             res.status(200).json(savedSlip);
         }catch(err){
@@ -18,7 +21,7 @@ const slipController = {
     //GET all slips
     getAllSlips: async (req, res) => {
         try{
-            const slips = await Slip.find().populate('username').populate('borrowList.book');
+            const slips = await Slip.find().populate('UserID').populate('borrowList.book');
             res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
@@ -28,8 +31,8 @@ const slipController = {
     //GET all slips of 1 reader 
     getAllSlipsOfReader: async (req, res) => {
         try{
-            const query = { username: req.params.id };
-            const slips = await Slip.find(query).populate('username').populate('borrowList.book');
+            const query = { UserID: req.params.id };
+            const slips = await Slip.find(query).populate('UserID').populate('borrowList.book');
             res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);

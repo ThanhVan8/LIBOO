@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const readerSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -12,6 +12,11 @@ const readerSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+
+    admin: {
+        type: Boolean,
+        default: false,
     },
 
     name: {
@@ -60,12 +65,12 @@ const readerSchema = new mongoose.Schema({
             return null;
           },
       },
-})
+},  {timestamps: true},)
 
 
 
 
 
-let Reader = mongoose.model('Reader', readerSchema);
+let User = mongoose.model('User', userSchema);
 
-module.exports = Reader;
+module.exports = User;

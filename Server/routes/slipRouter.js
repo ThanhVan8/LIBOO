@@ -3,12 +3,12 @@ const slipController = require('../controllers/slipController');
 const router = require('express').Router();
 
 //ADD slip
-router.post('/', slipController.addSlip);
+router.post('/:id', slipController.addSlip);
 
 //GET all slips
 router.get('/', slipController.getAllSlips);
 
-//GET all slip of 1 reader
+//GET all slip of 1 user
 router.get('/:id', slipController.getAllSlipsOfReader);
 
 //UPDATE slip

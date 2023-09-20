@@ -5,9 +5,10 @@ const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
-const readerRouter = require('./routes/readerRouter');
+const userRouter = require('./routes/userRouter');
 const bookRouter = require('./routes/bookRouter');
 const slipRouter = require('./routes/slipRouter');
+const authRouter = require('./routes/authRouter');
 
 
 app.use(bodyParser.json());
@@ -25,9 +26,10 @@ mongoose.connect(process.env.MONGODB_URL)
   });
 
 //ROUTES
-app.use('/api/reader', readerRouter);
+app.use('/api/user', userRouter);
 app.use('/api/book', bookRouter);
 app.use('/api/slip', slipRouter);
+app.use('/api/auth', authRouter);
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');

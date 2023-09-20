@@ -1,11 +1,11 @@
 const Book = require('../models/book');
-const Reader = require('../models/reader');
+const User = require('./user');
 const mongoose = require('mongoose');
 
 const borrowSchema = new mongoose.Schema({
-    username: {
+    UserID  : {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Reader',
+        ref: 'User',
     },
     
     borrowDate: {
