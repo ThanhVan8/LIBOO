@@ -1,14 +1,15 @@
+const middlewareController = require('../controllers/middlewareController');
 const userController = require('../controllers/userController');
 
 const router = require('express').Router();
 
-//GET all readers
-router.get('/', userController.getAllUsers);
+//GET all users
+router.get('/', middlewareController.verifyAdminToken, userController.getAllUsers);
 
-//UPDATE reader
-router.put('/:id', userController.updateUser);
+//UPDATE user
+router.put('/:id', middlewareController.verifyAdminToken, userController.updateUser);
 
-//DELETE reader
-router.delete('/:id', userController.deleteUser);
+//DELETE user
+router.delete('/:id', middlewareController.verifyAdminToken, userController.deleteUser);
 
 module.exports = router;

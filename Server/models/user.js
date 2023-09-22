@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
         minlength: 6,
         maxlength: 20,
         unique: true,
@@ -11,7 +10,6 @@ const userSchema = new mongoose.Schema({
 
     password: {
         type: String,
-        required: true,
     },
 
     admin: {
@@ -21,33 +19,26 @@ const userSchema = new mongoose.Schema({
 
     name: {
         type: String,
-        required: true,
     },
 
     id: {
         type: String,
-        required: true,
-        unique: true,
     },
 
     birthday: {
         type: Date,
-        required: true,
     },   
 
     sex: {
         type: String,
-        required: true,
     },
 
     email: {
         type: String,
-        required: true,
     },
 
     address: {
         type: String,
-        required: true,
     },
 
     makingDay: {
@@ -56,18 +47,25 @@ const userSchema = new mongoose.Schema({
     },
 
     invalidDay: {
-        type: Date,
-        default: function () {
-            if (this.makingDay) {
-              const year = this.makingDay.getFullYear();
-              return new Date(year + 2, this.makingDay.getMonth(), this.makingDay.getDate());
-            }
-            return null;
-          },
-      },
-},  {timestamps: true},)
+        type: Date
+    }
+});
 
-
+userSchema.pre('save', function (next) {
+    if (this.admin == true) {
+        this.makingDay = undefined;
+        this.invalidDay = undefined;
+    } else {
+        if (!this.makingDay) {
+            this.makingDay = new Date();
+        }
+        if (!this.invalidDay) {
+            const year = this.makingDay.getFullYear();
+            this.invalidDay = new Date(year + 2, this.makingDay.getMonth(), this.makingDay.getDate());
+        }
+    }
+    next();
+});
 
 
 

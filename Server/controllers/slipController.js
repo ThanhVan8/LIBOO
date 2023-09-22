@@ -21,7 +21,9 @@ const slipController = {
     //GET all slips
     getAllSlips: async (req, res) => {
         try{
-            const slips = await Slip.find().populate('UserID').populate('borrowList.book');
+            const slips = await Slip.find()
+            .populate({path: 'UserID', select: 'name email address'})
+            .populate({path: 'borrowList.book', select: 'ISBN name author'});
             res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
@@ -32,7 +34,9 @@ const slipController = {
     getAllSlipsOfReader: async (req, res) => {
         try{
             const query = { UserID: req.params.id };
-            const slips = await Slip.find(query).populate('UserID').populate('borrowList.book');
+            const slips = await Slip.find(query)
+            .populate({path: 'UserID', select: 'name email address'})
+            .populate({path: 'borrowList.book', select: 'ISBN name author'});
             res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
@@ -74,7 +78,7 @@ const slipController = {
             const index = slip.borrowList.findIndex(book => book.book == req.params.id2);
             if (index !== -1) {
                 slip.borrowList.splice(index, 1);
-                await slip.save(); // Lưu slip sau khi xóa phần tử
+                await slip.save();
                 res.status(200).json(slip);
             }
         } catch (err) {
