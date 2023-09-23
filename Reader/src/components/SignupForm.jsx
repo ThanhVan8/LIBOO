@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import NavLine from "../components/NavLine";
-import { Input } from "@material-tailwind/react";
+import { Input, Typography } from "@material-tailwind/react";
 import RadioButton from "../components/RadioButton";
 import CustomButton from "../components/CustomButton";
+import { FaInfoCircle } from "react-icons/fa";
 
 const SignupForm = () => {
   const [account, setAccount] = useState({username: '', password: '', name: '', id: '', birth: '', sex: '', email: '', address: ''});
@@ -18,13 +19,25 @@ const SignupForm = () => {
     >
       <NavLine element="Sign Up" />
       <div className="w-full grid grid-cols-2 gap-3">
-        <Input
-          label="Username"
-          required
-          onChange={(e) =>
-            setAccount((prev) => ({ ...prev, username: e.target.value }))
-          }
-        />
+        <div>
+          <Input
+            label="Username"
+            required
+            onChange={(e) =>
+              setAccount((prev) => ({ ...prev, username: e.target.value }))
+            }
+            minLength={6}
+            maxLength={20}
+          />
+          <Typography
+            variant="small"
+            color="gray"
+            className="mt-2 flex items-center gap-2 font-normal"
+          >
+            <FaInfoCircle className='w-4 h-4' />
+            Use 6-20 characters.
+          </Typography>
+        </div>
         <Input
           label="Password"
           type="password"
