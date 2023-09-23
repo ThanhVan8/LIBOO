@@ -5,14 +5,17 @@ const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
-const readerRouter = require('./routes/readerRouter');
+const userRouter = require('./routes/userRouter');
 const bookRouter = require('./routes/bookRouter');
 const slipRouter = require('./routes/slipRouter');
+const authRouter = require('./routes/authRouter');
+const cookieParser = require('cookie-parser');
 
 
 app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('common'));
+app.use(cookieParser());
 
 dotenv.config();
 
@@ -25,10 +28,13 @@ mongoose.connect(process.env.MONGODB_URL)
   });
 
 //ROUTES
-app.use('/api/reader', readerRouter);
+app.use('/api/user', userRouter);
 app.use('/api/book', bookRouter);
 app.use('/api/slip', slipRouter);
+app.use('/api/auth', authRouter);
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
+
+// JSON WEB TOKEN
