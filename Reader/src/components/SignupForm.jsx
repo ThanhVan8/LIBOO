@@ -6,12 +6,17 @@ import CustomButton from "../components/CustomButton";
 import { FaInfoCircle } from "react-icons/fa";
 
 const SignupForm = () => {
-  const [account, setAccount] = useState({username: '', password: '', name: '', id: '', birth: '', sex: '', email: '', address: ''});
+  const [account, setAccount] = useState({username: '', password: '', name: '', id: '', birthdate: '', sex: 'Male', email: '', address: ''});
+  const handleChangeInfo = (e) => {
+    e.preventDefault();
+    const {name, value} = e.target;
+    setAccount({...account, [name]: value});
+  }
   const handleSignup = (e) => {
     e.preventDefault();
-    // console.log("Sign up");
     console.log(account);
   }
+
   return (
     <form
       className="flex flex-col items-center gap-8 w-full"
@@ -23,71 +28,79 @@ const SignupForm = () => {
           <Input
             label="Username"
             required
-            onChange={(e) =>
-              setAccount((prev) => ({ ...prev, username: e.target.value }))
-            }
+            onChange={handleChangeInfo}
             minLength={6}
             maxLength={20}
+            name='username' 
+            value={account.username}
           />
-          <Typography
-            variant="small"
-            color="gray"
-            className="mt-2 flex items-center gap-2 font-normal"
-          >
-            <FaInfoCircle className='w-4 h-4' />
+          <p className="mt-2 flex items-center gap-2 font-normal text-[0.75rem]">
+            <FaInfoCircle className='w-3.5 h-3.5' />
             Use 6-20 characters.
-          </Typography>
+          </p>
         </div>
         <Input
           label="Password"
           type="password"
           required
-          onChange={(e) =>
-            setAccount((prev) => ({ ...prev, password: e.target.value }))
-          }
+          onChange={handleChangeInfo}
+          name='password' 
+          value={account.password}
         />
         <Input
           label="Name"
           required
-          onChange={(e) =>
-            setAccount((prev) => ({ ...prev, name: e.target.value }))
-          }
+          onChange={handleChangeInfo}
+          name='name' 
+          value={account.name}
         />
         <Input
           label="ID number"
           required
-          onChange={(e) =>
-            setAccount((prev) => ({ ...prev, id: e.target.value }))
-          }
+          onChange={handleChangeInfo}
           onInput={(e) => e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')}
           pattern=".{12}"
+          name='id' 
+          value={account.id}
         />
         <Input
           label="Birthdate"
           type="date"
           required
-          onChange={(e) =>
-            setAccount((prev) => ({ ...prev, birth: e.target.value }))
-          }
+          onChange={handleChangeInfo}
+          name='birthdate' 
+          value={account.birthdate}
         />
         <div className="flex gap-4">
-          <RadioButton label="Male" defaultChecked={true} />
-          <RadioButton label="Female" />
+          <RadioButton 
+            label="Male" 
+            value='Male'
+            name='sex' 
+            checked={account.sex === 'Male'}
+            onChange={handleChangeInfo}
+          />
+          <RadioButton 
+            label="Female"
+            value='Female'
+            name='sex' 
+            checked={account.sex === 'Female'} 
+            onChange={handleChangeInfo}
+          />
         </div>
         <Input
           label="Email"
           type="email"
           required
-          onChange={(e) =>
-            setAccount((prev) => ({ ...prev, email: e.target.value }))
-          }
+          onChange={handleChangeInfo}
+          name='email' 
+          value={account.email}
         />
         <Input
           label="Address"
           required
-          onChange={(e) =>
-            setAccount((prev) => ({ ...prev, address: e.target.value }))
-          }
+          onChange={handleChangeInfo}
+          name='address' 
+          value={account.address}
         />
       </div>
       <CustomButton label="Sign Up" type="submit" />

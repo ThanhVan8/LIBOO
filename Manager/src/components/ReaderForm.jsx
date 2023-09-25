@@ -8,6 +8,7 @@ import { MdEdit } from 'react-icons/md';
 import { Input } from "@material-tailwind/react";
 import RadioButton from "./RadioButton";
 import CustomButton from "./CustomButton";
+import { FaInfoCircle } from "react-icons/fa";
 
 const ReaderForm = () => {
   const today = new Date()
@@ -64,34 +65,111 @@ const ReaderForm = () => {
           </button>
         </div>
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-4">
-          <Input variant="standard" label="RID" disabled name='rid' value={account.rid} />
-          <Input variant="standard" label="Username" required minLength={6} maxLength={20} onChange={handleChangeInfo} name='username' value={account.username} />
-          <Input variant="standard" label="Name" required onChange={handleChangeInfo} name='name' value={account.name}/>
-          <Input variant="standard" label="ID number" required 
-            onInput={(e) => e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')}
-            pattern=".{12}"
-            onChange={handleChangeInfo} 
-            name='id' value={account.id}
+          <Input
+            variant="standard"
+            label="RID"
+            disabled
+            name="rid"
+            value={account.rid}
           />
-          <Input variant="standard" label="Birthdate" required type="date" onChange={handleChangeInfo} name='birthdate' value={account.birthdate} />
+          <div>
+            <Input
+              variant="standard"
+              label="Username"
+              required
+              minLength={6}
+              maxLength={20}
+              onChange={handleChangeInfo}
+              name="username"
+              value={account.username}
+            />
+            <p className="mt-2 flex items-center gap-2 font-normal text-[0.75rem]">
+              <FaInfoCircle className='w-3.5 h-3.5' />
+              Use 6-20 characters.
+            </p>
+          </div>
+          <Input
+            variant="standard"
+            label="Name"
+            required
+            onChange={handleChangeInfo}
+            name="name"
+            value={account.name}
+          />
+          <Input
+            variant="standard"
+            label="ID number"
+            required
+            onInput={(e) =>
+              (e.target.value = e.target.value
+                .replace(/[^0-9.]/g, "")
+                .replace(/(\..*?)\..*/g, "$1"))
+            }
+            pattern=".{12}"
+            onChange={handleChangeInfo}
+            name="id"
+            value={account.id}
+          />
+          <Input
+            variant="standard"
+            label="Birthdate"
+            required
+            type="date"
+            onChange={handleChangeInfo}
+            name="birthdate"
+            value={account.birthdate}
+          />
           <div className="flex gap-4 self-end">
             <RadioButton
               label="Male"
               onChange={handleChangeInfo}
-              value='Male'
-              name='sex' checked={account.sex === 'Male'} 
+              value="Male"
+              name="sex"
+              checked={account.sex === "Male"}
             />
             <RadioButton
               label="Female"
               onChange={handleChangeInfo}
-              value='Female'
-              name='sex' checked={account.sex === 'Female'} 
+              value="Female"
+              name="sex"
+              checked={account.sex === "Female"}
             />
           </div>
-          <Input variant="standard" label="Email" required type="email" onChange={handleChangeInfo} value={account.email} name='email' />
-          <Input variant="standard" label="Address" required onChange={handleChangeInfo} value={account.address} name='address' />
-          <Input variant="standard" label="Registration date" type="date" value={account.regDate} name='regDate' labelProps={{className: 'peer-disabled:text-textDisable'} } disabled/>
-          <Input variant="standard" label="Expiration date" disabled type="date" value={account.expDate} name='expDate' labelProps={{className: 'peer-disabled:text-textDisable'}}/>
+          <Input
+            variant="standard"
+            label="Email"
+            required
+            type="email"
+            onChange={handleChangeInfo}
+            value={account.email}
+            name="email"
+          />
+          <Input
+            variant="standard"
+            label="Address"
+            required
+            onChange={handleChangeInfo}
+            value={account.address}
+            name="address"
+          />
+          <Input
+            variant="standard"
+            label="Registration date"
+            disabled
+            type="date"
+            value={account.regDate}
+            name="regDate"
+            labelProps={{ className: "peer-disabled:text-textDisable" }}
+          />
+          <Input
+            variant="standard"
+            label="Expiration date"
+            disabled
+            type="date"
+            value={account.expDate}
+            name="expDate"
+            labelProps={{ className: "peer-disabled:text-textDisable" }}
+          />
         </div>
 
         <div className="flex justify-center pt-3">
