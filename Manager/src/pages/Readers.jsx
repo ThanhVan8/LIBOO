@@ -9,7 +9,7 @@ import { BiUserCircle, BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { MdEdit } from 'react-icons/md';
 import { FaTrash, FaUserPlus } from 'react-icons/fa';
 import logo from '../assets/logo.png';
-import { setShowAddReader, setShowUpdateReader } from '../slices/readerSlice';
+import { setShowAddReader, setShowUpdateReader, setUpdatingReader } from '../slices/readerSlice';
 import ReaderForm from '../components/ReaderForm';
 
 const TABLE_HEAD = ['', 'RID', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
@@ -21,96 +21,96 @@ const Readers = () => {
       Username: 'user1',
       Name: 'John Doe',
       ID: '123456789',
-      Birthdate: '01/01/2000',
+      Birthdate: '2000-01-01',
       Sex: 'Male',
       Email: 'JohnDoe@gmail.com',
       Address: '1234 Main St',
-      RegDate: '01/01/2022',
-      ExpDate: '01/01/2024',
+      RegDate: '2022-01-01',
+      ExpDate: '2024-01-01',
     },
     {
       RID: '2',
       Username: 'user2',
       Name: 'Jane Doe',
       ID: '987654321',
-      Birthdate: '01/01/2000',
+      Birthdate: '2000-01-01',
       Sex: 'Female',
       Email: 'JohnDoe@gmail.com',
       Address: '1234 Main St',
-      RegDate: '01/01/2022',
-      ExpDate: '01/01/2024',
+      RegDate: '2022-01-01',
+      ExpDate: '2024-01-01',
     },
     {
       RID: '3',
       Username: 'user3',
       Name: 'Jane Doe',
       ID: '987654321',
-      Birthdate: '01/01/2000',
+      Birthdate: '2000-01-01',
       Sex: 'Female',
       Email: 'JohnDoe@gmail.com',
       Address: '1234 Main St',
-      RegDate: '01/01/2022',
-      ExpDate: '01/01/2024',
+      RegDate: '2022-01-01',
+      ExpDate: '2024-01-01',
     },
     {
       RID: '4',
       Username: 'user3',
       Name: 'Jane Doe',
       ID: '987654321',
-      Birthdate: '01/01/2000',
+      Birthdate: '2000-01-01',
       Sex: 'Female',
       Email: 'JohnDoe@gmail.com',
       Address: '1234 Main St',
-      RegDate: '01/01/2022',
-      ExpDate: '01/01/2024',
+      RegDate: '2022-01-01',
+      ExpDate: '2024-01-01',
     },
     {
       RID: '5',
       Username: 'user3',
       Name: 'Jane Doe',
       ID: '987654321',
-      Birthdate: '01/01/2000',
+      Birthdate: '2000-01-01',
       Sex: 'Female',
       Email: 'JohnDoe@gmail.com',
       Address: '1234 Main St',
-      RegDate: '01/01/2022',
-      ExpDate: '01/01/2024',
+      RegDate: '2022-01-01',
+      ExpDate: '2024-01-01',
     },
     {
       RID: '6',
       Username: 'user3',
       Name: 'Jane Doe',
       ID: '987654321',
-      Birthdate: '01/01/2000',
+      Birthdate: '2000-01-01',
       Sex: 'Female',
       Email: 'JohnDoe@gmail.com',
       Address: '1234 Main St',
-      RegDate: '01/01/2022',
-      ExpDate: '01/01/2024',
+      RegDate: '2022-01-01',
+      ExpDate: '2024-01-01',
     },
     {
       RID: '7',
       Username: 'user3',
       Name: 'Jane Doe',
       ID: '987654321',
-      Birthdate: '01/01/2000',
+      Birthdate: '2000-01-01',
       Sex: 'Female',
       Email: 'JohnDoe@gmail.com',
       Address: '1234 Main St',
-      RegDate: '01/01/2022',
-      ExpDate: '01/01/2024',
+      RegDate: '2022-01-01',
+      ExpDate: '2024-01-01',
     },
     {
       RID: '8',
       Username: 'user3',
       Name: 'Jane Doe',
       ID: '987654321',
-      Birthdate: '01/01/2000',
+      Birthdate: '2000-01-01',
       Sex: 'Female',
       Email: 'JohnDoe@gmail.com',
       Address: '1234 Main St',
-      RegDate: '01/01/2022',
-      ExpDate: '01/01/2024',
+      RegDate: '2022-01-01',
+      ExpDate: '2024-01-01',
     }
   ])
 
@@ -141,10 +141,16 @@ const Readers = () => {
   }
 
   const dispatch = useDispatch();
-  const showAddMember = () => {
+  const showAddForm = (e) => {
+    e.preventDefault();
     dispatch(setShowAddReader());
   }
-  const {showAddReader, showUpdateReader } = useSelector(state => state.reader);
+  const showUpdateForm = (e, props) => {
+    e.preventDefault();
+    dispatch(setShowUpdateReader());
+    dispatch(setUpdatingReader(props));
+  }
+  const {showAddReader, showUpdateReader, updatingReader } = useSelector(state => state.reader);
  
   return (
     <div className={`flex w-full h-full ${showAddReader || showUpdateReader ? 'overflow-hidden':''}`}>
@@ -163,7 +169,7 @@ const Readers = () => {
             className="flex items-center gap-3" 
             size="sm" 
             style={{backgroundImage: `linear-gradient(to right, #EF9595, #EFB495)`}}
-            onClick={showAddMember}
+            onClick={showAddForm}
           >
             <FaUserPlus strokeWidth={2} className="h-4 w-4" /> Add member
           </Button>
@@ -219,7 +225,9 @@ const Readers = () => {
                   <p>{ExpDate}</p>
                 </td>              
                 <td className="p-2">
-                  <MdEdit />
+                  <button onClick={(e) => showUpdateForm(e, {RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate})}>
+                    <MdEdit />
+                  </button>
                 </td>
                 <td className="p-2">
                   <FaTrash />
@@ -243,6 +251,7 @@ const Readers = () => {
 
       </div>
       {showAddReader && <ReaderForm />}
+      {showUpdateReader && <ReaderForm {...updatingReader} />}
     </div>
   )
 }

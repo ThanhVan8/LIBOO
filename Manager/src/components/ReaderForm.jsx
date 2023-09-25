@@ -10,11 +10,17 @@ import RadioButton from "./RadioButton";
 import CustomButton from "./CustomButton";
 import { FaInfoCircle } from "react-icons/fa";
 
-const ReaderForm = () => {
+const ReaderForm = (props) => {
+  console.log(props)
+
   const today = new Date()
   const exp = new Date(today.getFullYear() + 2, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
   
-  const [account, setAccount] = useState({photo: '', rid: '', username: '', name: '', id: '', birthdate: '', sex: 'Male', email: '', address: '', regDate: today.toISOString().slice(0, 10), expDate: exp});
+  const [account, setAccount] = useState(
+    props == null ? 
+    {photo: '', rid: '', username: '', name: '', id: '', birthdate: '', sex: '', email: '', address: '', regDate: today.toISOString().slice(0, 10), expDate: exp}:
+    {photo: '', rid: props.RID, username: props.Username, name: props.Name, id: props.ID, birthdate: props.Birthdate, sex: props.Sex, email: props.Email, address: props.Address, regDate: props.RegDate, expDate: props.ExpDate}
+  );
   const {showAddReader, showUpdateReader} = useSelector(state => state.reader);
   const dispatch = useDispatch();
 
@@ -54,7 +60,7 @@ const ReaderForm = () => {
         >
           <BiX size="1.5rem" />
         </button>
-        <h1 className="text-2xl font-semibold text-left">Add Reader</h1>
+        <h1 className="text-2xl font-semibold text-left">{showAddReader ? 'Add' : 'Update'} Reader</h1>
         <div className="relative w-fit">
           <BiUserCircle size="4rem" />
           <button
