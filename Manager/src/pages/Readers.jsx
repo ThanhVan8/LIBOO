@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react'
-import MenuSidebar from '../components/MenuSidebar'
+import React, {useState} from 'react'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import SearchBar from '../components/SearchBar';
@@ -173,8 +172,6 @@ const Readers = () => {
  
   return (
     <div className={`flex w-full h-full ${showAddReader || showUpdateReader || showDeleteReader ? 'overflow-hidden':''}`}>
-      <MenuSidebar activeItem={'Readers'}  />
-
       <div className='w-full px-4 py-3'>
         {/* Search bar */}
         <div className='flex justify-end pl-14'>
