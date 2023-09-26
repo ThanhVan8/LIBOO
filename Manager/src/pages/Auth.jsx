@@ -3,15 +3,24 @@ import logo from '../assets/logo.png'
 import { Input } from "@material-tailwind/react";
 import CustomButton from "../components/CustomButton";
 import { FaRegUser, FaLock } from "react-icons/fa6";
+import { loginUser } from "../slices/requestApi";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSignin = (e) => {
     e.preventDefault();
-    // console.log("Sign in");
-    // console.log(username, password)
+    const newUser = {
+      username: username,
+      password: password,
+    }
+    console.log(newUser);
+    loginUser(newUser, dispatch, navigate);
   }
 
   return (
