@@ -5,17 +5,21 @@ import CustomButton from "../components/CustomButton";
 import { FaRegUser, FaLock } from "react-icons/fa6";
 
 const Auth = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [account, setAccount] = useState({username: '', password: ''});
+
+  const handleChangeInfo = (e) => {
+    e.preventDefault();
+    const {name, value} = e.target;
+    setAccount({...account, [name]: value});
+  }
 
   const handleSignin = (e) => {
     e.preventDefault();
-    // console.log("Sign in");
-    // console.log(username, password)
+    console.log(account);
   }
 
   return (
-    <div className='bg-lightOrange h-full bg-bg1 bg-right bg-contain bg-no-repeat'>
+    <div className='w-full bg-lightOrange h-full bg-bg1 bg-right bg-contain bg-no-repeat'>
       <div className='min-w-[500px] w-full h-full bg-white flex flex-col items-center justify-center py-10 px-5 gap-20 md:w-1/2 md:rounded-r-[30px]'>
         <div className='flex items-center gap-5'>
           <div className='bg-red rounded-full w-fit h-fit p-2'>
@@ -25,20 +29,24 @@ const Auth = () => {
         </div>
         
         <form className="flex flex-col items-center gap-8 w-full" onSubmit={(e) => handleSignin(e)}>
-          
+          <p className='text-2xl font-medium'>Sign In</p>
           <div className="w-full flex flex-col gap-3">
             <Input 
               icon={<FaRegUser />} 
               label="Username"
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleChangeInfo}
               required
+              name="username"
+              value={account.username}
             />
             <Input 
               icon={<FaLock />} 
               label="Password"
               type="password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChangeInfo}
               required
+              name="password"
+              value={account.password}
             />
           </div>
           <CustomButton label="Sign In" type='submit' />
