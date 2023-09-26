@@ -118,6 +118,7 @@ const ReaderForm = () => {
                 .replace(/(\..*?)\..*/g, "$1"))
             }
             pattern=".{12}"
+            maxLength={12}
             onChange={handleChangeInfo}
             name="ID"
             value={account.ID}
