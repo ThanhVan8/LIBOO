@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { BiX } from "react-icons/bi";
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { setShowAddReader, setShowUpdateReader } from '../slices/readerSlice';
+import { setShowAddReader, setShowUpdateReader, setUpdatingReader } from '../slices/readerSlice';
 import { BiUserCircle } from 'react-icons/bi';
 import { MdEdit } from 'react-icons/md';
 import { Input } from "@material-tailwind/react";
@@ -10,18 +10,19 @@ import RadioButton from "./RadioButton";
 import CustomButton from "./CustomButton";
 import { FaInfoCircle } from "react-icons/fa";
 
-const ReaderForm = (props) => {
-  console.log(props)
+const EXPIRATION = 2;
 
-  const today = new Date()
-  const exp = new Date(today.getFullYear() + 2, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
+const ReaderForm = () => {
+  const {showAddReader, showUpdateReader, updatingReader} = useSelector(state => state.reader);
   
+  const today = new Date()
+  const exp = new Date(today.getFullYear() + EXPIRATION, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
   const [account, setAccount] = useState(
-    props == null ? 
+    updatingReader == null ? 
     {photo: '', rid: '', username: '', name: '', id: '', birthdate: '', sex: '', email: '', address: '', regDate: today.toISOString().slice(0, 10), expDate: exp}:
-    {photo: '', rid: props.RID, username: props.Username, name: props.Name, id: props.ID, birthdate: props.Birthdate, sex: props.Sex, email: props.Email, address: props.Address, regDate: props.RegDate, expDate: props.ExpDate}
+    {photo: updatingReader.Photo, rid: updatingReader.RID, username: updatingReader.Username, name: updatingReader.Name, id: updatingReader.ID, birthdate: updatingReader.Birthdate, sex: updatingReader.Sex, email: updatingReader.Email, address: updatingReader.Address, regDate: updatingReader.RegDate, expDate: updatingReader.ExpDate}
   );
-  const {showAddReader, showUpdateReader} = useSelector(state => state.reader);
+
   const dispatch = useDispatch();
 
   const closeForm = () => {
@@ -29,6 +30,7 @@ const ReaderForm = (props) => {
       dispatch(setShowAddReader());
     } else if (showUpdateReader) {
       dispatch(setShowUpdateReader());
+      dispatch(setUpdatingReader(null));
     }
   }
 
@@ -45,7 +47,7 @@ const ReaderForm = (props) => {
 
   const handleAdd = (e) => {
     e.preventDefault()
-    console.log(account);
+    // console.log(account);
   }
 
   return (
@@ -61,8 +63,11 @@ const ReaderForm = (props) => {
           <BiX size="1.5rem" />
         </button>
         <h1 className="text-2xl font-semibold text-left">{showAddReader ? 'Add' : 'Update'} Reader</h1>
-        <div className="relative w-fit">
-          <BiUserCircle size="4rem" />
+        <div className="relative w-16 h-16">
+          {!account.photo ? 
+          <BiUserCircle className='w-full h-full' /> :
+          <img src={account.photo} alt="upload" className="object-cover w-full h-full rounded-full" />
+          }
           <button
             className="absolute bottom-2 right-1 w-5 h-5 rounded-full bg-red flex items-center justify-center"
             onClick={changePhoto}

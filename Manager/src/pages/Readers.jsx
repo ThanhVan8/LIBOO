@@ -27,6 +27,7 @@ const Readers = () => {
       Address: '1234 Main St',
       RegDate: '2022-01-01',
       ExpDate: '2024-01-01',
+      Photo: '',
     },
     {
       RID: '2',
@@ -39,6 +40,7 @@ const Readers = () => {
       Address: '1234 Main St',
       RegDate: '2022-01-01',
       ExpDate: '2024-01-01',
+      Photo: '',
     },
     {
       RID: '3',
@@ -51,6 +53,7 @@ const Readers = () => {
       Address: '1234 Main St',
       RegDate: '2022-01-01',
       ExpDate: '2024-01-01',
+      Photo: '',
     },
     {
       RID: '4',
@@ -63,6 +66,7 @@ const Readers = () => {
       Address: '1234 Main St',
       RegDate: '2022-01-01',
       ExpDate: '2024-01-01',
+      Photo: '',
     },
     {
       RID: '5',
@@ -75,6 +79,7 @@ const Readers = () => {
       Address: '1234 Main St',
       RegDate: '2022-01-01',
       ExpDate: '2024-01-01',
+      Photo: '',
     },
     {
       RID: '6',
@@ -87,6 +92,7 @@ const Readers = () => {
       Address: '1234 Main St',
       RegDate: '2022-01-01',
       ExpDate: '2024-01-01',
+      Photo: '',
     },
     {
       RID: '7',
@@ -99,6 +105,7 @@ const Readers = () => {
       Address: '1234 Main St',
       RegDate: '2022-01-01',
       ExpDate: '2024-01-01',
+      Photo: '',
     },
     {
       RID: '8',
@@ -111,6 +118,7 @@ const Readers = () => {
       Address: '1234 Main St',
       RegDate: '2022-01-01',
       ExpDate: '2024-01-01',
+      Photo: '',
     }
   ])
 
@@ -188,11 +196,13 @@ const Readers = () => {
             </tr>
           </thead>
           <tbody>
-            {records.map(({ RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate }, index) => (
+            {records.map(({ RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate, Photo }, index) => (
               <tr key={index} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
-                <td className="p-2">
-                  <BiUserCircle size={24} />
-                  {/* <img src={logo} alt="logo" className="w-8 h-8 rounded-full object-contain" /> */}
+                <td className="p-2 w-12 h-12">
+                  {!Photo ?
+                  <BiUserCircle className='w-full h-full' /> :
+                  <img src={Photo} alt="logo" className="w-full h-full rounded-full object-contain" />
+                  }
                 </td>
                 <td className="p-2">
                   <p>{RID}</p>
@@ -225,7 +235,7 @@ const Readers = () => {
                   <p>{ExpDate}</p>
                 </td>              
                 <td className="p-2">
-                  <button onClick={(e) => showUpdateForm(e, {RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate})}>
+                  <button onClick={(e) => showUpdateForm(e, {RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate, Photo})}>
                     <MdEdit />
                   </button>
                 </td>
@@ -250,8 +260,7 @@ const Readers = () => {
       </div>
 
       </div>
-      {showAddReader && <ReaderForm />}
-      {showUpdateReader && <ReaderForm {...updatingReader} />}
+      {(showAddReader || showUpdateReader) && <ReaderForm />}
     </div>
   )
 }
