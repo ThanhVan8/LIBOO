@@ -10,7 +10,7 @@ import { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteR
 import ReaderForm from '../components/ReaderForm';
 import DeleteModal from '../components/DeleteModal';
 
-const TABLE_HEAD = ['', 'RID', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
+const TABLE_HEAD = ['', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
 
 const Readers = () => {
   const data = [
@@ -162,10 +162,10 @@ const Readers = () => {
     dispatch(setShowUpdateReader());
     dispatch(setUpdatedReader(props));
   }
-  const showDelete = (e, RID) => {
+  const showDelete = (e, props) => {
     e.preventDefault();
     dispatch(setShowDeleteReader());
-    dispatch(setUpdatedReader(RID));
+    dispatch(setUpdatedReader(props));
   }
   
   const {showAddReader, showUpdateReader, showDeleteReader } = useSelector(state => state.reader);
@@ -208,51 +208,48 @@ const Readers = () => {
             </tr>
           </thead>
           <tbody>
-            {records.map(({ RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate, Photo }, index) => (
-              <tr key={index} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
+            {records.map((record) => (
+              <tr key={record.RID} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2 w-12 h-12">
-                  {!Photo ?
+                  {!record.Photo ?
                   <BiUserCircle className='w-full h-full' /> :
-                  <img src={Photo} alt="logo" className="w-full h-full rounded-full object-contain" />
+                  <img src={record.Photo} alt="logo" className="w-full h-full rounded-full object-contain" />
                   }
                 </td>
                 <td className="p-2">
-                  <p>{RID}</p>
+                  <p>{record.Username}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Username}</p>
+                  <p>{record.Name}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Name}</p>
+                  <p>{record.ID}</p>
                 </td>
                 <td className="p-2">
-                  <p>{ID}</p>
+                  <p>{record.Birthdate}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Birthdate}</p>
+                  <p>{record.Sex}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Sex}</p>
+                  <p>{record.Email}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Email}</p>
+                  <p>{record.Address}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Address}</p>
+                  <p>{record.RegDate}</p>
                 </td>
                 <td className="p-2">
-                  <p>{RegDate}</p>
-                </td>
-                <td className="p-2">
-                  <p>{ExpDate}</p>
+                  <p>{record.ExpDate}</p>
                 </td>              
                 <td className="p-2">
-                  <button onClick={(e) => showUpdateForm(e, {RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate, Photo})}>
+                  <button onClick={(e) => showUpdateForm(e, record)}>
                     <MdEdit />
                   </button>
                 </td>
                 <td className="p-2">
-                  <button onClick={(e) => showDelete(e, RID)}>
+                  <button onClick={(e) => showDelete(e, record)}>
                     <FaTrash />
                   </button>
                 </td>
