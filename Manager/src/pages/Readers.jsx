@@ -2,15 +2,14 @@ import React, {useState} from 'react'
 import MenuSidebar from '../components/MenuSidebar'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { motion } from "framer-motion";
 import SearchBar from '../components/SearchBar';
 import { Button } from '@material-tailwind/react';
 import { BiUserCircle, BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { MdEdit } from 'react-icons/md';
 import { FaTrash, FaUserPlus } from 'react-icons/fa';
-import logo from '../assets/logo.png';
-import { setShowAddReader, setShowUpdateReader, setUpdatingReader } from '../slices/readerSlice';
+import { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteReader } from '../slices/readerSlice';
 import ReaderForm from '../components/ReaderForm';
+import DeleteModal from '../components/DeleteModal';
 
 const TABLE_HEAD = ['', 'RID', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
 
@@ -156,12 +155,18 @@ const Readers = () => {
   const showUpdateForm = (e, props) => {
     e.preventDefault();
     dispatch(setShowUpdateReader());
-    dispatch(setUpdatingReader(props));
+    dispatch(setUpdatedReader(props));
   }
-  const {showAddReader, showUpdateReader, updatingReader } = useSelector(state => state.reader);
+  const showDelete = (e, RID) => {
+    e.preventDefault();
+    dispatch(setShowDeleteReader());
+    dispatch(setUpdatedReader(RID));
+  }
+  
+  const {showAddReader, showUpdateReader, showDeleteReader } = useSelector(state => state.reader);
  
   return (
-    <div className={`flex w-full h-full ${showAddReader || showUpdateReader ? 'overflow-hidden':''}`}>
+    <div className={`flex w-full h-full ${showAddReader || showUpdateReader || showDeleteReader ? 'overflow-hidden':''}`}>
       <MenuSidebar activeItem={'Readers'}  />
 
       <div className='w-full px-4 py-3'>
@@ -176,7 +181,7 @@ const Readers = () => {
           <Button
             className="flex items-center gap-3" 
             size="sm" 
-            style={{backgroundImage: `linear-gradient(to right, #EF9595, #EFB495)`}}
+            style={{backgroundImage: `linear-gradient(to right, var(--my-red), var(--my-orange)`}}
             onClick={showAddForm}
           >
             <FaUserPlus strokeWidth={2} className="h-4 w-4" /> Add member
@@ -240,7 +245,9 @@ const Readers = () => {
                   </button>
                 </td>
                 <td className="p-2">
-                  <FaTrash />
+                  <button onClick={(e) => showDelete(e, RID)}>
+                    <FaTrash />
+                  </button>
                 </td>
               </tr>
             ))}
@@ -261,6 +268,7 @@ const Readers = () => {
 
       </div>
       {(showAddReader || showUpdateReader) && <ReaderForm />}
+      {showDeleteReader && <DeleteModal />}
     </div>
   )
 }

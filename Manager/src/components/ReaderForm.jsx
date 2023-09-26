@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import { BiX } from "react-icons/bi";
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { setShowAddReader, setShowUpdateReader, setUpdatingReader } from '../slices/readerSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setShowAddReader, setShowUpdateReader, setUpdatedReader } from '../slices/readerSlice';
 import { BiUserCircle } from 'react-icons/bi';
 import { MdEdit } from 'react-icons/md';
 import { Input } from "@material-tailwind/react";
@@ -13,14 +12,15 @@ import { FaInfoCircle } from "react-icons/fa";
 const EXPIRATION = 2;
 
 const ReaderForm = () => {
-  const {showAddReader, showUpdateReader, updatingReader} = useSelector(state => state.reader);
+  const {showAddReader, showUpdateReader, updatedReader} = useSelector(state => state.reader);
   
   const today = new Date()
   const exp = new Date(today.getFullYear() + EXPIRATION, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
+  
   const [account, setAccount] = useState(
-    updatingReader == null ? 
+    updatedReader == null ? 
     {photo: '', rid: '', username: '', name: '', id: '', birthdate: '', sex: '', email: '', address: '', regDate: today.toISOString().slice(0, 10), expDate: exp}:
-    {photo: updatingReader.Photo, rid: updatingReader.RID, username: updatingReader.Username, name: updatingReader.Name, id: updatingReader.ID, birthdate: updatingReader.Birthdate, sex: updatingReader.Sex, email: updatingReader.Email, address: updatingReader.Address, regDate: updatingReader.RegDate, expDate: updatingReader.ExpDate}
+    {photo: updatedReader.Photo, rid: updatedReader.RID, username: updatedReader.Username, name: updatedReader.Name, id: updatedReader.ID, birthdate: updatedReader.Birthdate, sex: updatedReader.Sex, email: updatedReader.Email, address: updatedReader.Address, regDate: updatedReader.RegDate, expDate: updatedReader.ExpDate}
   );
 
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const ReaderForm = () => {
       dispatch(setShowAddReader());
     } else if (showUpdateReader) {
       dispatch(setShowUpdateReader());
-      dispatch(setUpdatingReader(null));
+      dispatch(setUpdatedReader(null));
     }
   }
 
@@ -45,19 +45,20 @@ const ReaderForm = () => {
     setAccount({...account, [name]: value});
   }
 
-  const handleAdd = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     // console.log(account);
+    closeForm();
   }
 
   return (
     <div className="fixed top-0 left-0 bg-black bg-opacity-25 w-full h-full flex justify-center items-center z-50 overflow-auto ">
       <form
         className="relative bg-white drop-shadow-md p-5 w-full h-full md:w-[30rem] md:h-fit flex flex-col justify-center gap-4 rounded-lg"
-        onSubmit={handleAdd}
+        onSubmit={handleSubmit}
       >
         <button
-          className="absolute top-3 right-3 w-6 h-6 bg-blue-gray-100 rounded-full"
+          className="absolute top-3 right-3 w-6 h-6 bg-lightGrey rounded-full"
           onClick={closeForm}
         >
           <BiX size="1.5rem" />

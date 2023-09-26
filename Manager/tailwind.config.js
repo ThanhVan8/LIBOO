@@ -13,7 +13,9 @@ module.exports = withMT({
         yellow: '#EFD595',
         lightYellow: '#D9D9D9',
         lightOrange: '#FFD8C7',
-        textDisable: '#6B7280'
+        textDisable: '#6B7280',
+        lightGrey: '#F5F5F5',
+        textPrimary: '#263238',
       },
     },
   },
