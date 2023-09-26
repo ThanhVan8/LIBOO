@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import MenuSidebar from '../components/MenuSidebar'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -14,7 +14,7 @@ import DeleteModal from '../components/DeleteModal';
 const TABLE_HEAD = ['', 'RID', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
 
 const Readers = () => {
-  const [readerData, setReaderData] = useState([
+  const data = [
     {
       RID: '1',
       Username: 'user1',
@@ -118,8 +118,9 @@ const Readers = () => {
       RegDate: '2022-01-01',
       ExpDate: '2024-01-01',
       Photo: '',
-    }
-  ])
+    },
+  ]
+  const [readerData, setReaderData] = useState(data)
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
@@ -139,12 +140,17 @@ const Readers = () => {
     }
   }
 
-  const selectFilter = (e) => {
-    console.log(e.target.value)
-  }
+  const filterSearch = ['Name', 'Username']
+  const [selectedFilter, setSelectedFilter] = useState(filterSearch[0]);
 
   const handleSearch = (e) => {
-    console.log(e.target.value)
+    const searchTerm = e.target.value;
+    if (searchTerm === '') {
+      setReaderData(data);
+      return;
+    }
+    const searchedReaders = data.filter((reader) => reader[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase()));
+    setReaderData(searchedReaders);
   }
 
   const dispatch = useDispatch();
@@ -172,7 +178,11 @@ const Readers = () => {
       <div className='w-full px-4 py-3'>
         {/* Search bar */}
         <div className='flex justify-end pl-14'>
-          <SearchBar filters={['Name', 'ISBN']} onClick={selectFilter} onChange={handleSearch}/>
+          <SearchBar 
+            filters={filterSearch} 
+            onClick={(e) => setSelectedFilter(e.target.value)} 
+            onChange={handleSearch}
+          />
         </div>
 
         {/* Heading */}
