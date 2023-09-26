@@ -1,6 +1,5 @@
 import React, {useState} from "react";
-import NavLine from "../components/NavLine";
-import { Input, Typography } from "@material-tailwind/react";
+import { Input } from "@material-tailwind/react";
 import RadioButton from "../components/RadioButton";
 import CustomButton from "../components/CustomButton";
 import { FaInfoCircle } from "react-icons/fa";
@@ -22,7 +21,6 @@ const SignupForm = () => {
       className="flex flex-col items-center gap-8 w-full"
       onSubmit={(e) => handleSignup(e)}
     >
-      <NavLine element="Sign Up" />
       <div className="w-full grid grid-cols-2 gap-3">
         <div>
           <Input
