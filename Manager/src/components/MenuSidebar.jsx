@@ -1,14 +1,12 @@
 import React from "react";
-import {LiaTimesSolid} from "react-icons/lia";
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom"
-import { LiaUserSolid, LiaChartBarSolid } from "react-icons/lia";
+import { Link, useLocation } from "react-router-dom"
+import { LiaTimesSolid, LiaUserSolid, LiaChartBarSolid } from "react-icons/lia";
 import { GoBook, GoArrowRight, GoArrowLeft } from "react-icons/go";
-import { BiLogOut } from "react-icons/bi";
+import { BiLogOut, BiMenu } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
 import { setToggle } from '../slices/menuSlice';
 import { motion } from "framer-motion";
-import { BiMenu } from "react-icons/bi";
 
 const items = [
   {
@@ -47,7 +45,8 @@ const MenuItem = ({icon, text, active}) => {
   )
 }
 
-const MenuSidebar = ({activeItem}) => {
+const MenuSidebar = () => {
+  const location = useLocation();
   const {toggle} = useSelector(state => state.menu);
 
   const dispatch = useDispatch();
@@ -76,7 +75,7 @@ const MenuSidebar = ({activeItem}) => {
               {items.map((item, index) => {
                 return (
                   <Link key={index} to={item.path}>
-                    <MenuItem icon={item.icon} text={item.text} active={item.text === activeItem}/>
+                    <MenuItem icon={item.icon} text={item.text} active={location.pathname === item.path}/>
                   </Link>
                 )
               })}

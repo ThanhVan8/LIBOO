@@ -1,3 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --my-red: theme(colors.red);
+    --my-orange: theme(colors.orange);
+    --my-text-primary: theme(colors.textPrimary);
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -6,8 +18,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --tw-text-opacity: 1;
-  color: rgb(38 50 56 / var(--tw-text-opacity));
+  color: var(--my-text-primary);
   font-size: 14px;
 }
 
@@ -15,7 +26,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

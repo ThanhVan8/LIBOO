@@ -8,7 +8,7 @@ const Auth = () => {
   const [current, setCurrent] = useState('Sign In')
 
   return (
-    <div className='bg-lightOrange h-full bg-bg1 bg-right bg-contain bg-no-repeat'>
+    <div className='bg-lightOrange w-full h-full bg-bg1 bg-right bg-contain bg-no-repeat'>
       <div className='min-w-[500px] w-full h-full bg-white flex flex-col items-center justify-center py-10 px-5 gap-10 md:w-1/2 md:rounded-r-[30px]'>
         <div className='flex items-center gap-5 mb-10'>
           <div className='bg-red rounded-full w-fit h-fit p-2'>

@@ -4,7 +4,7 @@ import Auth from './pages/Auth'
 
 const App = () => {
   return (
-    <div className="w-full h-screen">
+    <div className="w-screen h-screen flex">
       <Routes>
         <Route path="/Auth" element={<Auth />} />
       </Routes>
