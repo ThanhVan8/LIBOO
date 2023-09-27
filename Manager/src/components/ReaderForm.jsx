@@ -18,9 +18,20 @@ const ReaderForm = () => {
   const exp = new Date(today.getFullYear() + EXPIRATION, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
 
   const [account, setAccount] = useState(
-    !updatedReader ? 
-    {...updatedReader, Sex: 'Male', RegDate: today.toISOString().slice(0, 10), ExpDate: exp}:
-    updatedReader
+    !updatedReader
+      ? {
+          RID: "",
+          Username: "",
+          Name: "",
+          ID: "",
+          Birthdate: "",
+          Sex: "Male",
+          Email: "",
+          Address: "",
+          RegDate: today.toISOString().slice(0, 10),
+          ExpDate: exp,
+        }
+      : updatedReader
   );
 
   const dispatch = useDispatch();
@@ -80,7 +91,7 @@ const ReaderForm = () => {
           <Input
             variant="standard"
             label="RID"
-            disabled
+            readOnly
             name="RID"
             value={account.RID}
           />
@@ -91,9 +102,9 @@ const ReaderForm = () => {
               required
               minLength={6}
               maxLength={20}
-              onChange={handleChangeInfo}
               name="Username"
               value={account.Username}
+              onChange={handleChangeInfo}
             />
             <p className="mt-2 flex items-center gap-2 font-normal text-[0.75rem]">
               <FaInfoCircle className='w-3.5 h-3.5' />
@@ -168,7 +179,7 @@ const ReaderForm = () => {
           <Input
             variant="standard"
             label="Registration date"
-            disabled
+            readOnly
             type="date"
             value={account.RegDate}
             name="RegDate"
@@ -177,7 +188,7 @@ const ReaderForm = () => {
           <Input
             variant="standard"
             label="Expiration date"
-            disabled
+            readOnly
             type="date"
             value={account.ExpDate}
             name="ExpDate"

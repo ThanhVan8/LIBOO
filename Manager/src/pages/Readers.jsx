@@ -152,24 +152,18 @@ const Readers = () => {
     setReaderData(searchedReaders);
   }
 
+  const {showAddReader, showUpdateReader, showDeleteReader, updatedReader } = useSelector(state => state.reader);
+
   const dispatch = useDispatch();
-  const showAddForm = (e) => {
+
+  const handleDelete = (e) => {
     e.preventDefault();
-    dispatch(setShowAddReader());
-  }
-  const showUpdateForm = (e, props) => {
-    e.preventDefault();
-    dispatch(setShowUpdateReader());
-    dispatch(setUpdatedReader(props));
-  }
-  const showDelete = (e, props) => {
-    e.preventDefault();
+    // console.log('Delete reader: ', updatedReader);
+
+    dispatch(setUpdatedReader(null));
     dispatch(setShowDeleteReader());
-    dispatch(setUpdatedReader(props));
   }
   
-  const {showAddReader, showUpdateReader, showDeleteReader } = useSelector(state => state.reader);
- 
   return (
     <div className={`flex w-full h-full ${showAddReader || showUpdateReader || showDeleteReader ? 'overflow-hidden':''}`}>
       <div className='w-full px-4 py-3'>
@@ -189,7 +183,7 @@ const Readers = () => {
             className="flex items-center gap-3" 
             size="sm" 
             style={{backgroundImage: `linear-gradient(to right, var(--my-red), var(--my-orange)`}}
-            onClick={showAddForm}
+            onClick={() => dispatch(setShowAddReader())}
           >
             <FaUserPlus strokeWidth={2} className="h-4 w-4" /> Add member
           </Button>
@@ -244,12 +238,12 @@ const Readers = () => {
                   <p>{record.ExpDate}</p>
                 </td>              
                 <td className="p-2">
-                  <button onClick={(e) => showUpdateForm(e, record)}>
+                  <button onClick={() => {dispatch(setUpdatedReader(record)); dispatch(setShowUpdateReader())}}>
                     <MdEdit />
                   </button>
                 </td>
                 <td className="p-2">
-                  <button onClick={(e) => showDelete(e, record)}>
+                  <button onClick={() => {dispatch(setUpdatedReader(record)); dispatch(setShowDeleteReader())}}>
                     <FaTrash />
                   </button>
                 </td>
@@ -272,7 +266,7 @@ const Readers = () => {
 
       </div>
       {(showAddReader || showUpdateReader) && <ReaderForm />}
-      {showDeleteReader && <DeleteModal />}
+      {showDeleteReader && <DeleteModal onConfirm={handleDelete} onClose={() => dispatch(setShowDeleteReader())} />}
     </div>
   )
 }

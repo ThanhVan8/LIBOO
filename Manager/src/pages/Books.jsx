@@ -160,24 +160,17 @@ const Books = () => {
     setBookData(searchedBooks);
   }
 
+  const {showAddBook, showUpdateBook, showDeleteBook, updatedBook } = useSelector(state => state.book);
   const dispatch = useDispatch();
-  const showAddForm = (e) => {
+
+  const handleDelete = (e) => {
     e.preventDefault();
-    dispatch(setShowAddBook());
-  }
-  const showUpdateForm = (e, props) => {
-    e.preventDefault();
-    dispatch(setShowUpdateBook());
-    dispatch(setUpdatedBook(props));
-  }
-  const showDelete = (e, props) => {
-    e.preventDefault();
+    console.log('Delete book: ', updatedBook);
+
+    dispatch(setUpdatedBook(null));
     dispatch(setShowDeleteBook());
-    dispatch(setUpdatedBook(props));
   }
-  
-  const {showAddBook, showUpdateBook, showDeleteBook } = useSelector(state => state.book);
- 
+   
   return (
     <div className={`flex w-full h-full ${showAddBook || showUpdateBook || showDeleteBook ? 'overflow-hidden':''}`}>
       <div className='w-full px-4 py-3'>
@@ -197,7 +190,7 @@ const Books = () => {
             className="flex items-center gap-3" 
             size="sm" 
             style={{backgroundImage: `linear-gradient(to right, var(--my-red), var(--my-orange)`}}
-            onClick={showAddForm}
+            onClick={() => dispatch(setShowAddBook())}
           >
             <BiSolidBookAdd className="h-4 w-4" /> Add book
           </Button>
@@ -252,12 +245,19 @@ const Books = () => {
                   <p>{record.Borrowed}</p>
                 </td>              
                 <td className="p-2">
-                  <button onClick={(e) => showUpdateForm(e, record)}>
+                  <button 
+                  onClick={() => {
+                    dispatch(setUpdatedBook(record))
+                    dispatch(setShowUpdateBook()); 
+                  }}>
                     <MdEdit />
                   </button>
                 </td>
                 <td className="p-2">
-                  <button onClick={(e) => showDelete(e, record)}>
+                  <button onClick={() => {
+                    dispatch(setUpdatedBook(record))
+                    dispatch(setShowDeleteBook()); 
+                  }}>
                     <FaTrash />
                   </button>
                 </td>
@@ -280,7 +280,7 @@ const Books = () => {
 
       </div>
       {(showAddBook || showUpdateBook) && <BookForm />}
-      {showDeleteBook && <DeleteModal />}
+      {showDeleteBook && <DeleteModal onConfirm={handleDelete} onClose={() => dispatch(setShowDeleteBook())} />}
     </div>
   )
 }

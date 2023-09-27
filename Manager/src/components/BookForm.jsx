@@ -11,7 +11,20 @@ const BookForm = () => {
 
   const [book, setBook] = useState(
     !updatedBook ? 
-    {} :
+    {
+      BID: '',
+      ISBN: '',
+      Name: '',
+      Author: '',
+      Publisher: '',
+      PublishYear: 0,
+      Genre: '',
+      Price: 0,
+      Quantity: 0,
+      Borrowed: 0,
+      Photo: '',
+      Description: '',
+    } :
     updatedBook
   );
 
