@@ -16,11 +16,22 @@ const ReaderForm = () => {
   
   const today = new Date()
   const exp = new Date(today.getFullYear() + EXPIRATION, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
-  
+
   const [account, setAccount] = useState(
-    updatedReader == null ? 
-    {photo: '', rid: '', username: '', name: '', id: '', birthdate: '', sex: '', email: '', address: '', regDate: today.toISOString().slice(0, 10), expDate: exp}:
-    {photo: updatedReader.Photo, rid: updatedReader.RID, username: updatedReader.Username, name: updatedReader.Name, id: updatedReader.ID, birthdate: updatedReader.Birthdate, sex: updatedReader.Sex, email: updatedReader.Email, address: updatedReader.Address, regDate: updatedReader.RegDate, expDate: updatedReader.ExpDate}
+    !updatedReader
+      ? {
+          RID: "",
+          Username: "",
+          Name: "",
+          ID: "",
+          Birthdate: "",
+          Sex: "Male",
+          Email: "",
+          Address: "",
+          RegDate: today.toISOString().slice(0, 10),
+          ExpDate: exp,
+        }
+      : updatedReader
   );
 
   const dispatch = useDispatch();
@@ -47,7 +58,7 @@ const ReaderForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // console.log(account);
+    console.log(account);
     closeForm();
   }
 
@@ -65,9 +76,9 @@ const ReaderForm = () => {
         </button>
         <h1 className="text-2xl font-semibold text-left">{showAddReader ? 'Add' : 'Update'} Reader</h1>
         <div className="relative w-16 h-16">
-          {!account.photo ? 
+          {!account.Photo ? 
           <BiUserCircle className='w-full h-full' /> :
-          <img src={account.photo} alt="upload" className="object-cover w-full h-full rounded-full" />
+          <img src={account.Photo} alt="upload" className="object-cover w-full h-full rounded-full" />
           }
           <button
             className="absolute bottom-2 right-1 w-5 h-5 rounded-full bg-red flex items-center justify-center"
@@ -80,9 +91,9 @@ const ReaderForm = () => {
           <Input
             variant="standard"
             label="RID"
-            disabled
-            name="rid"
-            value={account.rid}
+            readOnly
+            name="RID"
+            value={account.RID}
           />
           <div>
             <Input
@@ -91,9 +102,9 @@ const ReaderForm = () => {
               required
               minLength={6}
               maxLength={20}
+              name="Username"
+              value={account.Username}
               onChange={handleChangeInfo}
-              name="username"
-              value={account.username}
             />
             <p className="mt-2 flex items-center gap-2 font-normal text-[0.75rem]">
               <FaInfoCircle className='w-3.5 h-3.5' />
@@ -105,8 +116,8 @@ const ReaderForm = () => {
             label="Name"
             required
             onChange={handleChangeInfo}
-            name="name"
-            value={account.name}
+            name="Name"
+            value={account.Name}
           />
           <Input
             variant="standard"
@@ -118,9 +129,10 @@ const ReaderForm = () => {
                 .replace(/(\..*?)\..*/g, "$1"))
             }
             pattern=".{12}"
+            maxLength={12}
             onChange={handleChangeInfo}
-            name="id"
-            value={account.id}
+            name="ID"
+            value={account.ID}
           />
           <Input
             variant="standard"
@@ -128,23 +140,23 @@ const ReaderForm = () => {
             required
             type="date"
             onChange={handleChangeInfo}
-            name="birthdate"
-            value={account.birthdate}
+            name="Birthdate"
+            value={account.Birthdate}
           />
           <div className="flex gap-4 self-end">
             <RadioButton
               label="Male"
               onChange={handleChangeInfo}
               value="Male"
-              name="sex"
-              checked={account.sex === "Male"}
+              name="Sex"
+              checked={account.Sex === "Male"}
             />
             <RadioButton
               label="Female"
               onChange={handleChangeInfo}
               value="Female"
-              name="sex"
-              checked={account.sex === "Female"}
+              name="Sex"
+              checked={account.Sex === "Female"}
             />
           </div>
           <Input
@@ -153,33 +165,33 @@ const ReaderForm = () => {
             required
             type="email"
             onChange={handleChangeInfo}
-            value={account.email}
-            name="email"
+            value={account.Email}
+            name="Email"
           />
           <Input
             variant="standard"
             label="Address"
             required
             onChange={handleChangeInfo}
-            value={account.address}
-            name="address"
+            value={account.Address}
+            name="Address"
           />
           <Input
             variant="standard"
             label="Registration date"
-            disabled
+            readOnly
             type="date"
-            value={account.regDate}
-            name="regDate"
+            value={account.RegDate}
+            name="RegDate"
             labelProps={{ className: "peer-disabled:text-textDisable" }}
           />
           <Input
             variant="standard"
             label="Expiration date"
-            disabled
+            readOnly
             type="date"
-            value={account.expDate}
-            name="expDate"
+            value={account.ExpDate}
+            name="ExpDate"
             labelProps={{ className: "peer-disabled:text-textDisable" }}
           />
         </div>

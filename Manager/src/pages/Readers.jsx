@@ -10,7 +10,7 @@ import { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteR
 import ReaderForm from '../components/ReaderForm';
 import DeleteModal from '../components/DeleteModal';
 
-const TABLE_HEAD = ['', 'RID', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
+const TABLE_HEAD = ['', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
 
 const Readers = () => {
   const data = [
@@ -152,24 +152,18 @@ const Readers = () => {
     setReaderData(searchedReaders);
   }
 
+  const {showAddReader, showUpdateReader, showDeleteReader, updatedReader } = useSelector(state => state.reader);
+
   const dispatch = useDispatch();
-  const showAddForm = (e) => {
+
+  const handleDelete = (e) => {
     e.preventDefault();
-    dispatch(setShowAddReader());
-  }
-  const showUpdateForm = (e, props) => {
-    e.preventDefault();
-    dispatch(setShowUpdateReader());
-    dispatch(setUpdatedReader(props));
-  }
-  const showDelete = (e, RID) => {
-    e.preventDefault();
+    // console.log('Delete reader: ', updatedReader);
+
+    dispatch(setUpdatedReader(null));
     dispatch(setShowDeleteReader());
-    dispatch(setUpdatedReader(RID));
   }
   
-  const {showAddReader, showUpdateReader, showDeleteReader } = useSelector(state => state.reader);
- 
   return (
     <div className={`flex w-full h-full ${showAddReader || showUpdateReader || showDeleteReader ? 'overflow-hidden':''}`}>
       <div className='w-full px-4 py-3'>
@@ -189,7 +183,7 @@ const Readers = () => {
             className="flex items-center gap-3" 
             size="sm" 
             style={{backgroundImage: `linear-gradient(to right, var(--my-red), var(--my-orange)`}}
-            onClick={showAddForm}
+            onClick={() => dispatch(setShowAddReader())}
           >
             <FaUserPlus strokeWidth={2} className="h-4 w-4" /> Add member
           </Button>
@@ -208,51 +202,48 @@ const Readers = () => {
             </tr>
           </thead>
           <tbody>
-            {records.map(({ RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate, Photo }, index) => (
-              <tr key={index} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
+            {records.map((record) => (
+              <tr key={record.RID} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2 w-12 h-12">
-                  {!Photo ?
+                  {!record.Photo ?
                   <BiUserCircle className='w-full h-full' /> :
-                  <img src={Photo} alt="logo" className="w-full h-full rounded-full object-contain" />
+                  <img src={record.Photo} alt="logo" className="w-full h-full rounded-full object-contain" />
                   }
                 </td>
                 <td className="p-2">
-                  <p>{RID}</p>
+                  <p>{record.Username}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Username}</p>
+                  <p>{record.Name}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Name}</p>
+                  <p>{record.ID}</p>
                 </td>
                 <td className="p-2">
-                  <p>{ID}</p>
+                  <p>{record.Birthdate}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Birthdate}</p>
+                  <p>{record.Sex}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Sex}</p>
+                  <p>{record.Email}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Email}</p>
+                  <p>{record.Address}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Address}</p>
+                  <p>{record.RegDate}</p>
                 </td>
                 <td className="p-2">
-                  <p>{RegDate}</p>
-                </td>
-                <td className="p-2">
-                  <p>{ExpDate}</p>
+                  <p>{record.ExpDate}</p>
                 </td>              
                 <td className="p-2">
-                  <button onClick={(e) => showUpdateForm(e, {RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate, Photo})}>
+                  <button onClick={() => {dispatch(setUpdatedReader(record)); dispatch(setShowUpdateReader())}}>
                     <MdEdit />
                   </button>
                 </td>
                 <td className="p-2">
-                  <button onClick={(e) => showDelete(e, RID)}>
+                  <button onClick={() => {dispatch(setUpdatedReader(record)); dispatch(setShowDeleteReader())}}>
                     <FaTrash />
                   </button>
                 </td>
@@ -275,7 +266,7 @@ const Readers = () => {
 
       </div>
       {(showAddReader || showUpdateReader) && <ReaderForm />}
-      {showDeleteReader && <DeleteModal />}
+      {showDeleteReader && <DeleteModal onConfirm={handleDelete} onClose={() => dispatch(setShowDeleteReader())} />}
     </div>
   )
 }

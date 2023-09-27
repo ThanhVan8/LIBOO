@@ -1,34 +1,18 @@
 import React from 'react'
 import { BiX, BiTrash } from "react-icons/bi";
-import { useDispatch, useSelector } from 'react-redux';
-import { setShowDeleteReader, setUpdatedReader } from '../slices/readerSlice';
 import { Button } from '@material-tailwind/react';
 import CustomButton from './CustomButton';
 
-const DeleteModal = () => {
-  const dispatch = useDispatch();
-  const {updatedReader} = useSelector(state => state.reader); // RID of reader to be deleted
-
-  const closeModal = () => {
-    dispatch(setShowDeleteReader());
-    dispatch(setUpdatedReader(null));
-  }
-
-  const handleDelete = (e) => {
-    e.preventDefault();
-    // console.log('Delete reader with RID: ', updatedReader);
-    closeModal();
-  }
-
+const DeleteModal = ({onConfirm, onClose}) => {
   return (
     <div className="fixed top-0 left-0 bg-black bg-opacity-25 w-full h-full flex justify-center items-center z-50">
       <form
         className="relative bg-white drop-shadow-md p-5 w-full md:w-[30rem] flex flex-col justify-center gap-10 rounded-lg"
-        onSubmit={handleDelete}
+        onSubmit={onConfirm}
       >
         <button
           className="absolute top-3 right-3 w-6 h-6 bg-lightGrey rounded-full"
-          onClick={closeModal}
+          onClick={onClose}
         >
           <BiX size="1.5rem" />
         </button>
@@ -48,7 +32,7 @@ const DeleteModal = () => {
 
         {/* Buttons */}
         <div className='flex gap-5'>
-          <Button className='bg-tranparant text-textPrimary border-textPrimary border w-full h-full' onClick={closeModal}>No, cancel</Button>
+          <Button className='bg-tranparant text-textPrimary border-textPrimary border w-full h-full' onClick={onClose}>No, cancel</Button>
           <CustomButton label='Yes, confirm' classes='w-full h-full' type='submit' />
         </div>
       </form>
