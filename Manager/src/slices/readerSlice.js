@@ -5,10 +5,10 @@ const readerSlice = createSlice({
     showAddReader: false,
     showUpdateReader: false,
     updatingReader: null,
-    users: {
+    readers:{
       allUsers: null,
       isFetching: false,
-      error: false
+      error: false,
     }
   },
   reducers: {
@@ -23,17 +23,17 @@ const readerSlice = createSlice({
     },
 
     getUserBegin(state) {
-      state.users.isFetching = true;
+      state.readers.isFetching = true;
     },
 
     getUserSuccess(state, action) {
-      state.users.allUsers = action.payload;
-      state.users.isFetching = false;
+      state.readers.allUsers = action.payload;
+      state.readers.isFetching = false;
     },
 
     getUserFailure(state) {
-      state.users.error = true;
-      state.users.isFetching = false;
+      state.readers.error = true;
+      state.readers.isFetching = false;
     }
 
   },

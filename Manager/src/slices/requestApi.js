@@ -1,5 +1,7 @@
 import axios from "axios";
 import { loginBegin, loginFailure, loginSuccess} from './authSlice'
+import { getUserBegin, getUserSuccess, getUserFailure } from './readerSlice'
+
 
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginBegin());
@@ -20,13 +22,16 @@ export const loginUser = async (user, dispatch, navigate) => {
 }
 
 export const getAllUsers = async (accessToken, dispatch) => {
+    dispatch(getUserBegin());
     try{
-        const res = await axios.get('http://localhost:8000/api/user',{
+        const res = await axios.get('http://localhost:8000/api/user/',{
             headers: {
                 token: `Bearer ${accessToken}`
             }
         });
+        dispatch(getUserSuccess(res.data));
     }catch(err){
         console.log(err.response.data);
+        dispatch(getUserFailure());
     }
 }
