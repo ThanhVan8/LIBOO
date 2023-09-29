@@ -33,8 +33,8 @@ app.use('/api/book', bookRouter);
 app.use('/api/slip', slipRouter);
 app.use('/api/auth', authRouter);
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.listen(8000, () => {
+    console.log('Server is running on port 8000');
 });
 
 // JSON WEB TOKEN

@@ -58,14 +58,14 @@ const authController = {
         try{
             const user = await User.findOne({username: req.body.username});
             if(!user){
-                res.status(400).json('Wrong username');
+                return res.status(400).json('Wrong username');
             }
             const validated = await bcrypt.compare(
                 req.body.password, 
                 user.password
             );
             if(!validated){
-                res.status(400).json('Wrong password');
+                return res.status(400).json('Wrong password');
             }
             if(user && validated){
                 const accessToken = authController.generateAccessToken(user);
@@ -74,7 +74,7 @@ const authController = {
                 //store refresh token in cookie
                 res.cookie('refreshToken', refreshToken, {
                     httpOnly: true,
-                    secure: true,
+                    secure: false,
                     path: '/',
                     sameSite: 'strict',
                 });
@@ -106,7 +106,7 @@ const authController = {
             refreshTokens.push(newRefreshToken);
             res.cookie('refreshToken', newRefreshToken, {
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 path: '/',
                 sameSite: 'strict',
             });

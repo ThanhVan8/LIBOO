@@ -6,6 +6,11 @@ const readerSlice = createSlice({
     showUpdateReader: false,
     showDeleteReader: false,
     updatedReader: null,
+    users: {
+      allUsers: null,
+      isFetching: false,
+      error: false
+    }
   },
   reducers: {
     setShowAddReader(state, action) {
@@ -19,9 +24,24 @@ const readerSlice = createSlice({
     },
     setUpdatedReader(state, action) {
       state.updatedReader = action.payload
+    },
+
+    getUserBegin(state) {
+      state.users.isFetching = true;
+    },
+
+    getUserSuccess(state, action) {
+      state.users.allUsers = action.payload;
+      state.users.isFetching = false;
+    },
+
+    getUserFailure(state) {
+      state.users.error = true;
+      state.users.isFetching = false;
     }
+
   },
 });
 const { actions, reducer } = readerSlice;
-export const { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteReader } = actions;
+export const { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteReader, getUserBegin, getUserSuccess, getUserFailure } = actions;
 export default reducer;
