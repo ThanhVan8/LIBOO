@@ -1,11 +1,14 @@
-import React, {useState} from 'react'
+import React from 'react'
 import logo from '../assets/logo.png'
 import SigninForm from '../components/SigninForm';
 import SignupForm from '../components/SignupForm';
 import NavLine from "../components/NavLine";
+import {useDispatch, useSelector} from 'react-redux'
+import { setCurrentAction } from '../slices/authSlice';
 
 const Auth = () => {
-  const [current, setCurrent] = useState('Sign In')
+  const dispatch = useDispatch()
+  const {currentAction} = useSelector(state => state.auth)
 
   return (
     <div className='bg-lightOrange w-full h-full bg-bg1 bg-right bg-contain bg-no-repeat'>
@@ -16,8 +19,8 @@ const Auth = () => {
           </div>
           <p className='font-semibold text-2xl'>Welcome to <span className='text-red'>LIBOO</span></p>
         </div>
-        <NavLine element={current} onShow={(props) => setCurrent(props)} />
-        {current === 'Sign In' ? <SigninForm /> : <SignupForm />}
+        <NavLine element={currentAction} onShow={(props) => dispatch(setCurrentAction(props))} />
+        {currentAction === 'Sign In' ? <SigninForm /> : <SignupForm />}
       </div>
     </div>
   )

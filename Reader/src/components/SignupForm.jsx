@@ -3,9 +3,12 @@ import { Input } from "@material-tailwind/react";
 import RadioButton from "../components/RadioButton";
 import CustomButton from "../components/CustomButton";
 import { FaInfoCircle } from "react-icons/fa";
+import { registerUser } from "../slices/requestApi";
+import { useDispatch } from "react-redux";
 
 const SignupForm = () => {
   const [account, setAccount] = useState({username: '', password: '', name: '', id: '', birthdate: '', sex: 'Male', email: '', address: ''});
+  const dispatch = useDispatch();
   const handleChangeInfo = (e) => {
     e.preventDefault();
     const {name, value} = e.target;
@@ -13,7 +16,7 @@ const SignupForm = () => {
   }
   const handleSignup = (e) => {
     e.preventDefault();
-    console.log(account);
+    registerUser(account, dispatch);
   }
 
   return (

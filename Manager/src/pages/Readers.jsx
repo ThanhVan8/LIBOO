@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import SearchBar from '../components/SearchBar';
@@ -9,10 +9,17 @@ import { FaTrash, FaUserPlus } from 'react-icons/fa';
 import { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteReader } from '../slices/readerSlice';
 import ReaderForm from '../components/ReaderForm';
 import DeleteModal from '../components/DeleteModal';
+import { getAllUsers } from '../slices/requestApi'
+import { useNavigate } from 'react-router-dom';
 
 const TABLE_HEAD = ['', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
 
 const Readers = () => {
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  console.log(user)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  //DUMMY DATA
   const data = [
     {
       RID: '1',
@@ -121,6 +128,17 @@ const Readers = () => {
   ]
   const [readerData, setReaderData] = useState(data)
 
+  useEffect(() => {
+    if(!user){
+      navigate('/auth');
+    }
+
+    if(user?.accessToken){
+      getAllUsers(user?.accessToken, dispatch);
+    }
+    
+  }, [])
+
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
   const numPage = Math.ceil(readerData.length / recordsPerPage);
@@ -153,8 +171,6 @@ const Readers = () => {
   }
 
   const {showAddReader, showUpdateReader, showDeleteReader, updatedReader } = useSelector(state => state.reader);
-
-  const dispatch = useDispatch();
 
   const handleDelete = (e) => {
     e.preventDefault();
