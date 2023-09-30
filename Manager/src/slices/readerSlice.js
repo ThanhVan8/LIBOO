@@ -40,14 +40,6 @@ const readerSlice = createSlice({
       state.readers.error = true;
       state.readers.isFetching = false;
     },
-
-    setShowDeleteReader(state, action) {
-      state.showDeleteReader = !state.showDeleteReader
-    },
-    setUpdatedReader(state, action) {
-      state.updatedReader = action.payload
-    }
-
   },
 });
 const { actions, reducer } = readerSlice;
