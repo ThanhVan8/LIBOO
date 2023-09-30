@@ -56,7 +56,7 @@ const MenuSidebar = () => {
   }
 
   return(
-    <div className="z-50">
+    <div className={`z-50 ${location.pathname === '/Auth' ? 'hidden' : ''}`}>
       {toggle &&
         <motion.div 
           className='bg-red rounded-r-[1.875rem] w-full h-full fixed shrink-0 sm:relative sm:w-[12.875rem]'
