@@ -18,7 +18,9 @@ const TABLE_HEAD = ['', 'RID', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Em
 
 const Readers = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
-  console.log(user)
+  const readerList = useSelector((state) => state.reader.readers?.allUsers);
+  // const len = readerList?.length;
+  // console.log(user)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //DUMMY DATA
@@ -129,6 +131,8 @@ const Readers = () => {
     }
   ])
 
+  // const [readerData, setReaderData] = useState([])
+
   useEffect(() => {
     if(!user){
       navigate('/auth');
@@ -136,7 +140,10 @@ const Readers = () => {
 
     if(user?.accessToken){
       getAllUsers(user?.accessToken, dispatch);
+      console.log(readerList)
+
     }
+
     
   }, [])
 
@@ -214,7 +221,7 @@ const Readers = () => {
             </tr>
           </thead>
           <tbody>
-            {records.map(({ RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate, Photo }, index) => (
+            {records?.map(({ RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate, Photo }, index) => (
               <tr key={index} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2 w-12 h-12">
                   {!Photo ?
