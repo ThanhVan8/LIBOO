@@ -9,14 +9,14 @@ import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [account, setAccount] = useState({username: '', password: ''});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChangeInfo = (e) => {
     e.preventDefault();
     const {name, value} = e.target;
     setAccount({...account, [name]: value});
   }
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleSignin = (e) => {
     e.preventDefault();
