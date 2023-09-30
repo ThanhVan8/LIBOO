@@ -5,12 +5,10 @@ import CustomButton from "../components/CustomButton";
 import { FaInfoCircle } from "react-icons/fa";
 import { registerUser } from "../slices/requestApi";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
   const [account, setAccount] = useState({username: '', password: '', name: '', id: '', birthdate: '', sex: 'Male', email: '', address: ''});
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const handleChangeInfo = (e) => {
     e.preventDefault();
     const {name, value} = e.target;
@@ -18,18 +16,7 @@ const SignupForm = () => {
   }
   const handleSignup = (e) => {
     e.preventDefault();
-    console.log(account);
-    const newUser = {
-      username: account.username,
-      password: account.password,
-      name: account.name,
-      id: account.id,
-      birthdate: account.birthdate,
-      sex: account.sex,
-      email: account.email,
-      address: account.address
-    };
-    registerUser(newUser, dispatch, navigate);
+    registerUser(account, dispatch);
   }
 
   return (

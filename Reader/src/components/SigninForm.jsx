@@ -15,18 +15,11 @@ const SigninForm = () => {
     e.preventDefault();
     const {name, value} = e.target;
     setAccount({...account, [name]: value});
-    // console.log(account);
   }
 
   const handleSignin = (e) => {
     e.preventDefault();
-    const newUser = {
-      username: account.username,
-      password: account.password,
-    }
-    console.log(newUser);
-    loginUser(newUser, dispatch, navigate);
-    
+    loginUser(account, dispatch, navigate);
   }
   return (
     <form className="flex flex-col items-center gap-8 w-full" onSubmit={(e) => handleSignin(e)}>

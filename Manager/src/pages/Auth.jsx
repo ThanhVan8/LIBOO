@@ -20,12 +20,7 @@ const Auth = () => {
 
   const handleSignin = (e) => {
     e.preventDefault();
-    const newUser = {
-      username: account.username,
-      password: account.password,
-    }
-    // console.log(account);
-    loginUser(newUser, dispatch, navigate);
+    loginUser(account, dispatch, navigate);
   }
 
   return (

@@ -1,20 +1,18 @@
 import React, {useEffect, useState} from 'react'
-import MenuSidebar from '../components/MenuSidebar'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { motion } from "framer-motion";
 import SearchBar from '../components/SearchBar';
 import { Button } from '@material-tailwind/react';
 import { BiUserCircle, BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { MdEdit } from 'react-icons/md';
 import { FaTrash, FaUserPlus } from 'react-icons/fa';
-import logo from '../assets/logo.png';
-import { setShowAddReader, setShowUpdateReader, setUpdatingReader } from '../slices/readerSlice';
+import { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteReader } from '../slices/readerSlice';
 import ReaderForm from '../components/ReaderForm';
+import DeleteModal from '../components/DeleteModal';
 import { getAllUsers } from '../slices/requestApi'
 import { useNavigate } from 'react-router-dom';
 
-const TABLE_HEAD = ['', 'RID', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
+const TABLE_HEAD = ['', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
 
 const Readers = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
@@ -24,7 +22,7 @@ const Readers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //DUMMY DATA
-  const [readerData, setReaderData] = useState([
+  const data = [
     {
       RID: '1',
       Username: 'user1',
@@ -128,10 +126,9 @@ const Readers = () => {
       RegDate: '2022-01-01',
       ExpDate: '2024-01-01',
       Photo: '',
-    }
-  ])
-
-  // const [readerData, setReaderData] = useState([])
+    },
+  ]
+  const [readerData, setReaderData] = useState(data)
 
   useEffect(() => {
     if(!user){
@@ -141,7 +138,6 @@ const Readers = () => {
     if(user?.accessToken){
       getAllUsers(user?.accessToken, dispatch);
       console.log(readerList)
-
     }
 
     
@@ -165,34 +161,39 @@ const Readers = () => {
     }
   }
 
-  const selectFilter = (e) => {
-    console.log(e.target.value)
-  }
+  const filterSearch = ['Name', 'Username']
+  const [selectedFilter, setSelectedFilter] = useState(filterSearch[0]);
 
   const handleSearch = (e) => {
-    console.log(e.target.value)
+    const searchTerm = e.target.value;
+    if (searchTerm === '') {
+      setReaderData(data);
+      return;
+    }
+    const searchedReaders = data.filter((reader) => reader[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase()));
+    setReaderData(searchedReaders);
   }
 
-  // const dispatch = useDispatch();
-  const showAddForm = (e) => {
+  const {showAddReader, showUpdateReader, showDeleteReader, updatedReader } = useSelector(state => state.reader);
+
+  const handleDelete = (e) => {
     e.preventDefault();
-    dispatch(setShowAddReader());
+    // console.log('Delete reader: ', updatedReader);
+
+    dispatch(setUpdatedReader(null));
+    dispatch(setShowDeleteReader());
   }
-  const showUpdateForm = (e, props) => {
-    e.preventDefault();
-    dispatch(setShowUpdateReader());
-    dispatch(setUpdatingReader(props));
-  }
-  const {showAddReader, showUpdateReader, updatingReader } = useSelector(state => state.reader);
- 
+  
   return (
-    <div className={`flex w-full h-full ${showAddReader || showUpdateReader ? 'overflow-hidden':''}`}>
-      <MenuSidebar activeItem={'Readers'}  />
-
+    <div className={`flex w-full h-full ${showAddReader || showUpdateReader || showDeleteReader ? 'overflow-hidden':''}`}>
       <div className='w-full px-4 py-3'>
         {/* Search bar */}
         <div className='flex justify-end pl-14'>
-          <SearchBar filters={['Name', 'ISBN']} onClick={selectFilter} onChange={handleSearch}/>
+          <SearchBar 
+            filters={filterSearch} 
+            onClick={(e) => setSelectedFilter(e.target.value)} 
+            onChange={handleSearch}
+          />
         </div>
 
         {/* Heading */}
@@ -201,8 +202,8 @@ const Readers = () => {
           <Button
             className="flex items-center gap-3" 
             size="sm" 
-            style={{backgroundImage: `linear-gradient(to right, #EF9595, #EFB495)`}}
-            onClick={showAddForm}
+            style={{backgroundImage: `linear-gradient(to right, var(--my-red), var(--my-orange)`}}
+            onClick={() => dispatch(setShowAddReader())}
           >
             <FaUserPlus strokeWidth={2} className="h-4 w-4" /> Add member
           </Button>
@@ -221,51 +222,50 @@ const Readers = () => {
             </tr>
           </thead>
           <tbody>
-            {records?.map(({ RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate, Photo }, index) => (
-              <tr key={index} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
+            {records.map((record) => (
+              <tr key={record.RID} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2 w-12 h-12">
-                  {!Photo ?
+                  {!record.Photo ?
                   <BiUserCircle className='w-full h-full' /> :
-                  <img src={Photo} alt="logo" className="w-full h-full rounded-full object-contain" />
+                  <img src={record.Photo} alt="logo" className="w-full h-full rounded-full object-contain" />
                   }
                 </td>
                 <td className="p-2">
-                  <p>{RID}</p>
+                  <p>{record.Username}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Username}</p>
+                  <p>{record.Name}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Name}</p>
+                  <p>{record.ID}</p>
                 </td>
                 <td className="p-2">
-                  <p>{ID}</p>
+                  <p>{record.Birthdate}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Birthdate}</p>
+                  <p>{record.Sex}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Sex}</p>
+                  <p>{record.Email}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Email}</p>
+                  <p>{record.Address}</p>
                 </td>
                 <td className="p-2">
-                  <p>{Address}</p>
+                  <p>{record.RegDate}</p>
                 </td>
                 <td className="p-2">
-                  <p>{RegDate}</p>
-                </td>
-                <td className="p-2">
-                  <p>{ExpDate}</p>
+                  <p>{record.ExpDate}</p>
                 </td>              
                 <td className="p-2">
-                  <button onClick={(e) => showUpdateForm(e, {RID, Username, Name, ID, Birthdate, Sex, Email, Address, RegDate, ExpDate, Photo})}>
+                  <button onClick={() => {dispatch(setUpdatedReader(record)); dispatch(setShowUpdateReader())}}>
                     <MdEdit />
                   </button>
                 </td>
                 <td className="p-2">
-                  <FaTrash />
+                  <button onClick={() => {dispatch(setUpdatedReader(record)); dispatch(setShowDeleteReader())}}>
+                    <FaTrash />
+                  </button>
                 </td>
               </tr>
             ))}
@@ -286,6 +286,7 @@ const Readers = () => {
 
       </div>
       {(showAddReader || showUpdateReader) && <ReaderForm />}
+      {showDeleteReader && <DeleteModal onConfirm={handleDelete} onClose={() => dispatch(setShowDeleteReader())} />}
     </div>
   )
 }
