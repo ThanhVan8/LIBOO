@@ -8,18 +8,23 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [account, setAccount] = useState({username: '', password: ''});
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleChangeInfo = (e) => {
+    e.preventDefault();
+    const {name, value} = e.target;
+    setAccount({...account, [name]: value});
+  }
 
   const handleSignin = (e) => {
     e.preventDefault();
     const newUser = {
-      username: username,
-      password: password,
+      username: account.username,
+      password: account.password,
     }
-    console.log(newUser);
+    // console.log(account);
     loginUser(newUser, dispatch, navigate);
   }
 
