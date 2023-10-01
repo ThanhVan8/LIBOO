@@ -12,126 +12,19 @@ import DeleteModal from '../components/DeleteModal';
 import { getAllUsers } from '../slices/requestApi'
 import { useNavigate } from 'react-router-dom';
 
-
-
 const TABLE_HEAD = ['', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
 
 const Readers = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const readerList = useSelector((state) => state.reader.readers?.allUsers);
-  // const len = readerList?.length;
-  // console.log(user)
-  // console.log(readerList)
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  //DUMMY DATA
-  const data = [
-    {
-      _id: '1',
-      username: 'user1',
-      name: 'John Doe',
-      id: '123456789',
-      birthday: '2000-01-01',
-      sex: 'Male',
-      email: 'JohnDoe@gmail.com',
-      address: '1234 Main St',
-      makingDay: '2022-01-01',
-      invalidDay: '2024-01-01',
-      photo: '',
-    },
-    {
-      _id: '2',
-      username: 'user2',
-      name: 'Jane Doe',
-      id: '987654321',
-      birthday: '2000-01-01',
-      sex: 'Female',
-      email: 'JohnDoe@gmail.com',
-      address: '1234 Main St',
-      makingDay: '2022-01-01',
-      invalidDay: '2024-01-01',
-      Photo: '',
-    },
-    {
-      _id: '3',
-      username: 'user3',
-      name: 'Jane Doe',
-      id: '987654321',
-      birthday: '2000-01-01',
-      sex: 'Female',
-      email: 'JohnDoe@gmail.com',
-      address: '1234 Main St',
-      makingDay: '2022-01-01',
-      invalidDay: '2024-01-01',
-      Photo: '',
-    },
-    {
-      _id: '4',
-      username: 'user3',
-      name: 'Jane Doe',
-      id: '987654321',
-      birthday: '2000-01-01',
-      sex: 'Female',
-      email: 'JohnDoe@gmail.com',
-      address: '1234 Main St',
-      makingDay: '2022-01-01',
-      invalidDay: '2024-01-01',
-      Photo: '',
-    },
-    {
-      _id: '5',
-      username: 'user3',
-      name: 'Jane Doe',
-      id: '987654321',
-      birthday: '2000-01-01',
-      sex: 'Female',
-      email: 'JohnDoe@gmail.com',
-      address: '1234 Main St',
-      makingDay: '2022-01-01',
-      invalidDay: '2024-01-01',
-      Photo: '',
-    },
-    {
-      _id: '6',
-      username: 'user3',
-      name: 'Jane Doe',
-      id: '987654321',
-      birthday: '2000-01-01',
-      sex: 'Female',
-      email: 'JohnDoe@gmail.com',
-      address: '1234 Main St',
-      makingDay: '2022-01-01',
-      invalidDay: '2024-01-01',
-      Photo: '',
-    },
-    {
-      _id: '7',
-      username: 'user3',
-      name: 'Jane Doe',
-      id: '987654321',
-      birthday: '2000-01-01',
-      sex: 'Female',
-      email: 'JohnDoe@gmail.com',
-      address: '1234 Main St',
-      makingDay: '2022-01-01',
-      invalidDay: '2024-01-01',
-      Photo: '',
-    },
-    {
-      _id: '8',
-      username: 'user3',
-      name: 'Jane Doe',
-      id: '987654321',
-      birthday: '2000-01-01',
-      sex: 'Female',
-      email: 'JohnDoe@gmail.com',
-      address: '1234 Main St',
-      makingDay: '2022-01-01',
-      invalidDay: '2024-01-01',
-      Photo: '',
-    },
-  ]
-  // const data = readerList;
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  }
+
   const [readerData, setReaderData] = useState([])
 
   useEffect(() => {
@@ -146,11 +39,8 @@ const Readers = () => {
     if(user?.accessToken){
       getAllUsers(user?.accessToken, dispatch);
     }
-
     
   }, [])
-
-
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
@@ -170,16 +60,16 @@ const Readers = () => {
     }
   }
 
-  const filterSearch = ['Name', 'Username']
+  const filterSearch = ['name', 'username']
   const [selectedFilter, setSelectedFilter] = useState(filterSearch[0]);
 
   const handleSearch = (e) => {
     const searchTerm = e.target.value;
     if (searchTerm === '') {
-      setReaderData(data);
+      setReaderData(readerList);
       return;
     }
-    const searchedReaders = data.filter((reader) => reader[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase()));
+    const searchedReaders = readerList.filter((reader) => reader[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase()));
     setReaderData(searchedReaders);
   }
 
@@ -249,7 +139,7 @@ const Readers = () => {
                   <p>{record.id}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.birthday}</p>
+                  <p>{formatDate(record.birthday)}</p>
                 </td>
                 <td className="p-2">
                   <p>{record.sex}</p>
@@ -261,10 +151,10 @@ const Readers = () => {
                   <p>{record.address}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.makingDay}</p>
+                  <p>{formatDate(record.makingDay)}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.invalidDay}</p>
+                  <p>{formatDate(record.invalidDay)}</p>
                 </td>              
                 <td className="p-2">
                   <button onClick={() => {dispatch(setUpdatedReader(record)); dispatch(setShowUpdateReader())}}>
