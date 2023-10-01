@@ -32,10 +32,6 @@ const Readers = () => {
   }, [readerList]);
 
   useEffect(() => {
-    if(!user){
-      navigate('/Auth');
-    }
-
     if(user?.accessToken){
       getAllUsers(user?.accessToken, dispatch);
     }
