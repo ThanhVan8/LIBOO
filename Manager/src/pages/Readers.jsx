@@ -12,6 +12,8 @@ import DeleteModal from '../components/DeleteModal';
 import { getAllUsers } from '../slices/requestApi'
 import { useNavigate } from 'react-router-dom';
 
+
+
 const TABLE_HEAD = ['', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
 
 const Readers = () => {
@@ -19,116 +21,122 @@ const Readers = () => {
   const readerList = useSelector((state) => state.reader.readers?.allUsers);
   // const len = readerList?.length;
   // console.log(user)
+  // console.log(readerList)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //DUMMY DATA
   const data = [
     {
-      RID: '1',
-      Username: 'user1',
-      Name: 'John Doe',
-      ID: '123456789',
-      Birthdate: '2000-01-01',
-      Sex: 'Male',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
+      _id: '1',
+      username: 'user1',
+      name: 'John Doe',
+      id: '123456789',
+      birthday: '2000-01-01',
+      sex: 'Male',
+      email: 'JohnDoe@gmail.com',
+      address: '1234 Main St',
+      makingDay: '2022-01-01',
+      invalidDay: '2024-01-01',
+      photo: '',
+    },
+    {
+      _id: '2',
+      username: 'user2',
+      name: 'Jane Doe',
+      id: '987654321',
+      birthday: '2000-01-01',
+      sex: 'Female',
+      email: 'JohnDoe@gmail.com',
+      address: '1234 Main St',
+      makingDay: '2022-01-01',
+      invalidDay: '2024-01-01',
       Photo: '',
     },
     {
-      RID: '2',
-      Username: 'user2',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
+      _id: '3',
+      username: 'user3',
+      name: 'Jane Doe',
+      id: '987654321',
+      birthday: '2000-01-01',
+      sex: 'Female',
+      email: 'JohnDoe@gmail.com',
+      address: '1234 Main St',
+      makingDay: '2022-01-01',
+      invalidDay: '2024-01-01',
       Photo: '',
     },
     {
-      RID: '3',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
+      _id: '4',
+      username: 'user3',
+      name: 'Jane Doe',
+      id: '987654321',
+      birthday: '2000-01-01',
+      sex: 'Female',
+      email: 'JohnDoe@gmail.com',
+      address: '1234 Main St',
+      makingDay: '2022-01-01',
+      invalidDay: '2024-01-01',
       Photo: '',
     },
     {
-      RID: '4',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
+      _id: '5',
+      username: 'user3',
+      name: 'Jane Doe',
+      id: '987654321',
+      birthday: '2000-01-01',
+      sex: 'Female',
+      email: 'JohnDoe@gmail.com',
+      address: '1234 Main St',
+      makingDay: '2022-01-01',
+      invalidDay: '2024-01-01',
       Photo: '',
     },
     {
-      RID: '5',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
+      _id: '6',
+      username: 'user3',
+      name: 'Jane Doe',
+      id: '987654321',
+      birthday: '2000-01-01',
+      sex: 'Female',
+      email: 'JohnDoe@gmail.com',
+      address: '1234 Main St',
+      makingDay: '2022-01-01',
+      invalidDay: '2024-01-01',
       Photo: '',
     },
     {
-      RID: '6',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
+      _id: '7',
+      username: 'user3',
+      name: 'Jane Doe',
+      id: '987654321',
+      birthday: '2000-01-01',
+      sex: 'Female',
+      email: 'JohnDoe@gmail.com',
+      address: '1234 Main St',
+      makingDay: '2022-01-01',
+      invalidDay: '2024-01-01',
       Photo: '',
     },
     {
-      RID: '7',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
-      Photo: '',
-    },
-    {
-      RID: '8',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
+      _id: '8',
+      username: 'user3',
+      name: 'Jane Doe',
+      id: '987654321',
+      birthday: '2000-01-01',
+      sex: 'Female',
+      email: 'JohnDoe@gmail.com',
+      address: '1234 Main St',
+      makingDay: '2022-01-01',
+      invalidDay: '2024-01-01',
       Photo: '',
     },
   ]
-  const [readerData, setReaderData] = useState(data)
+  // const data = readerList;
+  const [readerData, setReaderData] = useState([])
+
+  useEffect(() => {
+    setReaderData(readerList);
+  }, [readerList]);
 
   useEffect(() => {
     if(!user){
@@ -137,17 +145,19 @@ const Readers = () => {
 
     if(user?.accessToken){
       getAllUsers(user?.accessToken, dispatch);
-      console.log(readerList)
     }
 
+    
   }, [])
+
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
-  const numPage = Math.ceil(readerData.length / recordsPerPage);
+  const numPage = Math.ceil(readerData?.length / recordsPerPage);
   const lastIdx = currentPage * recordsPerPage;
   const firstIdx = lastIdx - recordsPerPage;
-  const records = readerData.slice(firstIdx, lastIdx);
+  const records = readerData?.slice(firstIdx, lastIdx);
 
   const nextPage = () => {
     if (currentPage < numPage) {
@@ -221,8 +231,8 @@ const Readers = () => {
             </tr>
           </thead>
           <tbody>
-            {records.map((record) => (
-              <tr key={record.RID} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
+            {records?.map((record) => (
+              <tr key={record._id} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2 w-12 h-12">
                   {!record.Photo ?
                   <BiUserCircle className='w-full h-full' /> :
@@ -230,31 +240,31 @@ const Readers = () => {
                   }
                 </td>
                 <td className="p-2">
-                  <p>{record.Username}</p>
+                  <p>{record.username}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Name}</p>
+                  <p>{record.name}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.ID}</p>
+                  <p>{record.id}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Birthdate}</p>
+                  <p>{record.birthday}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Sex}</p>
+                  <p>{record.sex}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Email}</p>
+                  <p>{record.email}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Address}</p>
+                  <p>{record.address}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.RegDate}</p>
+                  <p>{record.makingDay}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.ExpDate}</p>
+                  <p>{record.invalidDay}</p>
                 </td>              
                 <td className="p-2">
                   <button onClick={() => {dispatch(setUpdatedReader(record)); dispatch(setShowUpdateReader())}}>

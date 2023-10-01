@@ -7,7 +7,7 @@ import { registerUser } from "../slices/requestApi";
 import { useDispatch } from "react-redux";
 
 const SignupForm = () => {
-  const [account, setAccount] = useState({username: '', password: '', name: '', id: '', birthdate: '', sex: 'Male', email: '', address: ''});
+  const [account, setAccount] = useState({username: '', password: '', name: '', id: '', birthday: '', sex: 'Male', email: '', address: ''});
   const dispatch = useDispatch();
   const handleChangeInfo = (e) => {
     e.preventDefault();
@@ -69,8 +69,8 @@ const SignupForm = () => {
           type="date"
           required
           onChange={handleChangeInfo}
-          name='birthdate' 
-          value={account.birthdate}
+          name='birthday' 
+          value={account.birthday}
         />
         <div className="flex gap-4">
           <RadioButton 

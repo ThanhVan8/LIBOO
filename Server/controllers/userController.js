@@ -4,7 +4,8 @@ const userController = {
     //GET all users
     getAllUsers: async (req, res) => {
         try{
-            const users = await User.find();
+            const query = { admin: false };
+            const users = await User.find(query);
             res.status(200).json(users);
         }catch(err){
             res.status(500).json(err);
