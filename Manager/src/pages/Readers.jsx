@@ -132,7 +132,7 @@ const Readers = () => {
 
   useEffect(() => {
     if(!user){
-      navigate('/auth');
+      navigate('/Auth');
     }
 
     if(user?.accessToken){
@@ -140,7 +140,6 @@ const Readers = () => {
       console.log(readerList)
     }
 
-    
   }, [])
 
   const [currentPage, setCurrentPage] = useState(1);
