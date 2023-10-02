@@ -20,16 +20,16 @@ const ReaderForm = () => {
   const [account, setAccount] = useState(
     !updatedReader
       ? {
-          RID: "",
-          Username: "",
-          Name: "",
-          ID: "",
-          Birthdate: "",
-          Sex: "Male",
-          Email: "",
-          Address: "",
-          RegDate: today.toISOString().slice(0, 10),
-          ExpDate: exp,
+          _id: "",
+          username: "",
+          name: "",
+          id: "",
+          birthday: "",
+          sex: "Male",
+          email: "",
+          address: "",
+          makingDay: today.toISOString().slice(0, 10),
+          invalidDay: exp,
         }
       : updatedReader
   );
@@ -92,8 +92,8 @@ const ReaderForm = () => {
             variant="standard"
             label="RID"
             readOnly
-            name="RID"
-            value={account.RID}
+            name="_id"
+            value={account._id}
           />
           <div>
             <Input
@@ -102,8 +102,8 @@ const ReaderForm = () => {
               required
               minLength={6}
               maxLength={20}
-              name="Username"
-              value={account.Username}
+              name="username"
+              value={account.username}
               onChange={handleChangeInfo}
             />
             <p className="mt-2 flex items-center gap-2 font-normal text-[0.75rem]">
@@ -116,8 +116,8 @@ const ReaderForm = () => {
             label="Name"
             required
             onChange={handleChangeInfo}
-            name="Name"
-            value={account.Name}
+            name="name"
+            value={account.name}
           />
           <Input
             variant="standard"
@@ -131,8 +131,8 @@ const ReaderForm = () => {
             pattern=".{12}"
             maxLength={12}
             onChange={handleChangeInfo}
-            name="ID"
-            value={account.ID}
+            name="id"
+            value={account.id}
           />
           <Input
             variant="standard"
@@ -140,23 +140,23 @@ const ReaderForm = () => {
             required
             type="date"
             onChange={handleChangeInfo}
-            name="Birthdate"
-            value={account.Birthdate}
+            name="birthday"
+            value={account.birthday}
           />
           <div className="flex gap-4 self-end">
             <RadioButton
               label="Male"
               onChange={handleChangeInfo}
               value="Male"
-              name="Sex"
-              checked={account.Sex === "Male"}
+              name="sex"
+              checked={account.sex === "Male"}
             />
             <RadioButton
               label="Female"
               onChange={handleChangeInfo}
               value="Female"
-              name="Sex"
-              checked={account.Sex === "Female"}
+              name="sex"
+              checked={account.sex === "Female"}
             />
           </div>
           <Input
@@ -165,24 +165,24 @@ const ReaderForm = () => {
             required
             type="email"
             onChange={handleChangeInfo}
-            value={account.Email}
-            name="Email"
+            value={account.email}
+            name="email"
           />
           <Input
             variant="standard"
             label="Address"
             required
             onChange={handleChangeInfo}
-            value={account.Address}
-            name="Address"
+            value={account.address}
+            name="address"
           />
           <Input
             variant="standard"
             label="Registration date"
             readOnly
             type="date"
-            value={account.RegDate}
-            name="RegDate"
+            value={account.makingDay}
+            name="makingDay"
             labelProps={{ className: "peer-disabled:text-textDisable" }}
           />
           <Input
@@ -190,8 +190,8 @@ const ReaderForm = () => {
             label="Expiration date"
             readOnly
             type="date"
-            value={account.ExpDate}
-            name="ExpDate"
+            value={account.invalidDay}
+            name="invalidDay"
             labelProps={{ className: "peer-disabled:text-textDisable" }}
           />
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route, Routes} from 'react-router-dom'
+import PrivateRoute from './routers/PrivateRoute';
 import Auth from './pages/Auth'
 import Readers from './pages/Readers';
 import Books from './pages/Books';
@@ -11,8 +12,10 @@ const App = () => {
       <MenuSidebar />
       <Routes>
         <Route path="/Auth" element={<Auth />} />
-        <Route path="/" element={<Readers />} />
-        <Route path="/Books" element={<Books />} />
+        <Route element={<PrivateRoute />} >
+          <Route path="/" element={<Readers />} />
+          <Route path="/Books" element={<Books />} />
+        </Route>
       </Routes>
     </div>
   );

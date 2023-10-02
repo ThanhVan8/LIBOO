@@ -16,123 +16,22 @@ const TABLE_HEAD = ['', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', '
 
 const Readers = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
-  console.log(user)
+  const readerList = useSelector((state) => state.reader.readers?.allUsers);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  //DUMMY DATA
-  const data = [
-    {
-      RID: '1',
-      Username: 'user1',
-      Name: 'John Doe',
-      ID: '123456789',
-      Birthdate: '2000-01-01',
-      Sex: 'Male',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
-      Photo: '',
-    },
-    {
-      RID: '2',
-      Username: 'user2',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
-      Photo: '',
-    },
-    {
-      RID: '3',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
-      Photo: '',
-    },
-    {
-      RID: '4',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
-      Photo: '',
-    },
-    {
-      RID: '5',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
-      Photo: '',
-    },
-    {
-      RID: '6',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
-      Photo: '',
-    },
-    {
-      RID: '7',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
-      Photo: '',
-    },
-    {
-      RID: '8',
-      Username: 'user3',
-      Name: 'Jane Doe',
-      ID: '987654321',
-      Birthdate: '2000-01-01',
-      Sex: 'Female',
-      Email: 'JohnDoe@gmail.com',
-      Address: '1234 Main St',
-      RegDate: '2022-01-01',
-      ExpDate: '2024-01-01',
-      Photo: '',
-    },
-  ]
-  const [readerData, setReaderData] = useState(data)
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  }
+
+  const [readerData, setReaderData] = useState([])
 
   useEffect(() => {
-    if(!user){
-      navigate('/auth');
-    }
+    setReaderData(readerList);
+  }, [readerList]);
 
+  useEffect(() => {
     if(user?.accessToken){
       getAllUsers(user?.accessToken, dispatch);
     }
@@ -141,10 +40,10 @@ const Readers = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
-  const numPage = Math.ceil(readerData.length / recordsPerPage);
+  const numPage = Math.ceil(readerData?.length / recordsPerPage);
   const lastIdx = currentPage * recordsPerPage;
   const firstIdx = lastIdx - recordsPerPage;
-  const records = readerData.slice(firstIdx, lastIdx);
+  const records = readerData?.slice(firstIdx, lastIdx);
 
   const nextPage = () => {
     if (currentPage < numPage) {
@@ -157,16 +56,16 @@ const Readers = () => {
     }
   }
 
-  const filterSearch = ['Name', 'Username']
+  const filterSearch = ['name', 'username']
   const [selectedFilter, setSelectedFilter] = useState(filterSearch[0]);
 
   const handleSearch = (e) => {
     const searchTerm = e.target.value;
     if (searchTerm === '') {
-      setReaderData(data);
+      setReaderData(readerList);
       return;
     }
-    const searchedReaders = data.filter((reader) => reader[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase()));
+    const searchedReaders = readerList.filter((reader) => reader[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase()));
     setReaderData(searchedReaders);
   }
 
@@ -218,8 +117,8 @@ const Readers = () => {
             </tr>
           </thead>
           <tbody>
-            {records.map((record) => (
-              <tr key={record.RID} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
+            {records?.map((record) => (
+              <tr key={record._id} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2 w-12 h-12">
                   {!record.Photo ?
                   <BiUserCircle className='w-full h-full' /> :
@@ -227,31 +126,31 @@ const Readers = () => {
                   }
                 </td>
                 <td className="p-2">
-                  <p>{record.Username}</p>
+                  <p>{record.username}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Name}</p>
+                  <p>{record.name}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.ID}</p>
+                  <p>{record.id}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Birthdate}</p>
+                  <p>{formatDate(record.birthday)}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Sex}</p>
+                  <p>{record.sex}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Email}</p>
+                  <p>{record.email}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Address}</p>
+                  <p>{record.address}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.RegDate}</p>
+                  <p>{formatDate(record.makingDay)}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.ExpDate}</p>
+                  <p>{formatDate(record.invalidDay)}</p>
                 </td>              
                 <td className="p-2">
                   <button onClick={() => {dispatch(setUpdatedReader(record)); dispatch(setShowUpdateReader())}}>
