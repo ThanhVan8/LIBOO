@@ -73,9 +73,9 @@ const BookForm = () => {
         </button>
         <h1 className="text-2xl font-semibold text-left">{showAddBook ? 'Add' : 'Update'} Book</h1>
         <div className="relative w-16 h-16">
-          {!book.Photo ? 
+          {!book.photo ? 
           <BiBookOpen className='w-full h-full' /> :
-          <img src={book.Photo} alt="upload" className="object-cover w-full h-full rounded-full" />
+          <img src={book.photo} alt="upload" className="object-cover w-full h-full rounded-full" />
           }
           <button
             className="absolute bottom-2 right-1 w-5 h-5 rounded-full bg-red flex items-center justify-center"

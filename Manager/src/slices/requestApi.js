@@ -1,9 +1,9 @@
 import axios from "axios";
 import { loginBegin, loginFailure, loginSuccess} from './authSlice'
-import { getUserBegin, getUserSuccess, getUserFailure } from './readerSlice'
-import { addBookBegin, getBookBegin, getBookFailure, getBookSuccess } from "./bookSlice";
+import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess } from './readerSlice'
+import { addBookBegin, addBookFailure, addBookSuccess, getBookBegin, getBookFailure, getBookSuccess } from "./bookSlice";
 
-
+//auth
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginBegin());
     try {
@@ -22,6 +22,7 @@ export const loginUser = async (user, dispatch, navigate) => {
     }
 }
 
+//readers
 export const getAllUsers = async (accessToken, dispatch) => {
     dispatch(getUserBegin());
     try{
@@ -36,6 +37,23 @@ export const getAllUsers = async (accessToken, dispatch) => {
     }
 }
 
+export const addReader = async (reader, accessToken, dispatch) => {
+    dispatch(addReaderBegin());
+    try{
+        const res = await axios.post('http://localhost:8000/api/user', reader, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(addReaderSuccess(res.data));
+    }catch(err){
+        dispatch(addBookFailure())
+        console.log(err.response.data);
+    }
+}
+
+
+//books
 export const getAllBooks = async (accessToken, dispatch) => {
     dispatch(getBookBegin());
     try{
@@ -58,7 +76,9 @@ export const addBook = async (book, accessToken, dispatch) => {
                 token: `Bearer ${accessToken}`
             }
         });
+        dispatch(addBookSuccess(res.data));
     }catch(err){
+        dispatch(addBookFailure())
         console.log(err.response.data);
     }
 }
