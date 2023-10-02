@@ -10,7 +10,6 @@ import { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteR
 import ReaderForm from '../components/ReaderForm';
 import DeleteModal from '../components/DeleteModal';
 import { getAllUsers } from '../slices/requestApi'
-import { useNavigate } from 'react-router-dom';
 
 const TABLE_HEAD = ['', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
 
@@ -19,7 +18,6 @@ const Readers = () => {
   const readerList = useSelector((state) => state.reader.readers?.allUsers);
   
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
