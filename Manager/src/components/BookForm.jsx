@@ -5,25 +5,27 @@ import { BiX, BiBookOpen } from 'react-icons/bi';
 import { MdEdit } from 'react-icons/md';
 import { Input, Textarea } from "@material-tailwind/react";
 import CustomButton from "./CustomButton";
+import { addBook } from "../slices/requestApi";
 
 const BookForm = () => {
   const {showAddBook, showUpdateBook, updatedBook} = useSelector(state => state.book);
+  const user = useSelector((state) => state.auth.login?.currentUser);
+
 
   const [book, setBook] = useState(
     !updatedBook ? 
     {
-      BID: '',
       ISBN: '',
-      Name: '',
-      Author: '',
-      Publisher: '',
-      PublishYear: 0,
-      Genre: '',
-      Price: 0,
-      Quantity: 0,
-      Borrowed: 0,
-      Photo: '',
-      Description: '',
+      name: '',
+      author: '',
+      publisher: '',
+      publishYear: 0,
+      genre: '',
+      price: 0,
+      quantity: 0,
+      borrowed: 0,
+      photo: '',
+      description: '',
     } :
     updatedBook
   );
@@ -52,6 +54,7 @@ const BookForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    addBook(book, user?.accessToken, dispatch);
     console.log(book);
     closeForm();
   }
@@ -102,8 +105,8 @@ const BookForm = () => {
             label="Name"
             required
             onChange={handleChangeInfo}
-            name="Name"
-            value={book.Name}
+            name="name"
+            value={book.name}
           />
           <div className='md:col-span-2'>
             <Input
@@ -111,8 +114,8 @@ const BookForm = () => {
               label="Authors"
               required
               onChange={handleChangeInfo}
-              name="Author"
-              value={book.Author}
+              name="author"
+              value={book.author}
             />
           </div>
           <Input
@@ -120,16 +123,16 @@ const BookForm = () => {
             label="Publisher"
             required
             onChange={handleChangeInfo}
-            name="Publisher"
-            value={book.Publisher}
+            name="publisher"
+            value={book.publisher}
           />
           <Input
             variant="standard"
             label="Publish Year"
             required
             onChange={handleChangeInfo}
-            name="PublishYear"
-            value={book.PublishYear}
+            name="publishYear"
+            value={book.publishYear}
             type="number" 
             min="1000" 
             max="9999" 
@@ -140,16 +143,16 @@ const BookForm = () => {
             label="Genre"
             required
             onChange={handleChangeInfo}
-            value={book.Genre}
-            name="Genre"
+            value={book.genre}
+            name="genre"
           />
           <Input
             variant="standard"
             label="Price"
             required
             onChange={handleChangeInfo}
-            value={book.Price}
-            name="Price"
+            value={book.price}
+            name="price"
             type="number"
             min={0}
           />
@@ -158,8 +161,8 @@ const BookForm = () => {
               variant="outlined" 
               label="Description"
               onChange={handleChangeInfo}
-              name="Description"
-              value={book.Description}
+              name="description"
+              value={book.description}
             />
           </div>
         </div>
