@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import SearchBar from '../components/SearchBar';
@@ -9,132 +9,35 @@ import { FaTrash } from 'react-icons/fa';
 import { setShowAddBook, setShowUpdateBook, setUpdatedBook, setShowDeleteBook } from '../slices/bookSlice';
 import BookForm from '../components/BookForm';
 import DeleteModal from '../components/DeleteModal';
+import { getAllBooks } from '../slices/requestApi';
 
 const TABLE_HEAD = ['', 'ISBN', 'Name', 'Author', 'Publisher', 'Year', 'Genre', 'Price', 'Quantity', 'Borrowed', '', ''];
 
 const Books = () => {
-  const data = [
-    {
-      BID: '1',
-      ISBN: '12345',
-      Name: 'Tôi thấy hoa vàng trên cỏ xanh',
-      Author: 'Nguyễn Nhật Ánh',
-      Publisher: 'NXB Trẻ',
-      PublishYear: 2010,
-      Genre: 'Fiction',
-      Price: 125000,
-      Quantity: 20,
-      Borrowed: 0,
-      Photo: '',
-      Description: 'Tôi thấy hoa vàng trên cỏ xanh” truyện dài mới nhất của nhà văn vừa nhận giải văn chương ASEAN Nguyễn Nhật Ánh - đã được Nhà xuất bản Trẻ mua tác quyền và giới thiệu đến độc giả cả nước. Cuốn sách viết về tuổi thơ nghèo khó ở một làng quê, bên cạnh đề tài tình yêu quen thuộc, lần đầu tiên Nguyễn Nhật Ánh đưa vào tác phẩm của mình những nhân vật phản diện và đặt ra vấn đề đạo đức như sự vô tâm, cái ác. 81 chương ngắn là 81 câu chuyện nhỏ của những đứa trẻ xảy ra ở một ngôi làng: chuyện về con cóc Cậu trời, chuyện ma, chuyện công chúa và hoàng tử, bên cạnh chuyện đói ăn, cháy nhà, lụt lội,... “Tôi thấy hoa vàng trên cỏ xanh” hứa hẹn đem đến những điều thú vị với cả bạn đọc nhỏ tuổi và người lớn bằng giọng văn trong sáng, hồn nhiên, giản dị của trẻ con cùng nhiều tình tiết thú vị, bất ngờ và cảm động trong suốt hơn 300 trang sách. Cuốn sách, vì thế có sức ám ảnh, thu hút, hấp dẫn không thể bỏ qua.',
-    },
-    {
-      BID: '2',
-      ISBN: '12346',
-      Name: 'hoa vàng',
-      Author: 'Nguyễn Nhật Ánh',
-      Publisher: 'NXB Trẻ',
-      PublishYear: 2010,
-      Genre: 'Thriller',
-      Price: 125000,
-      Quantity: 20,
-      Borrowed: 0,
-      Photo: '',
-      Description: '',
-    },
-    {
-      BID: '3',
-      ISBN: '12347',
-      Name: 'cỏ xanh',
-      Author: 'Nguyễn Nhật Ánh',
-      Publisher: 'NXB Trẻ',
-      PublishYear: 2010,
-      Genre: 'Romance',
-      Price: 125000,
-      Quantity: 20,
-      Borrowed: 0,
-      Photo: '',
-      Description: '',
-    },
-    {
-      BID: '4',
-      ISBN: '12348',
-      Name: 'Tôi thấy',
-      Author: 'Nguyễn Nhật Ánh',
-      Publisher: 'NXB Trẻ',
-      PublishYear: 2010,
-      Genre: 'Fiction',
-      Price: 125000,
-      Quantity: 20,
-      Borrowed: 0,
-      Photo: '',
-      Description: '',
-    },
-    {
-      BID: '5',
-      ISBN: '12349',
-      Name: 'Tôi thấy',
-      Author: 'Nguyễn Nhật Ánh',
-      Publisher: 'NXB Trẻ',
-      PublishYear: 2010,
-      Genre: 'Fiction',
-      Price: 125000,
-      Quantity: 20,
-      Borrowed: 0,
-      Photo: '',
-      Description: '',
-    },
-    {
-      BID: '6',
-      ISBN: '12350',
-      Name: 'Tôi thấy',
-      Author: 'Nguyễn Nhật Ánh',
-      Publisher: 'NXB Trẻ',
-      PublishYear: 2010,
-      Genre: 'Romance',
-      Price: 125000,
-      Quantity: 20,
-      Borrowed: 0,
-      Photo: '',
-      Description: '',
-    },
-    {
-      BID: '7',
-      ISBN: '12351',
-      Name: 'Tôi thấy',
-      Author: 'Nguyễn Nhật Ánh',
-      Publisher: 'NXB Trẻ',
-      PublishYear: 2010,
-      Genre: 'Fiction',
-      Price: 125000,
-      Quantity: 20,
-      Borrowed: 0,
-      Photo: '',
-      Description: '',
-    },
-    {
-      BID: '8',
-      ISBN: '12352',
-      Name: 'Tôi thấy',
-      Author: 'Nguyễn Nhật Ánh',
-      Publisher: 'NXB Trẻ',
-      PublishYear: 2010,
-      Genre: 'Thriller',
-      Price: 125000,
-      Quantity: 20,
-      Borrowed: 0,
-      Photo: '',
-      Description: '',
-    },
-  ]
-  const [bookData, setBookData] = useState(data)
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const bookList = useSelector((state) => state.book.books?.allBooks);
+
+  const dispatch = useDispatch();
+
+  const [bookData, setBookData] = useState(bookList)
+
+  useEffect(() => {
+    setBookData(bookList);
+  }, [bookList]);
+
+  useEffect(() => {
+    if(user?.accessToken){
+      getAllBooks(user?.accessToken, dispatch);
+    }
+    
+  }, [])
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
-  const numPage = Math.ceil(bookData.length / recordsPerPage);
+  const numPage = Math.ceil(bookData?.length / recordsPerPage);
   const lastIdx = currentPage * recordsPerPage;
   const firstIdx = lastIdx - recordsPerPage;
-  const records = bookData.slice(firstIdx, lastIdx);
+  const records = bookData?.slice(firstIdx, lastIdx);
 
   const nextPage = () => {
     if (currentPage < numPage) {
@@ -153,15 +56,14 @@ const Books = () => {
   const handleSearch = (e) => {
     const searchTerm = e.target.value;
     if (searchTerm === '') {
-      setBookData(data);
+      setBookData(bookData);
       return;
     }
-    const searchedBooks = data.filter((book) => book[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase()));
+    const searchedBooks = bookData.filter((book) => book[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase()));
     setBookData(searchedBooks);
   }
 
   const {showAddBook, showUpdateBook, showDeleteBook, updatedBook } = useSelector(state => state.book);
-  const dispatch = useDispatch();
 
   const handleDelete = (e) => {
     e.preventDefault();
@@ -209,40 +111,40 @@ const Books = () => {
             </tr>
           </thead>
           <tbody>
-            {records.map((record) => (
-              <tr key={record.BID} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
+            {records?.map((record) => (
+              <tr key={record._id} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2 w-12 h-12">
-                  {!record.Photo ?
+                  {!record.photo ?
                   <BiBookOpen className='w-full h-full' /> :
-                  <img src={record.Photo} alt="logo" className="w-full h-full rounded-full object-contain" />
+                  <img src={record.photo} alt="logo" className="w-full h-full rounded-full object-contain" />
                   }
                 </td>
                 <td className="p-2">
                   <p>{record.ISBN}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Name}</p>
+                  <p>{record.name}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Author}</p>
+                  <p>{record.author}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Publisher}</p>
+                  <p>{record.publisher}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.PublishYear}</p>
+                  <p>{record.publishYear}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Genre}</p>
+                  <p>{record.genre}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Price}</p>
+                  <p>{record.price}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Quantity}</p>
+                  <p>{record.quantity}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.Borrowed}</p>
+                  <p>{record.borrowed}</p>
                 </td>              
                 <td className="p-2">
                   <button 
