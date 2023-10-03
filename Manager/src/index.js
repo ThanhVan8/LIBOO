@@ -15,11 +15,11 @@ root.render(
   <React.StrictMode>
     <Router>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
           <ThemeProvider> 
             <App />
           </ThemeProvider>
-        </PersistGate>
+        {/* </PersistGate> */}
       </Provider>
       <ToastContainer />
     </Router>

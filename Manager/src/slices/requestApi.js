@@ -3,9 +3,11 @@ import { loginBegin, loginFailure, loginSuccess} from './authSlice'
 import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess, updateReaderBegin, updateReaderSuccess, updateReaderFailure,
     deleteReaderBegin, deleteReaderSuccess, deleteReaderFailure 
 } from './readerSlice'
+
 import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBookFailure, deleteBookSuccess, getBookBegin, getBookFailure, getBookSuccess, 
     updateBookBegin, updateBookFailure, updateBookSuccess 
 } from "./bookSlice";
+
 import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure} from "./slipSlice"
 
 //auth
