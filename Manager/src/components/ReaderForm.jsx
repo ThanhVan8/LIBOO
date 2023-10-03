@@ -8,11 +8,13 @@ import { Input } from "@material-tailwind/react";
 import RadioButton from "./RadioButton";
 import CustomButton from "./CustomButton";
 import { FaInfoCircle } from "react-icons/fa";
+import { addReader, updateReader } from "../slices/requestApi";
 
 const EXPIRATION = 2;
 
 const ReaderForm = () => {
   const {showAddReader, showUpdateReader, updatedReader} = useSelector(state => state.reader);
+  const user = useSelector((state) => state.auth.login?.currentUser);
   
   const today = new Date()
   const exp = new Date(today.getFullYear() + EXPIRATION, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
@@ -20,7 +22,7 @@ const ReaderForm = () => {
   const [account, setAccount] = useState(
     !updatedReader
       ? {
-          _id: "",
+          // _id: "",
           username: "",
           name: "",
           id: "",
@@ -58,7 +60,12 @@ const ReaderForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(account);
+    if(showAddReader){
+      addReader(account, user?.accessToken, dispatch);
+    }
+    if(showUpdateReader){
+      updateReader(account, account._id, user?.accessToken, dispatch);
+    }
     closeForm();
   }
 
@@ -76,9 +83,9 @@ const ReaderForm = () => {
         </button>
         <h1 className="text-2xl font-semibold text-left">{showAddReader ? 'Add' : 'Update'} Reader</h1>
         <div className="relative w-16 h-16">
-          {!account.Photo ? 
+          {!account.photo ? 
           <BiUserCircle className='w-full h-full' /> :
-          <img src={account.Photo} alt="upload" className="object-cover w-full h-full rounded-full" />
+          <img src={account.photo} alt="upload" className="object-cover w-full h-full rounded-full" />
           }
           <button
             className="absolute bottom-2 right-1 w-5 h-5 rounded-full bg-red flex items-center justify-center"

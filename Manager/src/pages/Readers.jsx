@@ -9,7 +9,7 @@ import { FaTrash, FaUserPlus } from 'react-icons/fa';
 import { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteReader } from '../slices/readerSlice';
 import ReaderForm from '../components/ReaderForm';
 import DeleteModal from '../components/DeleteModal';
-import { getAllUsers } from '../slices/requestApi'
+import { getAllUsers, deleteReader } from '../slices/requestApi'
 
 const TABLE_HEAD = ['', 'Username', 'Name', 'ID', 'Birthdate', 'Sex', 'Email', 'Address', 'Reg. date', 'Exp. date', '', ''];
 
@@ -71,7 +71,7 @@ const Readers = () => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    // console.log('Delete reader: ', updatedReader);
+    deleteReader(user?.accessToken, dispatch, updatedReader._id);
 
     dispatch(setUpdatedReader(null));
     dispatch(setShowDeleteReader());

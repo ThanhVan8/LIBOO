@@ -5,7 +5,7 @@ import { BiX, BiBookOpen } from 'react-icons/bi';
 import { MdEdit } from 'react-icons/md';
 import { Input, Textarea } from "@material-tailwind/react";
 import CustomButton from "./CustomButton";
-import { addBook } from "../slices/requestApi";
+import { addBook, updateBook } from "../slices/requestApi";
 
 const BookForm = () => {
   const {showAddBook, showUpdateBook, updatedBook} = useSelector(state => state.book);
@@ -54,8 +54,12 @@ const BookForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    addBook(book, user?.accessToken, dispatch);
-    console.log(book);
+    if (showAddBook){
+      addBook(book, user?.accessToken, dispatch);
+    }
+    if (showUpdateBook){
+      updateBook(book, book._id, user?.accessToken, dispatch);
+    }
     closeForm();
   }
 
@@ -73,9 +77,9 @@ const BookForm = () => {
         </button>
         <h1 className="text-2xl font-semibold text-left">{showAddBook ? 'Add' : 'Update'} Book</h1>
         <div className="relative w-16 h-16">
-          {!book.Photo ? 
+          {!book.photo ? 
           <BiBookOpen className='w-full h-full' /> :
-          <img src={book.Photo} alt="upload" className="object-cover w-full h-full rounded-full" />
+          <img src={book.photo} alt="upload" className="object-cover w-full h-full rounded-full" />
           }
           <button
             className="absolute bottom-2 right-1 w-5 h-5 rounded-full bg-red flex items-center justify-center"
