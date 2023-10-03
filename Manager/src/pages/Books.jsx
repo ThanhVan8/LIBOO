@@ -50,7 +50,7 @@ const Books = () => {
     }
   }
 
-  const filterSearch = ['Name', 'ISBN', 'Author', 'Publisher', 'Genre']
+  const filterSearch = ['name', 'ISBN', 'author', 'publisher', 'genre']
   const [selectedFilter, setSelectedFilter] = useState(filterSearch[0]);
 
   const handleSearch = (e) => {
@@ -135,7 +135,7 @@ const Books = () => {
                   <p>{record.publishYear}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record.genre}</p>
+                  <p>{record.genre.join(', ')}</p>
                 </td>
                 <td className="p-2">
                   <p>{record.price}</p>
