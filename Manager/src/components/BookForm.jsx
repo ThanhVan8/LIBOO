@@ -5,7 +5,7 @@ import { BiX, BiBookOpen } from 'react-icons/bi';
 import { MdEdit } from 'react-icons/md';
 import { Input, Textarea } from "@material-tailwind/react";
 import CustomButton from "./CustomButton";
-import { addBook } from "../slices/requestApi";
+import { addBook, updateBook } from "../slices/requestApi";
 
 const BookForm = () => {
   const {showAddBook, showUpdateBook, updatedBook} = useSelector(state => state.book);
@@ -54,8 +54,12 @@ const BookForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    addBook(book, user?.accessToken, dispatch);
-    console.log(book);
+    if (showAddBook){
+      addBook(book, user?.accessToken, dispatch);
+    }
+    if (showUpdateBook){
+      updateBook(book, book._id, user?.accessToken, dispatch);
+    }
     closeForm();
   }
 

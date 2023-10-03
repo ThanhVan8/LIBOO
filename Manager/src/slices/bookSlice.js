@@ -15,6 +15,16 @@ const bookSlice = createSlice({
       isFetching: false,
       error: false,
       success: false
+    },
+    updateBook: {
+      isFetching: false,
+      error: false,
+      success: false
+    },
+    deleteBook: {
+      isFetching: false,
+      error: false,
+      success: false
     }
   },
   reducers: {
@@ -59,12 +69,45 @@ const bookSlice = createSlice({
         state.newbook.isFetching = false
         state.newbook.error = true
         state.newbook.success = false
+    }, 
+
+    updateBookBegin: (state) => {
+      state.updateBook.isFetching = true
+    },
+    
+    updateBookSuccess: (state) => {
+        state.updateBook.isFetching = false
+        state.updateBook.success = true
+        state.updateBook.error = false
+    },
+
+    updateBookFailure: (state) => {
+        state.updateBook.isFetching = false
+        state.updateBook.error = true
+        state.updateBook.success = false
+    },
+
+    deleteBookBegin: (state) => {
+      state.deleteBook.isFetching = true
+    },
+    
+    deleteBookSuccess: (state) => {
+        state.deleteBook.isFetching = false
+        state.deleteBook.success = true
+        state.deleteBook.error = false
+    },
+
+    deleteBookFailure: (state) => {
+        state.deleteBook.isFetching = false
+        state.deleteBook.error = true
+        state.deleteBook.success = false
     }
   },
 });
 const { actions, reducer } = bookSlice;
 export const { 
   setShowAddBook, setShowUpdateBook, setUpdatedBook, setShowDeleteBook, getBookBegin, getBookSuccess, getBookFailure,
-  addBookBegin, addBookSuccess, addBookFailure
+  addBookBegin, addBookSuccess, addBookFailure, updateBookBegin, updateBookSuccess, updateBookFailure, deleteBookBegin,
+  deleteBookSuccess, deleteBookFailure
 } = actions;
 export default reducer;

@@ -1,7 +1,10 @@
 import axios from "axios";
 import { loginBegin, loginFailure, loginSuccess} from './authSlice'
-import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess } from './readerSlice'
-import { addBookBegin, addBookFailure, addBookSuccess, getBookBegin, getBookFailure, getBookSuccess } from "./bookSlice";
+import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess 
+} from './readerSlice'
+import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBookFailure, deleteBookSuccess, getBookBegin, getBookFailure, getBookSuccess, 
+    updateBookBegin, updateBookFailure, updateBookSuccess 
+} from "./bookSlice";
 
 //auth
 export const loginUser = async (user, dispatch, navigate) => {
@@ -79,6 +82,36 @@ export const addBook = async (book, accessToken, dispatch) => {
         dispatch(addBookSuccess(res.data));
     }catch(err){
         dispatch(addBookFailure())
+        console.log(err.response.data);
+    }
+}
+
+export const updateBook = async (book, id, accessToken, dispatch) => {
+    dispatch(updateBookBegin());
+    try{
+        const res = await axios.put('http://localhost:8000/api/book/'+ id, book, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(updateBookSuccess(res.data));
+    }catch(err) {
+        dispatch(updateBookFailure())
+        console.log(err.response.data);
+    }
+}
+
+export const deleteBook = async (accessToken, dispatch, id) => {
+    dispatch(deleteBookBegin());
+    try{
+        const res = await axios.delete('http://localhost:8000/api/book/'+ id, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(deleteBookSuccess(res.data));
+    }catch(err) {
+        dispatch(deleteBookFailure())
         console.log(err.response.data);
     }
 }
