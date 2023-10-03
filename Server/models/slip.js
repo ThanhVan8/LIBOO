@@ -1,5 +1,5 @@
 const Book = require('../models/book');
-const User = require('./user');
+const User = require('../models/user');
 const mongoose = require('mongoose');
 
 const borrowSchema = new mongoose.Schema({
@@ -29,6 +29,11 @@ const borrowSchema = new mongoose.Schema({
             },
         }
     ],
+
+    accepted: {
+        type: Boolean,
+        default: false
+    },
 })
 
 let Borrow = mongoose.model('Borrow', borrowSchema);
