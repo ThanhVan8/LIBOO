@@ -1,11 +1,12 @@
 import axios from "axios";
 import { loginBegin, loginFailure, loginSuccess} from './authSlice'
-import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess, updateReaderBegin, updateReaderSuccess, updateReaderFailure, deleteUserBegin, deleteUserSuccess, deleteUserFailure,
+import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess, updateReaderBegin, updateReaderSuccess, updateReaderFailure,
     deleteReaderBegin, deleteReaderSuccess, deleteReaderFailure 
 } from './readerSlice'
 import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBookFailure, deleteBookSuccess, getBookBegin, getBookFailure, getBookSuccess, 
     updateBookBegin, updateBookFailure, updateBookSuccess 
 } from "./bookSlice";
+import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure} from "./slipSlice"
 
 //auth
 export const loginUser = async (user, dispatch, navigate) => {
@@ -143,6 +144,36 @@ export const deleteBook = async (accessToken, dispatch, id) => {
         dispatch(deleteBookSuccess(res.data));
     }catch(err) {
         dispatch(deleteBookFailure())
+        console.log(err.response.data);
+    }
+}
+
+//slips
+export const getAllSlips = async (accessToken, dispatch) => {
+    dispatch(getSlipsBegin());
+    try{
+        const res = await axios.get('http://localhost:8000/api/slip/unaccepted',{
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(getSlipsSuccess(res.data));
+    }catch(err){
+        dispatch(getSlipsFailure());
+    }
+}
+
+export const addSlip = async (slip, username , accessToken, dispatch) => {
+    dispatch(addSlipBegin());
+    try{
+        const res = await axios.post('http://localhost:8000/api/slip/manager/'+ username, slip, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(addSlipSuccess(res.data));
+    }catch(err){
+        dispatch(addSlipFailure())
         console.log(err.response.data);
     }
 }
