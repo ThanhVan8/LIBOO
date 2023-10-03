@@ -1,60 +1,18 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from 'react'
 import {Input} from "@material-tailwind/react";
 import CustomButton from "../components/CustomButton";
 import SearchBar from "../components/SearchBar";
 import { BiChevronLeft, BiChevronRight, BiDotsHorizontalRounded, BiRefresh } from 'react-icons/bi';
 import { FaTrash } from 'react-icons/fa';
 import DeleteModal from "../components/DeleteModal";
+import {getAllSlips} from "../slices/requestApi"
+import { useDispatch, useSelector } from 'react-redux';
+import {addSlip} from '../slices/requestApi'
 
 const EXPIRATION = 7;
 const TABLE_HEAD = ['Username', 'ISBN', 'Received date', ''];
 
 const Borrow = () => {
-  const data = [
-    {
-      username: 'user1',
-      borrowList: [
-        {
-          book: {ISBN: '123456789'},
-          DueDate: '2023-09-26T17:00:00.000+00:00',
-        },
-        {
-          book: {ISBN: '987654321'},
-          DueDate: '2023-09-26T17:00:00.000+00:00',
-        }, 
-      ],
-      borrowDate: '2023-09-20T08:40:12.238+00:00',
-    },
-    {
-      username: 'user2',
-      borrowList: [
-        {
-          book: {ISBN: '123456789'},
-          DueDate: '2023-09-26T17:00:00.000+00:00',
-        },
-        {
-          book: {ISBN: '123456789'},
-          DueDate: '2023-09-26T17:00:00.000+00:00',
-        }, 
-      ],
-      borrowDate: '2023-09-20T08:40:12.238+00:00',
-    },
-    {
-      username: 'user3',
-      borrowList: [
-        {
-          book: {ISBN: '123456789'},
-          DueDate: '2023-09-26T17:00:00.000+00:00',
-        },
-        {
-          book: {ISBN: '123456789'},
-          DueDate: '2023-09-26T17:00:00.000+00:00',
-        }, 
-      ],
-      borrowDate: '2023-09-20T08:40:12.238+00:00',
-    },
-  ]
-
   const today = new Date()
   // const exp = new Date(today.getFullYear(), today.getMonth(), today.getDate() + EXPIRATION)
 
@@ -86,13 +44,14 @@ const Borrow = () => {
 
   const handleBorrow = (e) => {
     e.preventDefault();
+    addSlip(slip, slip.username, user?.accessToken, dispatch)
     console.log(slip);
   }
 
   const showDetailBorrow = (selectedRecord) => {
     setSlip({
-      username: selectedRecord.username,
-      isbns: selectedRecord?.borrowList?.map((b) => b.book),
+      username: selectedRecord.UserID.username,
+      isbns: selectedRecord?.borrowList?.map((b) => b.book.ISBN),
       borrowDate: formatDate(selectedRecord.borrowDate),
       dueDate: formatDate(selectedRecord?.borrowList?.[0]?.DueDate),
     });
@@ -110,8 +69,24 @@ const Borrow = () => {
     e.preventDefault();
     setSlip({username:'', isbns: [], borrowDate: formatDate(today), dueDate: calcDueDate(today)})
   }
+  
 
-  const [borrowData, setBorrowData] = useState(data)
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const slipList = useSelector((state) => state.slip.slips?.allSlips);
+
+  const dispatch = useDispatch();
+
+  const [borrowData, setBorrowData] = useState(slipList)
+
+  useEffect(() => {
+    setBorrowData(slipList);
+  }, [slipList]);
+
+  useEffect(() => {
+    if(user?.accessToken){
+      getAllSlips(user?.accessToken, dispatch);
+    }
+  }, [])
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
   const numPage = Math.ceil(borrowData?.length / recordsPerPage);
@@ -136,20 +111,16 @@ const Borrow = () => {
   const handleSearch = (e) => {
     const searchTerm = e.target.value;
     if (searchTerm === '') {
-      setBorrowData(data);
+      setBorrowData(slipList);
       return;
     }
-    const searchedData = data.filter((d) =>
+    const searchedData = slipList.filter((d) =>
       {
         if (selectedFilter === 'ISBN') {
-          // return d[selectedFilter].some((isbn) => isbn.includes(searchTerm));
-          return d.borrowList.some((b) => {
-            console.log(b.book[selectedFilter]);
-            return b.book[selectedFilter].includes(searchTerm)
-          });
+          return d.borrowList.some((book) => book.book[selectedFilter].includes(searchTerm));
         }
         else {
-          return d[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase())
+          return d.UserID[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase())
         }
       }
     );
@@ -245,7 +216,7 @@ const Borrow = () => {
               // key={record._id} 
               <tr className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2">
-                  <p>{record.username}</p>
+                  <p>{record?.UserID.username}</p>
                 </td>
                 <td className="p-2">
                   <p>{record?.borrowList?.map((b) => b.book.ISBN)?.join(', ')}</p>
