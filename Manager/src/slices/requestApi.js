@@ -1,6 +1,7 @@
 import axios from "axios";
 import { loginBegin, loginFailure, loginSuccess} from './authSlice'
-import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess 
+import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess, updateReaderBegin, updateReaderSuccess, updateReaderFailure, deleteUserBegin, deleteUserSuccess, deleteUserFailure,
+    deleteReaderBegin, deleteReaderSuccess, deleteReaderFailure 
 } from './readerSlice'
 import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBookFailure, deleteBookSuccess, getBookBegin, getBookFailure, getBookSuccess, 
     updateBookBegin, updateBookFailure, updateBookSuccess 
@@ -51,6 +52,36 @@ export const addReader = async (reader, accessToken, dispatch) => {
         dispatch(addReaderSuccess(res.data));
     }catch(err){
         dispatch(addBookFailure())
+        console.log(err.response.data);
+    }
+}
+
+export const updateReader = async (user, id, accessToken, dispatch) => {
+    dispatch(updateReaderBegin());
+    try{
+        const res = await axios.put('http://localhost:8000/api/user/'+ id, user, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(updateReaderSuccess(res.data));
+    }catch(err) {
+        dispatch(updateReaderFailure())
+        console.log(err.response.data);
+    }
+}
+
+export const deleteReader = async (accessToken, dispatch, id) => {
+    dispatch(deleteReaderBegin());
+    try{
+        const res = await axios.delete('http://localhost:8000/api/user/'+ id, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(deleteReaderSuccess(res.data));
+    }catch(err) {
+        dispatch(deleteReaderFailure())
         console.log(err.response.data);
     }
 }
