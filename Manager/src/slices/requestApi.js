@@ -165,16 +165,16 @@ export const getAllSlips = async (accessToken, dispatch) => {
     }
 }
 
-export const addSlip = async (slip, username , accessToken, dispatch) => {
+export const addSlip = async (username, accessToken, isbnArray, dispatch) => {
     dispatch(addSlipBegin());
-    try{
-        const res = await axios.post('http://localhost:8000/api/slip/manager/'+ username, slip, {
+    try {
+        const res = await axios.post('http://localhost:8000/api/slip/manager/' + username, { ISBN: isbnArray }, {
             headers: {
                 token: `Bearer ${accessToken}`
-            }
+            },
         });
         dispatch(addSlipSuccess(res.data));
-    }catch(err){
+    } catch (err) {
         dispatch(addSlipFailure())
         console.log(err.response.data);
     }

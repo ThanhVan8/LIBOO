@@ -2,7 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const slipSlice = createSlice({
   name: "slip",
   initialState: {
-
+    slips:{
+      allSlips: null,
+      isFetching: false,
+      error: false
+    },
     newSlip: {
       isFetching: false,
       error: false,

@@ -44,9 +44,9 @@ const Borrow = () => {
 
   const handleBorrow = (e) => {
     e.preventDefault();
-    addSlip(slip, slip.username, user?.accessToken, dispatch)
-    console.log(slip);
-  }
+    addSlip(slip.username, user?.accessToken,slip.isbns, dispatch);
+    console.log(slip.isbns);
+  };
 
   const showDetailBorrow = (selectedRecord) => {
     setSlip({
