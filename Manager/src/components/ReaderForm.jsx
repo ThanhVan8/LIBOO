@@ -17,7 +17,7 @@ const ReaderForm = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   
   const today = new Date()
-  const exp = new Date(today.getFullYear() + EXPIRATION, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
+  const exp = new Date(today.getFullYear() + EXPIRATION, today.getMonth(), today.getDate())
 
   const [account, setAccount] = useState(
     !updatedReader
@@ -30,11 +30,15 @@ const ReaderForm = () => {
           sex: "Male",
           email: "",
           address: "",
-          makingDay: today.toISOString().slice(0, 10),
+          makingDay: today,
           invalidDay: exp,
         }
       : updatedReader
   );
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  }
 
   const dispatch = useDispatch();
 
@@ -95,14 +99,7 @@ const ReaderForm = () => {
           </button>
         </div>
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-4">
-          <Input
-            variant="standard"
-            label="RID"
-            readOnly
-            name="_id"
-            value={account._id}
-          />
-          <div>
+          <div className='col-span-2'>
             <Input
               variant="standard"
               label="Username"
@@ -112,6 +109,7 @@ const ReaderForm = () => {
               name="username"
               value={account.username}
               onChange={handleChangeInfo}
+              readOnly={showUpdateReader}
             />
             <p className="mt-2 flex items-center gap-2 font-normal text-[0.75rem]">
               <FaInfoCircle className='w-3.5 h-3.5' />
@@ -148,9 +146,9 @@ const ReaderForm = () => {
             type="date"
             onChange={handleChangeInfo}
             name="birthday"
-            value={account.birthday}
+            value={account.birthday === '' ? null : new Date(account.birthday).toISOString().slice(0, 10)}
           />
-          <div className="flex gap-4 self-end">
+          <div className="flex gap-4 self-end"> 
             <RadioButton
               label="Male"
               onChange={handleChangeInfo}
@@ -187,8 +185,7 @@ const ReaderForm = () => {
             variant="standard"
             label="Registration date"
             readOnly
-            type="date"
-            value={account.makingDay}
+            value={formatDate(account.makingDay)}
             name="makingDay"
             labelProps={{ className: "peer-disabled:text-textDisable" }}
           />
@@ -196,8 +193,7 @@ const ReaderForm = () => {
             variant="standard"
             label="Expiration date"
             readOnly
-            type="date"
-            value={account.invalidDay}
+            value={formatDate(account.invalidDay)}
             name="invalidDay"
             labelProps={{ className: "peer-disabled:text-textDisable" }}
           />

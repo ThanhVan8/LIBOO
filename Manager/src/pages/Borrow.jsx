@@ -15,11 +15,11 @@ const Borrow = () => {
       username: 'user1',
       borrowList: [
         {
-          book: '123456789',
+          book: {ISBN: '123456789'},
           DueDate: '2023-09-26T17:00:00.000+00:00',
         },
         {
-          book: '987654321',
+          book: {ISBN: '987654321'},
           DueDate: '2023-09-26T17:00:00.000+00:00',
         }, 
       ],
@@ -29,11 +29,11 @@ const Borrow = () => {
       username: 'user2',
       borrowList: [
         {
-          book: '123456789',
+          book: {ISBN: '123456789'},
           DueDate: '2023-09-26T17:00:00.000+00:00',
         },
         {
-          book: '987654321',
+          book: {ISBN: '123456789'},
           DueDate: '2023-09-26T17:00:00.000+00:00',
         }, 
       ],
@@ -43,11 +43,11 @@ const Borrow = () => {
       username: 'user3',
       borrowList: [
         {
-          book: '123456789',
+          book: {ISBN: '123456789'},
           DueDate: '2023-09-26T17:00:00.000+00:00',
         },
         {
-          book: '987654321',
+          book: {ISBN: '123456789'},
           DueDate: '2023-09-26T17:00:00.000+00:00',
         }, 
       ],
@@ -142,7 +142,11 @@ const Borrow = () => {
     const searchedData = data.filter((d) =>
       {
         if (selectedFilter === 'ISBN') {
-          return d[selectedFilter].some((isbn) => isbn.includes(searchTerm));
+          // return d[selectedFilter].some((isbn) => isbn.includes(searchTerm));
+          return d.borrowList.some((b) => {
+            console.log(b.book[selectedFilter]);
+            return b.book[selectedFilter].includes(searchTerm)
+          });
         }
         else {
           return d[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase())
@@ -244,7 +248,7 @@ const Borrow = () => {
                   <p>{record.username}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record?.borrowList?.map((b) => b.book)?.join(', ')}</p>
+                  <p>{record?.borrowList?.map((b) => b.book.ISBN)?.join(', ')}</p>
                 </td>
                 <td className="p-2">
                   <p>{formatDate(record.borrowDate)}</p>

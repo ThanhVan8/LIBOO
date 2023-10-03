@@ -167,6 +167,7 @@ const BookForm = () => {
               onChange={handleChangeInfo}
               name="description"
               value={book.description}
+              required
             />
           </div>
         </div>
