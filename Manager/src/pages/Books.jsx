@@ -9,7 +9,7 @@ import { FaTrash } from 'react-icons/fa';
 import { setShowAddBook, setShowUpdateBook, setUpdatedBook, setShowDeleteBook } from '../slices/bookSlice';
 import BookForm from '../components/BookForm';
 import DeleteModal from '../components/DeleteModal';
-import { getAllBooks } from '../slices/requestApi';
+import { getAllBooks, deleteBook } from '../slices/requestApi';
 
 const TABLE_HEAD = ['', 'ISBN', 'Name', 'Author', 'Publisher', 'Year', 'Genre', 'Price', 'Quantity', 'Borrowed', '', ''];
 
@@ -67,8 +67,10 @@ const Books = () => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    console.log('Delete book: ', updatedBook);
-
+    console.log(user?.accessToken)
+    deleteBook(user?.accessToken, dispatch, updatedBook._id);
+    console.log(updatedBook._id);
+    // console.log('Delete book: ', updatedBook);
     dispatch(setUpdatedBook(null));
     dispatch(setShowDeleteBook());
   }

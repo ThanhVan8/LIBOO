@@ -8,7 +8,7 @@ import { Input } from "@material-tailwind/react";
 import RadioButton from "./RadioButton";
 import CustomButton from "./CustomButton";
 import { FaInfoCircle } from "react-icons/fa";
-import { addReader } from "../slices/requestApi";
+import { addReader, updateReader } from "../slices/requestApi";
 
 const EXPIRATION = 2;
 
@@ -60,8 +60,12 @@ const ReaderForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    addReader(account, user?.accessToken, dispatch);
-    console.log(account);
+    if(showAddReader){
+      addReader(account, user?.accessToken, dispatch);
+    }
+    if(showUpdateReader){
+      updateReader(account, account._id, user?.accessToken, dispatch);
+    }
     closeForm();
   }
 

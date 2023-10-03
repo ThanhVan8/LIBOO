@@ -14,6 +14,16 @@ const readerSlice = createSlice({
       error: false,
       success: false
     },
+    updateReader: {
+      isFetching: false,
+      error: false,
+      success: false
+    },
+    deleteReader: {
+      isFetching: false,
+      error: false,
+      success: false
+    },
     showDeleteReader: false,
     updatedReader: null,
     },
@@ -60,11 +70,44 @@ const readerSlice = createSlice({
         state.newReader.isFetching = false
         state.newReader.error = true
         state.newReader.success = false
+    },
+
+    updateReaderBegin: (state) => {
+      state.updateReader.isFetching = true
+    },
+    
+    updateReaderSuccess: (state) => {
+        state.updateReader.isFetching = false
+        state.updateReader.success = true
+        state.updateReader.error = false
+    },
+
+    updateReaderFailure: (state) => {
+        state.updateReader.isFetching = false
+        state.updateReader.error = true
+        state.updateReader.success = false
+    },
+
+    deleteReaderBegin: (state) => {
+      state.deleteReader.isFetching = true
+    },
+    
+    deleteReaderSuccess: (state) => {
+        state.deleteReader.isFetching = false
+        state.deleteReader.success = true
+        state.deleteReader.error = false
+    },
+
+    deleteReaderFailure: (state) => {
+        state.deleteReader.isFetching = false
+        state.deleteReader.error = true
+        state.deleteReader.success = false
     }
   },
 });
 const { actions, reducer } = readerSlice;
 export const { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteReader, getUserBegin, getUserSuccess, getUserFailure, 
-  addReaderBegin, addReaderSuccess, addReaderFailure
+  addReaderBegin, addReaderSuccess, addReaderFailure, updateReaderBegin, updateReaderSuccess, updateReaderFailure, deleteReaderBegin, 
+  deleteReaderSuccess, deleteReaderFailure
 } = actions;
 export default reducer;
