@@ -3,9 +3,11 @@ import { loginBegin, loginFailure, loginSuccess} from './authSlice'
 import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess, updateReaderBegin, updateReaderSuccess, updateReaderFailure,
     deleteReaderBegin, deleteReaderSuccess, deleteReaderFailure 
 } from './readerSlice'
+
 import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBookFailure, deleteBookSuccess, getBookBegin, getBookFailure, getBookSuccess, 
     updateBookBegin, updateBookFailure, updateBookSuccess 
 } from "./bookSlice";
+
 import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure} from "./slipSlice"
 
 //auth
@@ -163,16 +165,16 @@ export const getAllSlips = async (accessToken, dispatch) => {
     }
 }
 
-export const addSlip = async (slip, username , accessToken, dispatch) => {
+export const addSlip = async (id, accessToken, isbnArray, dispatch) => {
     dispatch(addSlipBegin());
-    try{
-        const res = await axios.post('http://localhost:8000/api/slip/manager/'+ username, slip, {
+    try {
+        const res = await axios.post('http://localhost:8000/api/slip/manager/' + id, { ISBN: isbnArray }, {
             headers: {
                 token: `Bearer ${accessToken}`
-            }
+            },
         });
         dispatch(addSlipSuccess(res.data));
-    }catch(err){
+    } catch (err) {
         dispatch(addSlipFailure())
         console.log(err.response.data);
     }

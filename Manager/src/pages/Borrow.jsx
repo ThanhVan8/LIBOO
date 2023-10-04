@@ -27,7 +27,7 @@ const Borrow = () => {
 
   // const dueDate = formatDate(exp);
 
-  const [slip, setSlip] = useState({username:'', isbns: [], borrowDate: formatDate(today), dueDate: calcDueDate(today)})
+  const [slip, setSlip] = useState({_id:'', username:'', isbns: [], borrowDate: formatDate(today), dueDate: calcDueDate(today)})
   const [tempISBN, setTempISBN] = useState('');
 
   const handleChangeInfo = (e) => {
@@ -44,12 +44,14 @@ const Borrow = () => {
 
   const handleBorrow = (e) => {
     e.preventDefault();
-    addSlip(slip, slip.username, user?.accessToken, dispatch)
-    console.log(slip);
-  }
+    addSlip(slip._id, user?.accessToken,slip.isbns, dispatch);
+    // console.log(slip._id)
+    // console.log(slip);
+  };
 
   const showDetailBorrow = (selectedRecord) => {
     setSlip({
+      _id: selectedRecord._id,
       username: selectedRecord.UserID.username,
       isbns: selectedRecord?.borrowList?.map((b) => b.book.ISBN),
       borrowDate: formatDate(selectedRecord.borrowDate),
