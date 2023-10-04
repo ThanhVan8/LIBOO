@@ -1,4 +1,6 @@
 const Slip = require('../models/slip'); 
+const User = require('../models/user');
+const Book = require('../models/book');
 const { query } = require('express');
 const { where } = require('../models/book');
 
@@ -19,16 +21,10 @@ const slipController = {
 
     //ADD slip for manager
     addSlipManager: async (req, res) => {
-        try{
-            const newSlip = new Slip({
-                UserID: req.params.id,
-                borrowList: req.body.borrowList,
-                accepted: true,
-            })
-            const savedSlip = await newSlip.save();
-            res.status(200).json(savedSlip);
-        }catch(err){
-            res.status(500).json(err);
+        try {
+            const slip = await Slip.findByIdAndUpdate(req.params.id, {accepted: true});
+        } catch (err) {
+          res.status(500).json(err);
         }
     },
 
@@ -49,7 +45,7 @@ const slipController = {
         try{
             const query = { accepted: false };
             const slips = await Slip.find(query)
-            .populate({path: 'UserID', select: 'name email address'})
+            .populate({path: 'UserID', select: 'name email address username'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
             res.status(200).json(slips);
         }catch(err){

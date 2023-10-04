@@ -6,6 +6,7 @@ import Readers from './pages/Readers';
 import Books from './pages/Books';
 import MenuSidebar from './components/MenuSidebar';
 import Borrow from './pages/Borrow';
+import Return from './pages/Return';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/" element={<Readers />} />
           <Route path="/Books" element={<Books />} />
           <Route path="/Borrow" element={<Borrow />} />
+          <Route path="/Return" element={<Return />} />
         </Route>
       </Routes>
     </div>
