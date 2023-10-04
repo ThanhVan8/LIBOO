@@ -165,10 +165,10 @@ export const getAllSlips = async (accessToken, dispatch) => {
     }
 }
 
-export const addSlip = async (username, accessToken, isbnArray, dispatch) => {
+export const addSlip = async (id, accessToken, isbnArray, dispatch) => {
     dispatch(addSlipBegin());
     try {
-        const res = await axios.post('http://localhost:8000/api/slip/manager/' + username, { ISBN: isbnArray }, {
+        const res = await axios.post('http://localhost:8000/api/slip/manager/' + id, { ISBN: isbnArray }, {
             headers: {
                 token: `Bearer ${accessToken}`
             },

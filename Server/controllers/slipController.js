@@ -22,23 +22,7 @@ const slipController = {
     //ADD slip for manager
     addSlipManager: async (req, res) => {
         try {
-          const query = { username: req.params.username };
-          const user = await User.findOne(query);
-          let bookList = [];
-          for (let i = 0; i < req.body.ISBN.length; i++) {
-            const query1 = { ISBN: req.body.ISBN[i] };
-            const book = await Book.findOne(query1);
-            if (book) {
-              bookList.push(book);
-            }
-          }
-          const newSlip = new Slip({
-            UserID: user._id,
-            borrowList: bookList,
-            accepted: true,
-          });
-          const savedSlip = await newSlip.save();
-          res.status(200).json(savedSlip);
+            const slip = await Slip.findByIdAndUpdate(req.params.id, {accepted: true});
         } catch (err) {
           res.status(500).json(err);
         }
