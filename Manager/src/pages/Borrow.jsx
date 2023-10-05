@@ -45,9 +45,12 @@ const Borrow = () => {
   const handleBorrow = (e) => {
     e.preventDefault();
     if(slip._id){
+      console.log(user?.accessToken)
       addSlipById(slip._id, user?.accessToken, dispatch);
     }
-    else {
+    if(!slip._id){
+      console.log(slip.username);
+      console.log(slip.isbns);
       addSlipByUsername(slip.username, slip.isbns ,user?.accessToken, dispatch);
     }
   };
@@ -56,7 +59,7 @@ const Borrow = () => {
     setSlip({
       _id: selectedRecord._id,
       username: selectedRecord.UserID.username,
-      isbns: selectedRecord?.borrowList?.map((b) => b.book.ISBN),
+      isbns: selectedRecord?.borrowList?.map((b) => b.book?.ISBN),
       borrowDate: formatDate(selectedRecord.borrowDate),
       dueDate: formatDate(selectedRecord?.borrowList?.[0]?.DueDate),
     });
@@ -133,7 +136,7 @@ const Borrow = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full px-4 pt-12 pb-3 gap-8">
+    <div className="flex flex-col w-full h-full pl-16 pr-8 pt-3 pb-3 gap-8">
       {/* New Borrow */}
       <form className="w-full space-y-5" onSubmit={(e) => handleBorrow(e)}>
         <div className='flex justify-between'>
@@ -171,13 +174,9 @@ const Borrow = () => {
             <Input
               variant="standard"
               label="ISBNs"
-              onInput={(e) =>
-                (e.target.value = e.target.value
-                  .replace(/[^0-9.]/g, "")
-                  .replace(/(\..*?)\..*/g, "$1"))
+              onInput={ (e) =>
+                e.target.value = e.target.value.replace(/[^0-9]/g, '')
               }
-              pattern=".{13}"
-              maxLength={13}
               onChange={(e) => setTempISBN(e.target.value)}
             />
             <button
@@ -228,7 +227,7 @@ const Borrow = () => {
                   <p>{record?.UserID.username}</p>
                 </td>
                 <td className="p-2">
-                  <p>{record?.borrowList?.map((b) => b.book.ISBN)?.join(', ')}</p>
+                  <p>{record?.borrowList?.map((b) => b.book?.ISBN)?.join(', ')}</p>
                 </td>
                 <td className="p-2">
                   <p>{formatDate(record.borrowDate)}</p>

@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
 
-const numBook = 100;
+
 
 const numBookBorrowed = 20;
 
@@ -55,6 +56,13 @@ const Statistics = () => {
   const lastIdx = currentPage * recordsPerPage;
   const firstIdx = lastIdx - recordsPerPage;
   const records = overdueData?.slice(firstIdx, lastIdx);
+
+  const bookList = useSelector((state) => state.book.books?.allBooks);
+  const numBook = bookList?.length;
+
+  useEffect(() => {
+    console.log(numBook);
+  }, [bookList])
 
   const nextPage = () => {
     if (currentPage < numPage) {

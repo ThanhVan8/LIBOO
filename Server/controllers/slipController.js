@@ -23,6 +23,13 @@ const slipController = {
     addSlipManagerById: async (req, res) => {
         try {
             const slip = await Slip.findByIdAndUpdate(req.params.id, {accepted: true});
+            for (let i = 0; i < slip.borrowList.length; i++){
+                const query = { _id: slip.borrowList[i].book };
+                const book = await Book.findById(query);
+                let n = book.borrowed + 1;
+                await Book.findOneAndUpdate(query, {borrowed: n});
+
+            }
             res.status(200).json(slip);
             if (!slip){
                 res.status(500).json(err);
@@ -44,10 +51,15 @@ const slipController = {
             for (let i = 0; i < req.body.borrowList.length; i++){
                 const query = {ISBN: req.body.borrowList[i].ISBN};
                 const book = await Book.findOne(query);
+                let n = book.borrowed + 1;
                 if (!book){
                     res.status(500).json(err);
                 }
-                bookList.push(book);
+                else{
+                    let tmp = {book: book._id};
+                    bookList.push(tmp);
+                    await Book.findOneAndUpdate(query, {borrowed: n});
+                }
             }
             const newSlip = new Slip({
                 UserID: user._id,
