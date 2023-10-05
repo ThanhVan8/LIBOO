@@ -168,9 +168,13 @@ const Borrow = () => {
             <Input
               variant="standard"
               label="ISBNs"
-              onInput={ (e) =>
-                e.target.value = e.target.value.replace(/[^0-9]/g, '')
+              onInput={(e) =>
+                (e.target.value = e.target.value
+                  .replace(/[^0-9.]/g, "")
+                  .replace(/(\..*?)\..*/g, "$1"))
               }
+              pattern=".{13}"
+              maxLength={13}
               onChange={(e) => setTempISBN(e.target.value)}
             />
             <button
