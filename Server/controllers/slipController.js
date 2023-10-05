@@ -76,7 +76,20 @@ const slipController = {
     //GET all unaccepted slips
     getAllUnacceptedSlips: async (req, res) => {
         try{
-            const query = { accepted: false };
+            const query = { accepted: false};
+            const slips = await Slip.find(query)
+            .populate({path: 'UserID', select: 'name email address username'})
+            .populate({path: 'borrowList.book', select: 'ISBN name author'});
+            res.status(200).json(slips);
+        }catch(err){
+            res.status(500).json(err);
+        }
+    },
+
+    //GET all accepted slips
+    getAllAcceptedSlips: async (req, res) => {
+        try{
+            const query = { accepted: true};
             const slips = await Slip.find(query)
             .populate({path: 'UserID', select: 'name email address username'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});

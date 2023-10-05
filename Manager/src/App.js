@@ -9,21 +9,23 @@ import Borrow from './pages/Borrow';
 import Return from './pages/Return';
 import Statistics from './pages/Statistics';
 import {useDispatch, useSelector} from 'react-redux';
-import { getAllUsers, getAllBooks } from './slices/requestApi'
+import { getAllBooks,  getAllUsers} from './slices/requestApi';
 
 const App = () => {
   const {toggle} = useSelector(state => state.menu);
   const user = useSelector((state) => state.auth.login?.currentUser);
+  const readerList = useSelector((state) => state.reader.readers?.allUsers);
+  const bookList = useSelector((state) => state.book.books?.allBooks);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if(user?.accessToken){
-      getAllUsers(user?.accessToken, dispatch);
       getAllBooks(user?.accessToken, dispatch);
+      getAllUsers(user?.accessToken, dispatch);
     }
   }, [])
-
+  
   return (
     <div className="w-screen h-screen flex">
       <MenuSidebar />

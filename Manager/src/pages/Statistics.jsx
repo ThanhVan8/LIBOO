@@ -1,58 +1,24 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
-
-const numBook = 100;
-
-const numBookBorrowed = 20;
-
-const bookGenreData = [
-  {name: 'Fiction', value: 25},
-  {name: 'nonFiction', value: 35},
-  {name: 'science', value: 20},
-  {name: 'history', value: 5},
-  {name: 'art', value: 15},
-]
-
-const numReader = 316;
-
-const readerSexData = [
-  {name: 'Male', value: 150},
-  {name: 'Female', value: 166},
-]
-
-const readerOverdue = [
-  {
-    username: 'user1',
-    name: 'Nguyen Van A',
-    email: 'nva@gmail.com',
-    overdue: 5,
-  },
-  {
-    username: 'user2',
-    name: 'Nguyen Van B',
-    email: 'nvb@gmail.com',
-    overdue: 3,
-  },
-  {
-    username: 'user3',
-    name: 'Nguyen Van C',
-    email: 'nvc@gmail.com',
-    overdue: 1,
-  },
-]
+import { getAllAcceptedSlips } from '../slices/requestApi'
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const TABLE_HEAD = ['Username', 'Name', 'Email', 'Overdue (days)'];
+const TABLE_HEAD = ['Username', 'Name', 'Email', 'Book', 'Overdue (days)'];
 
 const Statistics = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const bookList = useSelector((state) => state.book.books?.allBooks);
   const readerList = useSelector((state) => state.reader.readers?.allUsers);
+  const slips = useSelector((state) => state.slip.slips?.allSlips);
+  
+  const [numBookBorrowed, setNumBookBorrowed] = useState(0)
+  const [genreData, setGenreData] = useState([])
+  const [sexData, setSexData] = useState([])
 
-  const [overdueData, setOverdueData] = useState(readerOverdue)
+  const [overdueData, setOverdueData] = useState([])
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
@@ -72,19 +38,103 @@ const Statistics = () => {
     }
   }
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(user?.accessToken){
+      getAllAcceptedSlips(user?.accessToken, dispatch)
+    }
+  }, [])
+
+  const countUniqueGenre = () => {
+    let unique = [];
+    let res = [];
+    bookList?.forEach((book) => {
+      book?.genre?.forEach((genre) => {
+        if (!unique.includes(genre)) {
+          unique.push(genre);
+          res.push({name: genre, value: 1});
+        }
+        else {
+          let idx = unique.indexOf(genre);
+          res[idx].value += 1;
+        }
+      });
+    });
+    return res;
+  }
+
+  const countUniqueSex = () => {
+    let unique = ['Male', 'Female'];
+    let res = [{name: 'Male', value: 0}, {name: 'Female', value: 0}];
+    readerList?.forEach((reader) => {
+      let idx = unique.indexOf(reader.sex);
+      if (idx !== -1)
+        res[idx].value += 1;
+    });
+    return res;
+  }
+
+  const findReaderOverdue = () => {
+    const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    const today = new Date();
+
+    let res = [];
+    slips?.forEach((slip) => {
+      let reader = readerList?.find((reader) => reader._id === slip.UserID._id);
+      slip?.borrowList?.forEach((borrow) => {
+        const diffDays = Math.round((today - new Date(borrow.DueDate)) / oneDay);
+        if (diffDays > 0) {
+          console.log(bookList, borrow);
+          let book = bookList?.find((book) => book._id === borrow.book._id);
+          if (reader && book)
+            res.push({
+              username: reader.username,
+              name: reader.name,
+              email: reader.email,
+              book: book.name,
+              overdue: diffDays,
+            });
+        }
+      });
+    })
+    return res;
+  }
+
+  useEffect(() => {
+    setGenreData(countUniqueGenre());
+  }, [bookList])
+
+  useEffect(() => {
+    setSexData(countUniqueSex());
+  }, [readerList])
+
+  useEffect(() => {
+    setNumBookBorrowed(() => {
+      let count = 0;
+      slips?.forEach((slip) => {
+        count += slip.borrowList.length;
+      });
+      return count;
+    });
+
+    setOverdueData(findReaderOverdue());
+
+  }, [slips]);
+
   return (
     <div className='px-4 pt-12 pb-3 space-y-3 w-full'>
       <p className='text-2xl font-semibold'>STATISTICS</p>
 
       <div className='space-y-3 w-full'>
         <p className='text-xl font-medium'>BOOKS</p>
-        <p>Number of books: <span className='text-red'>{numBook}</span></p>
+        <p>Number of books: <span className='text-red'>{bookList.length}</span></p>
         <p>Number of books being borrowed: <span className='text-red'>{numBookBorrowed}</span></p>
         <div className='flex items-center w-full'>
           <div className='flex flex-col space-y-3 w-full items-center'>
             <PieChart width={730} height={250}>
-              <Pie data={bookGenreData} fill="#EFD595" label={(entry) => entry.name} >
-                {bookGenreData.map((entry, index) => (
+              <Pie data={genreData} fill="#EFD595" label={(entry) => entry.name} >
+                {genreData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
@@ -99,12 +149,12 @@ const Statistics = () => {
 
       <div className='space-y-3 w-full'>
         <p className='text-xl font-medium'>READERS</p>
-        <p>Number of readers: <span className='text-red'>{numReader}</span></p>
+        <p>Number of readers: <span className='text-red'>{readerList.length}</span></p>
         <div className='flex items-center w-full'>
           <div className='flex flex-col space-y-3 w-full items-center'>
             <PieChart width={730} height={250}>
-              <Pie data={readerSexData} fill="#EFD595" label={(entry) => entry.name} >
-                {bookGenreData.map((entry, index) => (
+              <Pie data={sexData} fill="#EFD595" label={(entry) => entry.name} >
+                {sexData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
@@ -139,6 +189,9 @@ const Statistics = () => {
                   </td>
                   <td className="p-2">
                     <p>{record.email}</p>
+                  </td>
+                  <td className="p-2">
+                    <p>{record.book}</p>
                   </td>
                   <td className="p-2">
                     <p>{record.overdue}</p>

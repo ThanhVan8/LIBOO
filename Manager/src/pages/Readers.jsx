@@ -29,11 +29,11 @@ const Readers = () => {
     setReaderData(readerList);
   }, [readerList]);
 
-  // useEffect(() => {
-  //   if(user?.accessToken){
-  //     getAllUsers(user?.accessToken, dispatch);
-  //   }
-  // }, [])
+  useEffect(() => {
+    if(user?.accessToken){
+      getAllUsers(user?.accessToken, dispatch);
+    }
+  }, [])
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;

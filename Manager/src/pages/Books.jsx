@@ -25,12 +25,12 @@ const Books = () => {
     setBookData(bookList);
   }, [bookList]);
 
-  // useEffect(() => {
-  //   if(user?.accessToken){
-  //     getAllBooks(user?.accessToken, dispatch);
-  //   }
+  useEffect(() => {
+    if(user?.accessToken){
+      getAllBooks(user?.accessToken, dispatch);
+    }
     
-  // }, [])
+  }, [])
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;

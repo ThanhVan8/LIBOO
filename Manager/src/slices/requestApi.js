@@ -199,6 +199,21 @@ export const getAllSlips = async (accessToken, dispatch) => {
     }
 }
 
+//accepted slips
+export const getAllAcceptedSlips = async (accessToken, dispatch) => {
+    dispatch(getSlipsBegin());
+    try{
+        const res = await axios.get('http://localhost:8000/api/slip/accepted',{
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(getSlipsSuccess(res.data));
+    }catch(err){
+        dispatch(getSlipsFailure());
+    }
+}
+
 //making slip by id
 export const addSlipById = async (id, accessToken, dispatch) => {
     dispatch(addSlipBegin());
