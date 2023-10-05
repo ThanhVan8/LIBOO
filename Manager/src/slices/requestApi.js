@@ -31,6 +31,7 @@ export const loginUser = async (user, dispatch, navigate) => {
     } catch (err) {
         console.log(err.response.data);
         dispatch(loginFailure());
+        toast.error(err.response.data);
     }
 }
 
