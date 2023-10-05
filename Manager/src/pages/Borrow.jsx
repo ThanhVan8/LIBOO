@@ -40,6 +40,7 @@ const Borrow = () => {
     e.preventDefault();
     if(tempISBN !== '')
       setSlip({...slip, isbns: [...slip.isbns, tempISBN]});
+    setTempISBN('');
   }
 
   const handleBorrow = (e) => {
@@ -178,6 +179,7 @@ const Borrow = () => {
               }
               pattern=".{13}"
               maxLength={13}
+              value={tempISBN}
               onChange={(e) => setTempISBN(e.target.value)}
             />
             <button
