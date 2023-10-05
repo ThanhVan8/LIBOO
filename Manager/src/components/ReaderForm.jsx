@@ -15,7 +15,9 @@ const EXPIRATION = 2;
 const ReaderForm = () => {
   const {showAddReader, showUpdateReader, updatedReader} = useSelector(state => state.reader);
   const user = useSelector((state) => state.auth.login?.currentUser);
-  
+  const doneAdd = useSelector((state) => state.reader.newReader?.success);
+  const doneUpdate = useSelector((state) => state.reader.updatedReader?.success);
+
   const today = new Date()
   const exp = new Date(today.getFullYear() + EXPIRATION, today.getMonth(), today.getDate())
 
@@ -32,6 +34,7 @@ const ReaderForm = () => {
           address: "",
           makingDay: today,
           invalidDay: exp,
+          photo: "",
         }
       : updatedReader
   );
@@ -70,14 +73,15 @@ const ReaderForm = () => {
     if(showUpdateReader){
       updateReader(account, account._id, user?.accessToken, dispatch);
     }
-    closeForm();
+    if(doneAdd || doneUpdate)
+      closeForm();
   }
 
   return (
     <div className="fixed top-0 left-0 bg-black bg-opacity-25 w-full h-full flex justify-center items-center z-50 overflow-auto ">
       <form
         className="relative bg-white drop-shadow-md p-5 w-full h-full md:w-[30rem] md:h-fit flex flex-col justify-center gap-4 rounded-lg"
-        onSubmit={handleSubmit}
+        onSubmit={(e) => handleSubmit(e)}
       >
         <button
           className="absolute top-3 right-3 w-6 h-6 bg-lightGrey rounded-full"
@@ -146,7 +150,7 @@ const ReaderForm = () => {
             type="date"
             onChange={handleChangeInfo}
             name="birthday"
-            value={account.birthday === '' ? null : new Date(account.birthday).toISOString().slice(0, 10)}
+            value={account.birthday === '' ? '' : new Date(account.birthday).toISOString().slice(0, 10)}
           />
           <div className="flex gap-4 self-end"> 
             <RadioButton

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { loginBegin, loginFailure, loginSuccess} from './authSlice'
-import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess, updateReaderBegin, updateReaderSuccess, updateReaderFailure,
+import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess, addReaderFailure, updateReaderBegin, updateReaderSuccess, updateReaderFailure,
     deleteReaderBegin, deleteReaderSuccess, deleteReaderFailure 
 } from './readerSlice'
 
@@ -10,6 +10,9 @@ import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBo
 
 import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure} from "./slipSlice"
 
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 //auth
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginBegin());
@@ -17,15 +20,18 @@ export const loginUser = async (user, dispatch, navigate) => {
         const res = await axios.post('http://localhost:8000/api/auth/login', user);
         if (res.data.admin === true) {
             dispatch(loginSuccess(res.data));
+            toast.success('Login successfully!');
             navigate('/');
         }
         else {
             dispatch(loginFailure());
+            toast.error('You are not admin');
         } 
         
     } catch (err) {
         console.log(err.response.data);
         dispatch(loginFailure());
+        toast.error(err.response.data);
     }
 }
 
@@ -53,9 +59,11 @@ export const addReader = async (reader, accessToken, dispatch) => {
             }
         });
         dispatch(addReaderSuccess(res.data));
+        toast.success('Add reader successfully!');
     }catch(err){
-        dispatch(addBookFailure())
+        dispatch(addReaderFailure())
         console.log(err.response.data);
+        toast.error(err.response.data);
     }
 }
 

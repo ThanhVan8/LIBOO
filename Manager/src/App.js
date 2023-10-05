@@ -16,7 +16,7 @@ const App = () => {
   return (
     <div className="w-screen h-screen flex">
       <MenuSidebar />
-      <div className={`${toggle ? 'ml-[12.875rem]' : ''} w-full h-full overflow-auto`}>
+        <div className={`${toggle ? 'ml-[12.875rem]' : ''} w-full h-full overflow-auto`}>
         <Routes>
           <Route path="/Auth" element={<Auth />} />
           <Route element={<PrivateRoute />} >
