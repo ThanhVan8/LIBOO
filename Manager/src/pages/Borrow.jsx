@@ -45,12 +45,9 @@ const Borrow = () => {
   const handleBorrow = (e) => {
     e.preventDefault();
     if(slip._id){
-      console.log(user?.accessToken)
       addSlipById(slip._id, user?.accessToken, dispatch);
     }
-    if(!slip._id){
-      console.log(slip.username);
-      console.log(slip.isbns);
+    else {
       addSlipByUsername(slip.username, slip.isbns ,user?.accessToken, dispatch);
     }
   };
