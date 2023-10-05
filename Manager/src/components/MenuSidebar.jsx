@@ -1,12 +1,13 @@
 import React from "react";
 import logo from "../assets/logo.png";
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { LiaTimesSolid, LiaUserSolid, LiaChartBarSolid } from "react-icons/lia";
 import { GoBook, GoArrowRight, GoArrowLeft } from "react-icons/go";
 import { BiLogOut, BiMenu } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
 import { setToggle } from '../slices/menuSlice';
 import { motion } from "framer-motion";
+import {logoutUser} from "../slices/requestApi"
 
 const items = [
   {
@@ -48,14 +49,22 @@ const MenuItem = ({icon, text, active}) => {
 const MenuSidebar = () => {
   const location = useLocation();
   const {toggle} = useSelector(state => state.menu);
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const accessToken = user?.accessToken;
+  const id = user?._id;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleToggleMenu = (e) => {
     e.preventDefault()
     dispatch(setToggle());
   }
 
+
   const logout = () => {
+    logoutUser(dispatch, id, navigate, accessToken);
+    dispatch(setToggle());
     console.log('logout')
   }
 
