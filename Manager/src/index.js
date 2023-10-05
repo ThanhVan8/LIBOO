@@ -21,7 +21,10 @@ root.render(
           </ThemeProvider>
         </PersistGate>
       </Provider>
-      <ToastContainer />
+      <ToastContainer 
+        autoClose={1000}
+        hideProgressBar={true} 
+      />
     </Router>
   </React.StrictMode>
 );

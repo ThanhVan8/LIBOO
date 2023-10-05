@@ -16,7 +16,10 @@ router.post('/manager/username/:username',middlewareController.verifyAdminToken,
 router.get('/all',middlewareController.verifyAdminToken, slipController.getAllSlips);
 
 // GET all unaccepted slips
-router.get('/unaccepted',middlewareController.verifyAdminToken, slipController.getAllUnacceptedSlips);
+router.get(`/unaccepted`,middlewareController.verifyAdminToken, slipController.getAllUnacceptedSlips);
+
+// GET all accepted slips
+router.get(`/accepted`,middlewareController.verifyAdminToken, slipController.getAllAcceptedSlips);
 
 //GET all slip of 1 user
 router.get('/:id',middlewareController.verifyToken ,slipController.getAllSlipsOfReader);

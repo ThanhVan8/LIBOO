@@ -4,11 +4,12 @@ import { Input } from "@material-tailwind/react";
 import CustomButton from "../components/CustomButton";
 import { FaRegUser, FaLock } from "react-icons/fa6";
 import { loginUser } from "../slices/requestApi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [account, setAccount] = useState({username: '', password: ''});
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,7 +40,7 @@ const Auth = () => {
             <Input 
               icon={<FaRegUser />} 
               label="Username"
-              onChange={handleChangeInfo}
+              onChange={(e) => handleChangeInfo(e)}
               required
               name="username"
               value={account.username}
@@ -48,7 +49,7 @@ const Auth = () => {
               icon={<FaLock />} 
               label="Password"
               type="password"
-              onChange={handleChangeInfo}
+              onChange={(e) => handleChangeInfo(e)}
               required
               name="password"
               value={account.password}

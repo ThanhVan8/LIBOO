@@ -33,7 +33,6 @@ const Readers = () => {
     if(user?.accessToken){
       getAllUsers(user?.accessToken, dispatch);
     }
-    
   }, [])
 
   const [currentPage, setCurrentPage] = useState(1);

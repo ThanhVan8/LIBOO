@@ -22,7 +22,7 @@ const BookForm = () => {
       publishYear: 0,
       genre: '',
       price: 0,
-      quantity: 0,
+      quantity: 1,
       borrowed: 0,
       photo: '',
       description: '',
@@ -112,16 +112,22 @@ const BookForm = () => {
             name="name"
             value={book.name}
           />
-          <div className='md:col-span-2'>
-            <Input
-              variant="standard"
-              label="Authors"
-              required
-              onChange={handleChangeInfo}
-              name="author"
-              value={book.author}
-            />
-          </div>
+          <Input
+            variant="standard"
+            label="Authors"
+            required
+            onChange={handleChangeInfo}
+            name="author"
+            value={book.author}
+          />
+          <Input
+            variant="standard"
+            label="Genre"
+            required
+            onChange={handleChangeInfo}
+            value={book.genre}
+            name="genre"
+          />
           <Input
             variant="standard"
             label="Publisher"
@@ -144,11 +150,13 @@ const BookForm = () => {
           />
           <Input
             variant="standard"
-            label="Genre"
+            label="Quantity"
             required
             onChange={handleChangeInfo}
-            value={book.genre}
-            name="genre"
+            value={book.quantity}
+            name="quantity"
+            type="number"
+            min={1}
           />
           <Input
             variant="standard"
