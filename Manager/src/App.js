@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Route, Routes} from 'react-router-dom'
 import PrivateRoute from './routers/PrivateRoute';
 import Auth from './pages/Auth'
@@ -8,10 +8,21 @@ import MenuSidebar from './components/MenuSidebar';
 import Borrow from './pages/Borrow';
 import Return from './pages/Return';
 import Statistics from './pages/Statistics';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import { getAllUsers, getAllBooks } from './slices/requestApi'
 
 const App = () => {
   const {toggle} = useSelector(state => state.menu);
+  const user = useSelector((state) => state.auth.login?.currentUser);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(user?.accessToken){
+      getAllUsers(user?.accessToken, dispatch);
+      getAllBooks(user?.accessToken, dispatch);
+    }
+  }, [])
 
   return (
     <div className="w-screen h-screen flex">

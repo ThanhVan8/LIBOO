@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
+import { useDispatch, useSelector } from 'react-redux';
 
 const numBook = 100;
 
@@ -47,6 +48,10 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 const TABLE_HEAD = ['Username', 'Name', 'Email', 'Overdue (days)'];
 
 const Statistics = () => {
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const bookList = useSelector((state) => state.book.books?.allBooks);
+  const readerList = useSelector((state) => state.reader.readers?.allUsers);
+
   const [overdueData, setOverdueData] = useState(readerOverdue)
 
   const [currentPage, setCurrentPage] = useState(1);
