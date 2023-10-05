@@ -25,7 +25,7 @@ const slipController = {
             const slip = await Slip.findByIdAndUpdate(req.params.id, {accepted: true});
             res.status(200).json(slip);
             if (!slip){
-                return res.status(400).json('Slip not found');
+                res.status(500).json(err);
             }
         } catch (err) {
           res.status(500).json(err);
@@ -39,13 +39,13 @@ const slipController = {
             const user = await User.findOne(query);
             let bookList = [];
             if(!user){
-                return res.status(200).json('Cannot find user');
+                res.status(500).json(err);
             }
             for (let i = 0; i < req.body.borrowList.length; i++){
                 const query = {ISBN: req.body.borrowList[i].ISBN};
                 const book = await Book.findOne(query);
                 if (!book){
-                    return res.status(200).json('Cannot find book'); 
+                    res.status(500).json(err);
                 }
                 bookList.push(book);
             }
