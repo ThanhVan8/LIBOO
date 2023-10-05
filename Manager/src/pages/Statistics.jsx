@@ -68,7 +68,7 @@ const Statistics = () => {
   }
 
   return (
-    <div className='pl-16 pr-8 pt-3 pb-3 space-y-3 w-full'>
+    <div className='px-4 pt-12 pb-3 space-y-3 w-full'>
       <p className='text-2xl font-semibold'>STATISTICS</p>
 
       <div className='space-y-3 w-full'>
