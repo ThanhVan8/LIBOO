@@ -1,5 +1,5 @@
 import axios from "axios";
-import { loginBegin, loginFailure, loginSuccess} from './authSlice'
+import { loginBegin, loginFailure, loginSuccess, logoutBegin, logoutFailure, logoutSuccess} from './authSlice'
 import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess, addReaderFailure, updateReaderBegin, updateReaderSuccess, updateReaderFailure,
     deleteReaderBegin, deleteReaderSuccess, deleteReaderFailure 
 } from './readerSlice'
@@ -31,7 +31,21 @@ export const loginUser = async (user, dispatch, navigate) => {
     } catch (err) {
         console.log(err.response.data);
         dispatch(loginFailure());
-        toast.error(err.response.data);
+    }
+}
+
+export const logoutUser = async (dispatch, id, navigate, accessToken) => {
+    dispatch(logoutBegin());
+    try{
+        const res = await axios.post(`http://localhost:8000/api/auth/logout/${id}`, {}, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        })
+        dispatch(logoutSuccess(res.data));
+    } catch (err) {
+        console.log(err.response.data);
+        dispatch(logoutFailure());
     }
 }
 
