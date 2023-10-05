@@ -55,8 +55,12 @@ const MenuSidebar = () => {
     dispatch(setToggle());
   }
 
+  const logout = () => {
+    console.log('logout')
+  }
+
   return(
-    <div className={`z-50 ${location.pathname === '/Auth' ? 'hidden' : ''}`}>
+    <div className={`fixed z-50 h-full ${location.pathname === '/Auth' ? 'hidden' : ''}`}>
       {toggle &&
         <motion.div 
           className='bg-red rounded-r-[1.875rem] w-full h-full fixed shrink-0 sm:relative sm:w-[12.875rem]'
@@ -81,9 +85,11 @@ const MenuSidebar = () => {
               })}
             </ul>
 
-            <div className='flex w-full h-fit gap-2 pl-8 rounded-l-3xl'>
-              <BiLogOut color='white' size='1.5rem' />
-              <span className='text-white text-base'>Logout</span>
+            <div className='w-full pl-8'>
+              <button onClick={logout} className='flex gap-2 rounded-l-3xl'>
+                <BiLogOut color='white' size='1.5rem' />
+                <span className='text-white text-base'>Logout</span>
+              </button>
             </div>
           </div>
         </motion.div>

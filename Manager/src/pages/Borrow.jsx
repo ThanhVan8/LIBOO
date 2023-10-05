@@ -7,7 +7,7 @@ import { FaTrash } from 'react-icons/fa';
 import DeleteModal from "../components/DeleteModal";
 import {getAllSlips} from "../slices/requestApi"
 import { useDispatch, useSelector } from 'react-redux';
-import {addSlip} from '../slices/requestApi'
+import {addSlipById, addSlipByUsername} from '../slices/requestApi'
 
 const EXPIRATION = 7;
 const TABLE_HEAD = ['Username', 'ISBN', 'Received date', ''];
@@ -44,9 +44,12 @@ const Borrow = () => {
 
   const handleBorrow = (e) => {
     e.preventDefault();
-    addSlip(slip._id, user?.accessToken,slip.isbns, dispatch);
-    // console.log(slip._id)
-    // console.log(slip);
+    if(slip._id){
+      addSlipById(slip._id, user?.accessToken, dispatch);
+    }
+    else {
+      addSlipByUsername(slip.username, slip.isbns ,user?.accessToken, dispatch);
+    }
   };
 
   const showDetailBorrow = (selectedRecord) => {
@@ -130,7 +133,7 @@ const Borrow = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full pl-16 pr-8 pt-3 pb-3 gap-8">
+    <div className="flex flex-col w-full h-full px-4 pt-12 pb-3 gap-8">
       {/* New Borrow */}
       <form className="w-full space-y-5" onSubmit={(e) => handleBorrow(e)}>
         <div className='flex justify-between'>
@@ -168,9 +171,13 @@ const Borrow = () => {
             <Input
               variant="standard"
               label="ISBNs"
-              onInput={ (e) =>
-                e.target.value = e.target.value.replace(/[^0-9]/g, '')
+              onInput={(e) =>
+                (e.target.value = e.target.value
+                  .replace(/[^0-9.]/g, "")
+                  .replace(/(\..*?)\..*/g, "$1"))
               }
+              pattern=".{13}"
+              maxLength={13}
               onChange={(e) => setTempISBN(e.target.value)}
             />
             <button

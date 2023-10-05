@@ -56,10 +56,16 @@ const Books = () => {
   const handleSearch = (e) => {
     const searchTerm = e.target.value;
     if (searchTerm === '') {
-      setBookData(bookData);
+      setBookData(bookList);
       return;
     }
-    const searchedBooks = bookData.filter((book) => book[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase()));
+    const searchedBooks = bookList.filter((book) => {
+      if (selectedFilter === 'genre') {
+        return book[selectedFilter].some((genre) => genre.toLowerCase().includes(searchTerm.toLowerCase()));
+      }
+      else
+        return book[selectedFilter].toLowerCase().includes(searchTerm.toLowerCase())
+    });
     setBookData(searchedBooks);
   }
 
