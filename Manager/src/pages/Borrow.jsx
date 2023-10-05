@@ -7,7 +7,7 @@ import { FaTrash } from 'react-icons/fa';
 import DeleteModal from "../components/DeleteModal";
 import {getAllSlips} from "../slices/requestApi"
 import { useDispatch, useSelector } from 'react-redux';
-import {addSlip} from '../slices/requestApi'
+import {addSlipById, addSlipByUsername} from '../slices/requestApi'
 
 const EXPIRATION = 7;
 const TABLE_HEAD = ['Username', 'ISBN', 'Received date', ''];
@@ -44,9 +44,15 @@ const Borrow = () => {
 
   const handleBorrow = (e) => {
     e.preventDefault();
-    addSlip(slip._id, user?.accessToken,slip.isbns, dispatch);
-    // console.log(slip._id)
-    // console.log(slip);
+    if(slip._id){
+      console.log(user?.accessToken)
+      addSlipById(slip._id, user?.accessToken, dispatch);
+    }
+    if(!slip._id){
+      console.log(slip.username);
+      console.log(slip.isbns);
+      addSlipByUsername(slip.username, slip.isbns ,user?.accessToken, dispatch);
+    }
   };
 
   const showDetailBorrow = (selectedRecord) => {

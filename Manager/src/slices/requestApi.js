@@ -165,16 +165,35 @@ export const getAllSlips = async (accessToken, dispatch) => {
     }
 }
 
-export const addSlip = async (id, accessToken, isbnArray, dispatch) => {
+//making slip by id
+export const addSlipById = async (id, accessToken, dispatch) => {
     dispatch(addSlipBegin());
     try {
-        const res = await axios.post('http://localhost:8000/api/slip/manager/' + id, { ISBN: isbnArray }, {
+        const res = await axios.post(`http://localhost:8000/api/slip/manager/id/${id}`, {},
+        {
             headers: {
                 token: `Bearer ${accessToken}`
             },
         });
         dispatch(addSlipSuccess(res.data));
     } catch (err) {
+        dispatch(addSlipFailure())
+        console.log(err.response.data);
+    }
+}
+
+//making slip by username
+export const addSlipByUsername = async (username, isbns, accessToken, dispatch) => {
+    dispatch(addSlipBegin());
+    try{
+        const res = await axios.post(`http://localhost:8000/api/slip/manager/username/${username}`, {borrowList: isbns.map((isbn) => ({ISBN: isbn}))},
+        {
+            headers: {
+                token: `Bearer ${accessToken}`
+            },
+        });
+        dispatch(addSlipSuccess(res.data));
+    } catch (err){
         dispatch(addSlipFailure())
         console.log(err.response.data);
     }

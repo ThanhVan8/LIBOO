@@ -6,8 +6,11 @@ const router = require('express').Router();
 //ADD slip for reader
 router.post('/reader/:id',middlewareController.verifyToken, slipController.addSlipReader);
 
-//ADD slip for manager
-router.post('/manager/:id',middlewareController.verifyAdminToken, slipController.addSlipManager);
+//ADD slip for manager by id
+router.post('/manager/id/:id',middlewareController.verifyAdminToken, slipController.addSlipManagerById);
+
+//ADD slip for manager by username
+router.post('/manager/username/:username',middlewareController.verifyAdminToken, slipController.addSlipManagerByUsername);
 
 //GET all slips
 router.get('/all',middlewareController.verifyAdminToken, slipController.getAllSlips);
