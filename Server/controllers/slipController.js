@@ -19,12 +19,45 @@ const slipController = {
         }
     },
 
-    //ADD slip for manager
-    addSlipManager: async (req, res) => {
+    //ADD slip for manager by SlipId
+    addSlipManagerById: async (req, res) => {
         try {
             const slip = await Slip.findByIdAndUpdate(req.params.id, {accepted: true});
+            res.status(200).json(slip);
+            if (!slip){
+                res.status(500).json(err);
+            }
         } catch (err) {
           res.status(500).json(err);
+        }
+    },
+    
+    //ADD slip for manager by username
+    addSlipManagerByUsername: async (req, res) => {
+        try{
+            const query = {username: req.params.username};
+            const user = await User.findOne(query);
+            let bookList = [];
+            if(!user){
+                res.status(500).json(err);
+            }
+            for (let i = 0; i < req.body.borrowList.length; i++){
+                const query = {ISBN: req.body.borrowList[i].ISBN};
+                const book = await Book.findOne(query);
+                if (!book){
+                    res.status(500).json(err);
+                }
+                bookList.push(book);
+            }
+            const newSlip = new Slip({
+                UserID: user._id,
+                borrowList: bookList,
+                accepted: true,
+              });
+            const savedSlip = await newSlip.save();
+            res.status(200).json(savedSlip);
+        }catch (err) {
+            res.status(500).json(err);
         }
     },
 
