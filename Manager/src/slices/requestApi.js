@@ -35,7 +35,7 @@ export const loginUser = async (user, dispatch, navigate) => {
     }
 }
 
-export const logoutUser = async (dispatch, id, navigate, accessToken) => {
+export const logoutUser = async (dispatch, id, accessToken) => {
     dispatch(logoutBegin());
     try{
         const res = await axios.post(`http://localhost:8000/api/auth/logout/${id}`, {}, {
@@ -78,7 +78,7 @@ export const addReader = async (reader, accessToken, dispatch) => {
     }catch(err){
         dispatch(addReaderFailure())
         console.log(err.response.data);
-        toast.error(err.response.data);
+        toast.error('Add reader failed!');
     }
 }
 
@@ -91,9 +91,11 @@ export const updateReader = async (user, id, accessToken, dispatch) => {
             }
         });
         dispatch(updateReaderSuccess(res.data));
+        toast.success('Update reader successfully!');
     }catch(err) {
         dispatch(updateReaderFailure())
         console.log(err.response.data);
+        toast.error('Update reader failed!');
     }
 }
 
@@ -106,9 +108,11 @@ export const deleteReader = async (accessToken, dispatch, id) => {
             }
         });
         dispatch(deleteReaderSuccess(res.data));
+        toast.success('Delete reader successfully!');
     }catch(err) {
         dispatch(deleteReaderFailure())
         console.log(err.response.data);
+        toast.success('Delete reader failed!');
     }
 }
 
@@ -137,9 +141,11 @@ export const addBook = async (book, accessToken, dispatch) => {
             }
         });
         dispatch(addBookSuccess(res.data));
+        toast.success('Add book successfully!');
     }catch(err){
         dispatch(addBookFailure())
         console.log(err.response.data);
+        toast.error('Add book failed!');
     }
 }
 
@@ -152,9 +158,12 @@ export const updateBook = async (book, id, accessToken, dispatch) => {
             }
         });
         dispatch(updateBookSuccess(res.data));
+        toast.success('Update book successfully!');
+        
     }catch(err) {
         dispatch(updateBookFailure())
         console.log(err.response.data);
+        toast.success('Update book failed!');
     }
 }
 
@@ -167,9 +176,11 @@ export const deleteBook = async (accessToken, dispatch, id) => {
             }
         });
         dispatch(deleteBookSuccess(res.data));
+        toast.success('Delete book successfully!');
     }catch(err) {
         dispatch(deleteBookFailure())
         console.log(err.response.data);
+        toast.success('Delete book failed!');
     }
 }
 
@@ -199,9 +210,11 @@ export const addSlipById = async (id, accessToken, dispatch) => {
             },
         });
         dispatch(addSlipSuccess(res.data));
+        toast.success('Borrow books successfully!');
     } catch (err) {
         dispatch(addSlipFailure())
         console.log(err.response.data);
+        toast.success('Borrow books failed!');
     }
 }
 
@@ -216,8 +229,10 @@ export const addSlipByUsername = async (username, isbns, accessToken, dispatch) 
             },
         });
         dispatch(addSlipSuccess(res.data));
+        toast.success('Borrow books successfully!');
     } catch (err){
         dispatch(addSlipFailure())
         console.log(err.response.data);
+        toast.success('Borrow books failed!');
     }
 }

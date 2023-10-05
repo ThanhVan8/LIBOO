@@ -221,9 +221,8 @@ const Borrow = () => {
             </tr>
           </thead>
           <tbody>
-            {records?.map((record) => (
-              // key={record._id} 
-              <tr className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
+            {records?.map((record, index) => (
+              <tr key={index} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2">
                   <p>{record?.UserID.username}</p>
                 </td>

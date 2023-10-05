@@ -54,7 +54,6 @@ const MenuSidebar = () => {
   const id = user?._id;
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleToggleMenu = (e) => {
     e.preventDefault()
@@ -63,9 +62,8 @@ const MenuSidebar = () => {
 
 
   const logout = () => {
-    logoutUser(dispatch, id, navigate, accessToken);
+    logoutUser(dispatch, id, accessToken);
     dispatch(setToggle());
-    console.log('logout')
   }
 
   return(
