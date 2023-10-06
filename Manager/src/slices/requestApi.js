@@ -112,7 +112,7 @@ export const deleteReader = async (accessToken, dispatch, id) => {
     }catch(err) {
         dispatch(deleteReaderFailure())
         console.log(err.response.data);
-        toast.success('Delete reader failed!');
+        toast.error('Delete reader failed!');
     }
 }
 
@@ -163,7 +163,7 @@ export const updateBook = async (book, id, accessToken, dispatch) => {
     }catch(err) {
         dispatch(updateBookFailure())
         console.log(err.response.data);
-        toast.success('Update book failed!');
+        toast.error('Update book failed!');
     }
 }
 
@@ -180,7 +180,7 @@ export const deleteBook = async (accessToken, dispatch, id) => {
     }catch(err) {
         dispatch(deleteBookFailure())
         console.log(err.response.data);
-        toast.success('Delete book failed!');
+        toast.error('Delete book failed!');
     }
 }
 
@@ -229,7 +229,7 @@ export const addSlipById = async (id, accessToken, dispatch) => {
     } catch (err) {
         dispatch(addSlipFailure())
         console.log(err.response.data);
-        toast.success('Borrow books failed!');
+        toast.error('Borrow books failed!');
     }
 }
 
@@ -248,7 +248,7 @@ export const addSlipByUsername = async (username, isbns, accessToken, dispatch) 
     } catch (err){
         dispatch(addSlipFailure())
         console.log(err.response.data);
-        toast.success('Borrow books failed!');
+        toast.error('Borrow books failed!');
     }
 }
 
