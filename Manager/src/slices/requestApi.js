@@ -8,7 +8,7 @@ import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBo
     updateBookBegin, updateBookFailure, updateBookSuccess 
 } from "./bookSlice";
 
-import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure} from "./slipSlice"
+import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure, returnBookBegin, returnBookSuccess, returnBookFailure} from "./slipSlice"
 
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -249,5 +249,21 @@ export const addSlipByUsername = async (username, isbns, accessToken, dispatch) 
         dispatch(addSlipFailure())
         console.log(err.response.data);
         toast.success('Borrow books failed!');
+    }
+}
+
+//delete book from slip
+export const deleteBookFromSlip = async (username, isbn, accessToken, dispatch) => {
+    dispatch(returnBookBegin());
+    try{
+        const res = await axios.delete(`http://localhost:8000/api/slip/${username}/${isbn}`, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            },
+        });
+        dispatch(returnBookSuccess(res.data));
+    }catch(err) {
+        dispatch(returnBookFailure())
+        console.log(err.response.data);
     }
 }

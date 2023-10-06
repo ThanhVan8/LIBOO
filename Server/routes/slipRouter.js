@@ -34,6 +34,6 @@ router.put('/:id1/:id2',middlewareController.verifyAdminToken, slipController.up
 router.delete('/:id',middlewareController.verifyAdminToken, slipController.deleteSlip);
 
 //DELETE book from slip
-router.delete('/:id1/:id2',middlewareController.verifyAdminToken, slipController.deleteBookFromSlip);
+router.delete('/:username/:isbn',middlewareController.verifyAdminToken, slipController.deleteBookFromSlip);
 
 module.exports = router;
