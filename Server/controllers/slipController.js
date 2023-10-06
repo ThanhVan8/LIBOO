@@ -23,6 +23,13 @@ const slipController = {
     addSlipManagerById: async (req, res) => {
         try {
             const slip = await Slip.findByIdAndUpdate(req.params.id, {accepted: true});
+            for (let i = 0; i < slip.borrowList.length; i++){
+                const query = { _id: slip.borrowList[i].book };
+                const book = await Book.findById(query);
+                let n = book.borrowed + 1;
+                await Book.findOneAndUpdate(query, {borrowed: n});
+
+            }
             res.status(200).json(slip);
             if (!slip){
                 res.status(500).json(err);
@@ -37,6 +44,7 @@ const slipController = {
         try{
             const query = {username: req.params.username};
             const user = await User.findOne(query);
+            const slips = await Slip.find();
             let bookList = [];
             if(!user){
                 res.status(500).json(err);
@@ -44,10 +52,24 @@ const slipController = {
             for (let i = 0; i < req.body.borrowList.length; i++){
                 const query = {ISBN: req.body.borrowList[i].ISBN};
                 const book = await Book.findOne(query);
+                // for (let j = 0; j < slips.length; j++){
+                //     if(String(slips[j].UserID) == String(user._id)){
+                //         for (let k = 0; k < slips[j].borrowList.length; k++){
+                //             if(String(slips[j].borrowList[k].book) == String(book._id)){
+                //                 return res.status(300).json(`The reader has already borrowed this book: ${req.body.borrowList[i].ISBN}`);
+                //             }
+                //         }
+                //     }
+                // }
+                let n = book.borrowed + 1;
                 if (!book){
                     res.status(500).json(err);
                 }
-                bookList.push(book);
+                else{
+                    let tmp = {book: book._id};
+                    bookList.push(tmp);
+                    await Book.findOneAndUpdate(query, {borrowed: n});
+                }
             }
             const newSlip = new Slip({
                 UserID: user._id,
@@ -161,13 +183,29 @@ const slipController = {
     //Delete book from slip
     deleteBookFromSlip: async (req, res) => {
         try {
-            const slip = await Slip.findById(req.params.id1);
-            const index = slip.borrowList.findIndex(book => book.book == req.params.id2);
-            if (index !== -1) {
-                slip.borrowList.splice(index, 1);
-                await slip.save();
-                res.status(200).json(slip);
+            const user = await User.findOne({ username: req.params.username });
+            if(!user){
+                return res.status(500).json(err);            
             }
+            const book1 = await Book.findOne({ ISBN: req.params.isbn });
+            let n = book1.borrowed - 1;
+            const query = { UserID: user._id };
+            const slips = await Slip.find(query);
+            for (let i = 0; i < slips.length; i++) {
+                for (let j = 0; j < slips[i].borrowList.length; j++){
+                    if (String(slips[i].borrowList[j].book) == String(book1._id)){
+                        const book1 = await Book.findOneAndUpdate({ ISBN: req.params.isbn }, {borrowed: n});
+                        slips[i].borrowList.splice(j, 1);
+                        slips[i].save();
+                        if(slips[i].borrowList.length == 0){
+                            await Slip.deleteOne({ _id: slips[i]._id });
+                            return res.status(200).json('The slip has been deleted');
+                        }
+                        return res.status(200).json('The book has been removed');
+                    }
+                }
+            }
+            return res.status(500).json(err);            
         } catch (err) {
             res.status(500).json(err);
         }

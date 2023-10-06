@@ -1,6 +1,9 @@
 import React, {useState} from "react";
 import { Input, Checkbox } from "@material-tailwind/react";
 import CustomButton from "../components/CustomButton";
+import {deleteBookFromSlip} from "../slices/requestApi"
+import { useSelector, useDispatch } from 'react-redux';
+
 
 const NOTE = {
   ON_TIME: 'On time',
@@ -8,6 +11,11 @@ const NOTE = {
 }
 
 const Return = () => {
+
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const dispatch = useDispatch();
+
+
   const today = new Date()
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -22,7 +30,7 @@ const Return = () => {
 
   const handleReturn = (e) => {
     e.preventDefault();
-    console.log(slip);
+    deleteBookFromSlip(slip.username, slip.isbn, user?.accessToken, dispatch)
   }
 
   return (
