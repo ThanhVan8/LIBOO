@@ -11,7 +11,6 @@ const NOTE = {
 }
 
 const Return = () => {
-
   const user = useSelector((state) => state.auth.login?.currentUser);
   const dispatch = useDispatch();
 
@@ -86,7 +85,7 @@ const Return = () => {
             value={slip.fine}
             type="number"
             min={0}
-            required
+            readOnly
             onChange={handleChangeInfo}
           />
         </div>
