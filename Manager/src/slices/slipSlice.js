@@ -12,6 +12,11 @@ const slipSlice = createSlice({
       error: false,
       success: false
     },
+    returnSlip:{
+      isFetching: false,
+      error: false,
+      success: false
+    }
   },
   reducers: {
     getSlipsBegin(state) {
@@ -43,10 +48,27 @@ const slipSlice = createSlice({
         state.newSlip.error = true
         state.newSlip.success = false
     }, 
+
+    returnBookBegin: (state) => {
+      state.returnSlip.isFetching = true
+    },
+    
+    returnBookSuccess: (state) => {
+        state.returnSlip.isFetching = false
+        state.returnSlip.success = true
+        state.returnSlip.error = false
+    },
+
+    returnBookFailure: (state) => {
+        state.returnSlip.isFetching = false
+        state.returnSlip.error = true
+        state.returnSlip.success = false
+    }, 
   },
 });
 const { actions, reducer } = slipSlice;
 export const { 
-  getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure
+  getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure,
+  returnBookBegin, returnBookSuccess, returnBookFailure
 } = actions;
 export default reducer;

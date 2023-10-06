@@ -8,7 +8,7 @@ import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBo
     updateBookBegin, updateBookFailure, updateBookSuccess 
 } from "./bookSlice";
 
-import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure} from "./slipSlice"
+import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure, returnBookBegin, returnBookSuccess, returnBookFailure} from "./slipSlice"
 
 //auth
 export const loginUser = async (user, dispatch, navigate) => {
@@ -210,6 +210,22 @@ export const addSlipByUsername = async (username, isbns, accessToken, dispatch) 
         dispatch(addSlipSuccess(res.data));
     } catch (err){
         dispatch(addSlipFailure())
+        console.log(err.response.data);
+    }
+}
+
+//delete book from slip
+export const deleteBookFromSlip = async (username, isbn, accessToken, dispatch) => {
+    dispatch(returnBookBegin());
+    try{
+        const res = await axios.delete(`http://localhost:8000/api/slip/${username}/${isbn}`, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            },
+        });
+        dispatch(returnBookSuccess(res.data));
+    }catch(err) {
+        dispatch(returnBookFailure())
         console.log(err.response.data);
     }
 }
