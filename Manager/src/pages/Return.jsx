@@ -29,7 +29,8 @@ const Return = () => {
 
   const handleReturn = (e) => {
     e.preventDefault();
-    deleteBookFromSlip(slip.username, slip.isbn, user?.accessToken, dispatch)
+    // deleteBookFromSlip(slip.username, slip.isbn, user?.accessToken, dispatch)
+    console.log(slip)
   }
 
   return (
@@ -76,7 +77,7 @@ const Return = () => {
               readOnly
               containerProps={{className: 'w-1/2'}}
             />
-            <Checkbox label='Lost' onChange={() => setSlip({...slip, lost: true})} />
+            <Checkbox label='Lost' onChange={(e) => setSlip({...slip, lost: e.target.checked})} />
           </div>
           <Input
             variant="standard"
