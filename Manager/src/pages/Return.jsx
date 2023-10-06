@@ -29,7 +29,9 @@ const Return = () => {
 
   const handleReturn = (e) => {
     e.preventDefault();
-    deleteBookFromSlip(slip.username, slip.isbn, user?.accessToken, dispatch)
+    // deleteBookFromSlip(slip.username, slip.isbn, user?.accessToken, dispatch)
+    console.log(slip)
+
   }
 
   return (
