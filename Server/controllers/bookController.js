@@ -17,6 +17,9 @@ const bookController = {
         try{
             const books = await Book.find();
             res.status(200).json(books);
+            if(!books){
+                return res.status(500).json(err);            
+            }
         }catch(err){
             res.status(500).json(err);
         }
@@ -27,6 +30,9 @@ const bookController = {
         try{
             const book = await Book.findOne({ISBN: req.params.isbn});
             res.status(200).json(book);
+            if(!book){
+                return res.status(500).json(err);            
+            }
         }catch(err){
             res.status(500).json(err);
         }
@@ -35,8 +41,11 @@ const bookController = {
     //UPDATE book
     updateBook: async (req, res) => {
         try{
-            const reader = await Book.findByIdAndUpdate(req.params.id, {$set: req.body});
+            const book = await Book.findByIdAndUpdate(req.params.id, {$set: req.body});
             res.status(200).json('The book has been updated');
+            if(!book){
+                return res.status(500).json(err);            
+            }
         }catch(err){
             res.status(500).json(err);
         }
@@ -46,6 +55,9 @@ const bookController = {
     deleteBook: async (req, res) => {
         try{
             const book = await Book.findByIdAndDelete(req.params.id);
+            if (!book){
+                return res.status(500).json(err);            
+            }
             res.status(200).json('The book has been deleted');
         }catch(err){
             res.status(500).json(err);
