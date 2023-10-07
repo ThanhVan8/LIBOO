@@ -5,10 +5,15 @@ import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReader
 } from './readerSlice'
 
 import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBookFailure, deleteBookSuccess, getBookBegin, getBookFailure, getBookSuccess, 
+    getOneBookBegin, 
+    getOneBookFailure, 
+    getOneBookSuccess, 
     updateBookBegin, updateBookFailure, updateBookSuccess 
 } from "./bookSlice";
 
-import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure, returnBookBegin, returnBookSuccess, returnBookFailure} from "./slipSlice"
+import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure, returnBookBegin, returnBookSuccess, returnBookFailure,
+    getSlipBegin, getSlipFailure, getSlipSuccess
+} from "./slipSlice"
 
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -184,6 +189,20 @@ export const deleteBook = async (accessToken, dispatch, id) => {
     }
 }
 
+export const getBookByISBN = async (accessToken, dispatch, isbn) => {
+    dispatch(getOneBookBegin());
+    try{
+        const res = await axios.get ('http://localhost:8000/api/book/'+ isbn, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(getOneBookSuccess(res.data));
+    }catch(err){
+        dispatch(getOneBookFailure());
+    }
+}
+
 //slips
 export const getAllSlips = async (accessToken, dispatch) => {
     dispatch(getSlipsBegin());
@@ -264,6 +283,22 @@ export const deleteBookFromSlip = async (username, isbn, accessToken, dispatch) 
         dispatch(returnBookSuccess(res.data));
     }catch(err) {
         dispatch(returnBookFailure())
+        console.log(err.response.data);
+    }
+}
+
+// get slip by username and isbn
+export const getSlipByUsernameAndISBN = async (username, isbn, accessToken, dispatch) => {
+    try{
+        dispatch(getSlipBegin())
+        const res = await axios.get(`http://localhost:8000/api/slip/${username}/${isbn}`, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            },
+        });
+        dispatch(getSlipSuccess(res.data));
+    }catch(err) {
+        dispatch(getSlipFailure())
         console.log(err.response.data);
     }
 }
