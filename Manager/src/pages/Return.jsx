@@ -43,7 +43,7 @@ const Return = () => {
   useEffect(() => {
     getBookByISBN(user?.accessToken, dispatch, slip.isbn)
     getSlipByUsernameAndISBN(slip.username, slip.isbn, user?.accessToken, dispatch)
-    setDiffDays(Math.round((today - new Date(currentSlip.DueDate)) / oneDay));
+    setDiffDays(Math.round((today - new Date(currentSlip?.DueDate)) / oneDay));
     if (diffDays > 0) {
       setSlip({...slip, note: NOTE.OVERDUE})
     }

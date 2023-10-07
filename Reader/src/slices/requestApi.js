@@ -4,6 +4,7 @@ import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
+//auth
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginBegin());
     try {
@@ -30,3 +31,7 @@ export const registerUser = async (user, dispatch) => {
         toast.error(err.response.data);
     }
 }
+
+//book
+//GET all books
+// export const getAllBooks = async (accessToken,dispatch) => {}
