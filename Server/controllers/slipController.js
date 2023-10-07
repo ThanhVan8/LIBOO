@@ -79,6 +79,14 @@ const slipController = {
                         return res.status(500).json(err);
                     }
                     else{
+                        const slipsList = await Slip.find({UserID: user._id});
+                        for (let i = 0; i < slips.length; i++){
+                            for (let j = 0; j < slips[i].borrowList.length; j++){
+                                if (String(slips[i].borrowList[j].book) == String(book._id)){
+                                    return res.status(200).json(err);
+                                }
+                            }
+                        }
                         let tmp = {book: book._id};
                         bookList.push(tmp);
                         await Book.findOneAndUpdate(query, {borrowed: n});
