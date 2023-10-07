@@ -196,6 +196,9 @@ const slipController = {
                 return res.status(500).json(err);            
             }
             const book1 = await Book.findOne({ ISBN: req.params.isbn });
+            if(!book1){
+                return res.status(500).json(err);            
+            }
             let n = book1.borrowed - 1;
             const query = { UserID: user._id };
             const slips = await Slip.find(query);
