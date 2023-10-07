@@ -3,6 +3,9 @@ import { Input, Checkbox } from "@material-tailwind/react";
 import CustomButton from "../components/CustomButton";
 import {deleteBookFromSlip} from "../slices/requestApi"
 import { useSelector, useDispatch } from 'react-redux';
+import {getBookByISBN, getSlipByUsernameAndISBN} from '../slices/requestApi'
+
+
 
 
 const NOTE = {
@@ -12,7 +15,10 @@ const NOTE = {
 
 const Return = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
+  const book = useSelector((state) => state.book.book?.currentBook);
+  const currentSlip = useSelector((state) => state.slip.slip?.currentSlip);
   const dispatch = useDispatch();
+
 
 
   const today = new Date()
@@ -27,10 +33,52 @@ const Return = () => {
     setSlip({...slip, [name]: value});
   }
 
+  const [diffDays, setDiffDays] = useState(0)
+  const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+
+  // useEffect(() => {
+  //   getBookByISBN(user?.accessToken, dispatch, slip.isbn)
+  // }, [slip])
+
+  useEffect(() => {
+    getBookByISBN(user?.accessToken, dispatch, slip.isbn)
+    getSlipByUsernameAndISBN(slip.username, slip.isbn, user?.accessToken, dispatch)
+    setDiffDays(Math.round((today - new Date(currentSlip.DueDate)) / oneDay));
+    if (diffDays > 0) {
+      setSlip({...slip, note: NOTE.OVERDUE})
+    }
+
+  }, [slip.isbn])
+
+  useEffect(() => {    
+    if (slip.note === NOTE.OVERDUE){
+      setSlip({...slip, fine: 5000 * diffDays})
+    }
+    else if (slip.note === NOTE.ON_TIME){
+      setSlip({...slip, fine: 0})
+    }
+  }, [slip.note])
+
+  useEffect(() => {
+    if(slip.lost) {
+      setSlip({...slip, fine: book?.price * 2})
+    } 
+    else{
+      if (slip.note === NOTE.OVERDUE){
+        setSlip({...slip, fine: 5000 * diffDays})
+      }
+      else if (slip.note === NOTE.ON_TIME){
+        setSlip({...slip, fine: 0})
+      }
+    }
+
+  }, [slip.lost]);
+
+
+
   const handleReturn = (e) => {
     e.preventDefault();
-    // deleteBookFromSlip(slip.username, slip.isbn, user?.accessToken, dispatch)
-    console.log(slip)
+    deleteBookFromSlip(slip.username, slip.isbn, user?.accessToken, dispatch)
   }
 
   return (
@@ -97,5 +145,6 @@ const Return = () => {
     </div>
   );
 };
+
 
 export default Return;

@@ -24,6 +24,9 @@ router.get(`/accepted`,middlewareController.verifyAdminToken, slipController.get
 //GET all slip of 1 user
 router.get('/:id',middlewareController.verifyToken ,slipController.getAllSlipsOfReader);
 
+//GET slip by username and isbn
+router.get('/:username/:isbn',middlewareController.verifyAdminToken, slipController.getSlipByUsernameAndISBN);
+
 //UPDATE status slip
 router.put('/:id',middlewareController.verifyAdminToken, slipController.updateStatusSlip);
 
