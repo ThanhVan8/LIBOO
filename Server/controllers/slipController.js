@@ -3,6 +3,8 @@ const User = require('../models/user');
 const Book = require('../models/book');
 const { query } = require('express');
 const { where } = require('../models/book');
+const  getWeek = require('date-fns/getWeek')
+
 
 const slipController = {
     //ADD slip for reader
@@ -44,10 +46,19 @@ const slipController = {
         try{
             const query = {username: req.params.username};
             const user = await User.findOne(query);
+            const week = getWeek(new Date());
             const slips = await Slip.find();
             let bookList = [];
             if(!user){
                 res.status(500).json(err);
+            }
+            let cnt = 0;
+            for (let i = 0; i < slips.length; i++){
+                if (String(slips[i].UserID) == String(user._id)){
+                    if (getWeek(slips[i].borrowDate) == week){
+                        cnt++;
+                    }
+                }
             }
             for (let i = 0; i < req.body.borrowList.length; i++){
                 const query = {ISBN: req.body.borrowList[i].ISBN};
@@ -57,9 +68,14 @@ const slipController = {
                     res.status(500).json(err);
                 }
                 else{
-                    let tmp = {book: book._id};
-                    bookList.push(tmp);
-                    await Book.findOneAndUpdate(query, {borrowed: n});
+                    if(cnt >= 2){
+                        return res.status(500).json(err);
+                    }
+                    else{
+                        let tmp = {book: book._id};
+                        bookList.push(tmp);
+                        await Book.findOneAndUpdate(query, {borrowed: n});
+                    }
                 }
             }
             const newSlip = new Slip({
@@ -68,6 +84,7 @@ const slipController = {
                 accepted: true,
               });
             const savedSlip = await newSlip.save();
+            // console.log(week)
             res.status(200).json(savedSlip);
         }catch (err) {
             res.status(500).json(err);
