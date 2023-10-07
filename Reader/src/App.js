@@ -5,6 +5,7 @@ import Auth from './pages/Auth'
 import Home from './pages/Home';
 import Menu from './components/Menu'
 import Catalog from './pages/Catalog';
+import BookDetail from './pages/BookDetail';
 import {useSelector} from 'react-redux';
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
           <Route element={<PrivateRoute />} >
             <Route path="/" element={<Home />} />
             <Route path="/Catalog" element={<Catalog />} />
+            <Route path="/Catalog/:id" element={<BookDetail />} />
           </Route>
         </Routes>
       </div>
