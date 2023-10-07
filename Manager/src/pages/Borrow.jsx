@@ -50,6 +50,10 @@ const Borrow = () => {
     }
     if(!slip._id){
       addSlipByUsername(slip.username, slip.isbns ,user?.accessToken, dispatch);
+      // console.log(getWeek(today))
+      // console.log(new Date())
+      // console.log(today)
+      // console.log(getWeek(new Date(slip.borrowDate.getFullYear, slip.borrowDate.getMonth, slip.borrowDate.getDate)))
     }
   };
 

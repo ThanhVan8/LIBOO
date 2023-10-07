@@ -5,10 +5,15 @@ import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReader
 } from './readerSlice'
 
 import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBookFailure, deleteBookSuccess, getBookBegin, getBookFailure, getBookSuccess, 
+    getOneBookBegin, 
+    getOneBookFailure, 
+    getOneBookSuccess, 
     updateBookBegin, updateBookFailure, updateBookSuccess 
 } from "./bookSlice";
 
-import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure, returnBookBegin, returnBookSuccess, returnBookFailure} from "./slipSlice"
+import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure, returnBookBegin, returnBookSuccess, returnBookFailure,
+    getSlipBegin, getSlipFailure, getSlipSuccess
+} from "./slipSlice"
 
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -112,7 +117,7 @@ export const deleteReader = async (accessToken, dispatch, id) => {
     }catch(err) {
         dispatch(deleteReaderFailure())
         console.log(err.response.data);
-        toast.success('Delete reader failed!');
+        toast.error('Delete reader failed!');
     }
 }
 
@@ -163,7 +168,7 @@ export const updateBook = async (book, id, accessToken, dispatch) => {
     }catch(err) {
         dispatch(updateBookFailure())
         console.log(err.response.data);
-        toast.success('Update book failed!');
+        toast.error('Update book failed!');
     }
 }
 
@@ -180,7 +185,21 @@ export const deleteBook = async (accessToken, dispatch, id) => {
     }catch(err) {
         dispatch(deleteBookFailure())
         console.log(err.response.data);
-        toast.success('Delete book failed!');
+        toast.error('Delete book failed!');
+    }
+}
+
+export const getBookByISBN = async (accessToken, dispatch, isbn) => {
+    dispatch(getOneBookBegin());
+    try{
+        const res = await axios.get ('http://localhost:8000/api/book/'+ isbn, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(getOneBookSuccess(res.data));
+    }catch(err){
+        dispatch(getOneBookFailure());
     }
 }
 
@@ -229,7 +248,7 @@ export const addSlipById = async (id, accessToken, dispatch) => {
     } catch (err) {
         dispatch(addSlipFailure())
         console.log(err.response.data);
-        toast.success('Borrow books failed!');
+        toast.error('Borrow books failed!');
     }
 }
 
@@ -248,7 +267,7 @@ export const addSlipByUsername = async (username, isbns, accessToken, dispatch) 
     } catch (err){
         dispatch(addSlipFailure())
         console.log(err.response.data);
-        toast.success('Borrow books failed!');
+        toast.error('Borrow books failed!');
     }
 }
 
@@ -264,6 +283,22 @@ export const deleteBookFromSlip = async (username, isbn, accessToken, dispatch) 
         dispatch(returnBookSuccess(res.data));
     }catch(err) {
         dispatch(returnBookFailure())
+        console.log(err.response.data);
+    }
+}
+
+// get slip by username and isbn
+export const getSlipByUsernameAndISBN = async (username, isbn, accessToken, dispatch) => {
+    try{
+        dispatch(getSlipBegin())
+        const res = await axios.get(`http://localhost:8000/api/slip/${username}/${isbn}`, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            },
+        });
+        dispatch(getSlipSuccess(res.data));
+    }catch(err) {
+        dispatch(getSlipFailure())
         console.log(err.response.data);
     }
 }

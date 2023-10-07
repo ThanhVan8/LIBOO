@@ -22,6 +22,16 @@ const bookController = {
         }
     },
 
+    //GET book by ISBN
+    getBookByISBN: async (req, res) => {
+        try{
+            const book = await Book.findOne({ISBN: req.params.isbn});
+            res.status(200).json(book);
+        }catch(err){
+            res.status(500).json(err);
+        }
+    },
+
     //UPDATE book
     updateBook: async (req, res) => {
         try{

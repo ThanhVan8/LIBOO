@@ -9,6 +9,9 @@ router.post('/',middlewareController.verifyAdminToken, bookController.addBook);
 //GET all books
 router.get('/',middlewareController.verifyToken, bookController.getAllBooks);
 
+//GET book by ISBN
+router.get('/:isbn',middlewareController.verifyToken, bookController.getBookByISBN)
+
 //UPDATE book
 router.put('/:id',middlewareController.verifyAdminToken, bookController.updateBook);
 

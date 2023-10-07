@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../assets/logo.png";
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { LiaTimesSolid, LiaUserSolid, LiaChartBarSolid } from "react-icons/lia";
 import { GoBook, GoArrowRight, GoArrowLeft } from "react-icons/go";
 import { BiLogOut, BiMenu } from "react-icons/bi";

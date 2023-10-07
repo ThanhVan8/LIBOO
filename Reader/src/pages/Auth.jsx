@@ -8,7 +8,7 @@ import { setCurrentAction } from '../slices/authSlice';
 
 const Auth = () => {
   const dispatch = useDispatch()
-  const {currentAction} = useSelector(state => state.auth)
+  const currentAction = useSelector(state => state.auth?.currentAction)
 
   return (
     <div className='bg-lightOrange w-full h-full bg-bg1 bg-right bg-contain bg-no-repeat'>
