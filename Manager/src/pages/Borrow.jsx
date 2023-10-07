@@ -38,7 +38,7 @@ const Borrow = () => {
 
   const addISBN = (e) => {
     e.preventDefault();
-    if(tempISBN !== '')
+    if(tempISBN !== '' && slip.isbns.length < 2 && !slip.isbns.includes(tempISBN))
       setSlip({...slip, isbns: [...slip.isbns, tempISBN]});
     setTempISBN('');
   }
