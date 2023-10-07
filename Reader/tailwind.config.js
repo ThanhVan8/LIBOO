@@ -13,6 +13,7 @@ module.exports = withMT({
         yellow: '#EFD595',
         lightYellow: '#D9D9D9',
         lightOrange: '#FFD8C7',
+        lightGrey: '#F5F5F5',
       },
     },
   },
