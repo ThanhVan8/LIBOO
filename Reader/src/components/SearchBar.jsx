@@ -123,7 +123,7 @@ const SearchBar = ({data}) => {
             icon={<BiSearch size='1.2rem' />}
           />
           {bookList?.length !== 0 &&
-            <div className='z-50 w-full h-fit absolute top-12 space-y-2 bg-white border-blue-gray-200 border-2 rounded-md px-1.5 py-2 overflow-auto'>
+            <div className='z-50 w-full h-fit absolute top-12 space-y-2 bg-white border-blue-gray-200 border-[1.2px] rounded-md px-1.5 py-2 overflow-auto'>
               {bookList.map((item) => (
                 <>
                 <Link key={item._id} to={`/Catalog/${item._id}`} className='flex w-full h-fit gap-2'>
