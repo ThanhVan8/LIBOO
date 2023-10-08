@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema({
 
     invalidDay: {
         type: Date
+    },
+
+    imageUrl: {
+        type: String,
     }
 });
 

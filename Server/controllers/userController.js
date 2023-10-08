@@ -1,5 +1,6 @@
 const User = require('../models/user'); 
 
+
 const userController = {
     //GET all users
     getAllUsers: async (req, res) => {
@@ -9,7 +10,6 @@ const userController = {
             res.status(200).json(users);
             if(!users){
                 return res.status(500).json(err);            
-
             }
         }catch(err){
             res.status(500).json(err);
@@ -20,6 +20,10 @@ const userController = {
     addUser: async (req, res) => {
         try{
             const newUser = new User(req.body);
+            if(req.file){
+                
+                newUser.imageUrl = req.file.filename;
+            }
             const savedUser = await newUser.save();
             res.status(200).json(savedUser);
         }catch(err){
@@ -49,7 +53,6 @@ const userController = {
             res.status(500).json(err);
         }
     },
+
 };
-
-
 module.exports = userController;

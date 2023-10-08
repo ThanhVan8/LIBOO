@@ -1,5 +1,16 @@
 const middlewareController = require('../controllers/middlewareController');
 const userController = require('../controllers/userController');
+const multer = require ('multer');
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null, 'images/users/');
+    },
+    filename: function(req, file, cb){
+        cb(null, file.originalname);
+    }
+});
+
+const upload = multer({storage: storage});
 
 const router = require('express').Router();
 
@@ -7,7 +18,7 @@ const router = require('express').Router();
 router.get('/', middlewareController.verifyAdminToken, userController.getAllUsers);
 
 //ADD one users
-router.post('/', middlewareController.verifyAdminToken, userController.addUser);
+router.post('/', upload.single('imageUrl'), middlewareController.verifyAdminToken, userController.addUser);
 
 //UPDATE user
 router.put('/:id', middlewareController.verifyAdminToken, userController.updateUser);
@@ -15,7 +26,7 @@ router.put('/:id', middlewareController.verifyAdminToken, userController.updateU
 //DELETE user
 router.delete('/:id', middlewareController.verifyAdminToken, userController.deleteUser);
 
-//ADD image
-router.post('/image', middlewareController.verifyToken, userController.addImage);
+// //Upload image
+// router.post('/upload', , userController.uploadImage);
 
 module.exports = router;

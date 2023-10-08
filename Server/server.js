@@ -11,7 +11,6 @@ const slipRouter = require('./routes/slipRouter');
 const authRouter = require('./routes/authRouter');
 const cookieParser = require('cookie-parser');
 
-
 app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('common'));
