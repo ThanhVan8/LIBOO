@@ -249,6 +249,8 @@ const slipController = {
                 for (let j = 0; j < slips[i].borrowList.length; j++){
                     if (String(slips[i].borrowList[j].book) == String(book1._id)){
                         const book1 = await Book.findOneAndUpdate({ ISBN: req.params.isbn }, {borrowed: n});
+                        if (!book1) 
+                            return res.status(500).json(err);
                         slips[i].borrowList.splice(j, 1);
                         slips[i].save();
                         if(slips[i].borrowList.length == 0){
@@ -287,7 +289,7 @@ const slipController = {
             for (let i = 0; i < slips.length; i++) {
                 for (let j = 0; j < slips[i].borrowList.length; j++){
                     if (String(slips[i].borrowList[j].book) == String(book._id)){
-                        res.status(200).json(slips[i].borrowList[j]);
+                        return res.status(200).json(slips[i].borrowList[j]);
                     }
                 }
             }
