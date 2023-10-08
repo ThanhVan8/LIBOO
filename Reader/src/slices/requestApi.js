@@ -1,6 +1,8 @@
 import axios from "axios";
 import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess } from './authSlice'
 
+import { getBookBegin, getBookFailure, getBookSuccess } from './bookSlice'
+
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,6 +34,18 @@ export const registerUser = async (user, dispatch) => {
     }
 }
 
-//book
-//GET all books
-// export const getAllBooks = async (accessToken,dispatch) => {}
+// book
+// GET all books
+export const getAllBooks = async (accessToken, dispatch) => {
+    dispatch(getBookBegin());
+    try{
+        const res = await axios.get('http://localhost:8000/api/book',{
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(getBookSuccess(res.data));
+    }catch(err){
+        dispatch(getBookFailure());
+    }
+}

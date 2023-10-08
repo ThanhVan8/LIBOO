@@ -296,6 +296,11 @@ const slipController = {
         } catch (err){
             res.status(500).json(err);
         }
+    },
+
+    //UPLOAD image
+    addImage: async (req, res, next) => {
+
     }
 };
 

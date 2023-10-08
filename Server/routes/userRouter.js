@@ -15,4 +15,7 @@ router.put('/:id', middlewareController.verifyAdminToken, userController.updateU
 //DELETE user
 router.delete('/:id', middlewareController.verifyAdminToken, userController.deleteUser);
 
+//ADD image
+router.post('/image', middlewareController.verifyToken, userController.addImage);
+
 module.exports = router;
