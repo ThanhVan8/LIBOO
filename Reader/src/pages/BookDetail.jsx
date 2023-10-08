@@ -4,6 +4,7 @@ import book from '../assets/book.png'
 import SearchBar from '../components/SearchBar'
 import CustomButton from '../components/CustomButton'
 import {BiChevronUp, BiChevronDown} from 'react-icons/bi'
+import { useNavigate } from "react-router-dom";
 
 const data = [
   {
@@ -78,8 +79,13 @@ const bookDetail =
 
 const BookDetail = () => {
   const { id } = useParams();
-  // const book = data.find(book => book._id === id)
   const [expanded, setExpanded] = useState(false);
+
+  const navigate = useNavigate();
+
+  const gotoBorrow = () => {
+    navigate(`/Borrow/${id}`)
+  }
 
   return (
     <div className='w-full h-full space-y-3'>
@@ -119,7 +125,7 @@ const BookDetail = () => {
           </p>
           <p>Amount: <span className='font-medium'>{bookDetail.quantity}</span></p>
           <p>Available: <span className='font-medium'>{bookDetail.quantity - bookDetail.borrowed}</span></p>
-          <CustomButton label='Borrow' classes='self-center w-[12rem]' disabled={bookDetail.borrowed >= bookDetail.quantity} />
+          <CustomButton label='Borrow' classes='self-center w-[12rem]' disabled={bookDetail.borrowed >= bookDetail.quantity} onClick={gotoBorrow} />
         </div>
       </div>
     </div>
