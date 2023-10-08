@@ -281,9 +281,11 @@ export const deleteBookFromSlip = async (username, isbn, accessToken, dispatch) 
             },
         });
         dispatch(returnBookSuccess(res.data));
+        toast.success('Return book successfully!');
     }catch(err) {
         dispatch(returnBookFailure())
         console.log(err.response.data);
+        toast.error('Return book failed!');
     }
 }
 

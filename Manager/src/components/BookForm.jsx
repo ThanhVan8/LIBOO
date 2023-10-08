@@ -11,7 +11,6 @@ const BookForm = () => {
   const {showAddBook, showUpdateBook, updatedBook} = useSelector(state => state.book);
   const user = useSelector((state) => state.auth.login?.currentUser);
 
-
   const [book, setBook] = useState(
     !updatedBook ? 
     {
@@ -20,7 +19,7 @@ const BookForm = () => {
       author: '',
       publisher: '',
       publishYear: 0,
-      genre: '',
+      genre: [],
       price: 0,
       quantity: 1,
       borrowed: 0,
@@ -29,6 +28,8 @@ const BookForm = () => {
     } :
     updatedBook
   );
+
+  const [tempGenre, setTempGenre] = useState('');
 
   const dispatch = useDispatch();
 
@@ -49,7 +50,13 @@ const BookForm = () => {
   const handleChangeInfo = (e) => {
     e.preventDefault();
     const {name, value} = e.target;
-    setBook({...book, [name]: value});
+    if (name === 'genre') {
+      setTempGenre(value);
+      setBook({...book, genre: value.split(',').map((item) => item.trim())});
+    }
+    else {
+      setBook({...book, [name]: value});
+    }
   }
 
   const handleSubmit = (e) => {
@@ -114,7 +121,7 @@ const BookForm = () => {
           />
           <Input
             variant="standard"
-            label="Authors"
+            label="Author"
             required
             onChange={handleChangeInfo}
             name="author"
@@ -125,7 +132,7 @@ const BookForm = () => {
             label="Genre"
             required
             onChange={handleChangeInfo}
-            value={book.genre}
+            value={tempGenre}
             name="genre"
           />
           <Input

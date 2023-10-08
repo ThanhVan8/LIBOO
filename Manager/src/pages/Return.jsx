@@ -19,8 +19,6 @@ const Return = () => {
   const currentSlip = useSelector((state) => state.slip.slip?.currentSlip);
   const dispatch = useDispatch();
 
-
-
   const today = new Date()
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -35,10 +33,6 @@ const Return = () => {
 
   const [diffDays, setDiffDays] = useState(0)
   const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-
-  // useEffect(() => {
-  //   getBookByISBN(user?.accessToken, dispatch, slip.isbn)
-  // }, [slip])
 
   useEffect(() => {
     getBookByISBN(user?.accessToken, dispatch, slip.isbn)

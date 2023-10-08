@@ -233,11 +233,11 @@ const slipController = {
         try {
             const user = await User.findOne({ username: req.params.username });
             if(!user){
-                return res.status(500).json(err);            
+                return res.status(500).json('User not found');            
             }
             const book1 = await Book.findOne({ ISBN: req.params.isbn });
             if(!book1){
-                return res.status(500).json(err);            
+                return res.status(500).json('Book not found');            
             }
             let n = book1.borrowed - 1;
             const query = { UserID: user._id };
