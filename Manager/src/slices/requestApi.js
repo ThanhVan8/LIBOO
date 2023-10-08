@@ -267,7 +267,7 @@ export const addSlipByUsername = async (username, isbns, accessToken, dispatch) 
     } catch (err){
         dispatch(addSlipFailure())
         console.log(err.response.data);
-        toast.error('Borrow books failed!');
+        toast.error(`Borrow books failed! ${err.response.data}`);
     }
 }
 
@@ -285,7 +285,7 @@ export const deleteBookFromSlip = async (username, isbn, accessToken, dispatch) 
     }catch(err) {
         dispatch(returnBookFailure())
         console.log(err.response.data);
-        toast.error('Return book failed!');
+        toast.error(`Return book failed! ${err.response.data}`);
     }
 }
 
