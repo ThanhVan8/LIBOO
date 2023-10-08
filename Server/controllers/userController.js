@@ -7,6 +7,10 @@ const userController = {
             const query = { admin: false };
             const users = await User.find(query);
             res.status(200).json(users);
+            if(!users){
+                return res.status(500).json(err);            
+
+            }
         }catch(err){
             res.status(500).json(err);
         }
@@ -28,6 +32,9 @@ const userController = {
         try{
             const user = await User.findByIdAndUpdate(req.params.id, {$set: req.body});
             res.status(200).json('The user has been updated');
+            if(!user){
+                return res.status(500).json(err);            
+            }
         }catch(err){
             res.status(500).json(err);
         }

@@ -48,6 +48,9 @@ const slipController = {
             const user = await User.findOne(query);
             const week = getWeek(new Date());
             const slips = await Slip.find();
+            if(!slips){
+                return res.status(500).json(err);            
+            }
             let bookList = [];
             for (let i = 0; i < req.body.borrowList.length - 1; i++){
                 for (let j = i + 1; j < req.body.borrowList.length; j++){
@@ -72,13 +75,21 @@ const slipController = {
                 const book = await Book.findOne(query);
                 let n = book.borrowed + 1;
                 if (!book){
-                    res.status(500).json(err);
+                    return res.status(500).json(err);
                 }
                 else{
                     if(cnt >= 2){
                         return res.status(500).json(err);
                     }
                     else{
+                        const slipsList = await Slip.find({UserID: user._id});
+                        for (let i = 0; i < slips.length; i++){
+                            for (let j = 0; j < slips[i].borrowList.length; j++){
+                                if (String(slips[i].borrowList[j].book) == String(book._id)){
+                                    return res.status(200).json(err);
+                                }
+                            }
+                        }
                         let tmp = {book: book._id};
                         bookList.push(tmp);
                         await Book.findOneAndUpdate(query, {borrowed: n});
@@ -105,6 +116,9 @@ const slipController = {
             .populate({path: 'UserID', select: 'name email address'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
             res.status(200).json(slips);
+            if(!slips){
+                return res.status(500).json(err);            
+            }
         }catch(err){
             res.status(500).json(err);
         }
@@ -118,6 +132,9 @@ const slipController = {
             .populate({path: 'UserID', select: 'name email address username'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
             res.status(200).json(slips);
+            if(!slips){
+                return res.status(500).json(err);            
+            }
         }catch(err){
             res.status(500).json(err);
         }
@@ -131,6 +148,9 @@ const slipController = {
             .populate({path: 'UserID', select: 'name email address username'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
             res.status(200).json(slips);
+            if(!slips){
+                return res.status(500).json(err);            
+            }
         }catch(err){
             res.status(500).json(err);
         }
@@ -144,6 +164,10 @@ const slipController = {
             .populate({path: 'UserID', select: 'name email address'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
             res.status(200).json(slips);
+            if(!slips){
+                return res.status(500).json(err);            
+
+            }
         }catch(err){
             res.status(500).json(err);
         }
@@ -154,6 +178,9 @@ const slipController = {
     updateStatusSlip: async (req, res) => {
         try{
             const slip = await Slip.findById(req.params.id);
+            if(!slip){
+                return res.status(500).json(err);            
+            }
             if (slip.accepted == false){
                 slip.accepted = true;
                 slip.save();
@@ -169,6 +196,9 @@ const slipController = {
     updateExpSlip: async (req, res) => {
         try{
             const slip = await Slip.findById(req.params.id1);
+            if(!slip){
+                return res.status(500).json(err);            
+            }
             if (slip.accepted){
                 for (let book of slip.borrowList){
                     if (book.book == req.params.id2){
@@ -179,7 +209,7 @@ const slipController = {
                 }            
                 res.status(200).json('The slip has been renewed');
             }
-            res.status(300).json('The slip is invalid');
+            return res.status(300).json('The slip is invalid');
         }catch(err){
             res.status(500).json(err);
         }
@@ -189,6 +219,9 @@ const slipController = {
     deleteSlip: async (req, res) => {
         try{
             const slip = await Slip.findByIdAndDelete(req.params.id);
+            if(!slip){
+                return res.status(500).json(err);            
+            }
             res.status(200).json('The slip has been deleted');
         }catch(err){
             res.status(500).json(err);
@@ -200,15 +233,18 @@ const slipController = {
         try {
             const user = await User.findOne({ username: req.params.username });
             if(!user){
-                return res.status(500).json(err);            
+                return res.status(500).json('User not found');            
             }
             const book1 = await Book.findOne({ ISBN: req.params.isbn });
             if(!book1){
-                return res.status(500).json(err);            
+                return res.status(500).json('Book not found');            
             }
             let n = book1.borrowed - 1;
             const query = { UserID: user._id };
             const slips = await Slip.find(query);
+            if(!slips){
+                return res.status(500).json(err);            
+            }
             for (let i = 0; i < slips.length; i++) {
                 for (let j = 0; j < slips[i].borrowList.length; j++){
                     if (String(slips[i].borrowList[j].book) == String(book1._id)){
@@ -238,6 +274,10 @@ const slipController = {
             }
             const book = await Book.findOne({ ISBN: req.params.isbn });
 
+            if(!book){
+                return res.status(500).json(err);            
+            }
+
             const slips = await Slip.find({ UserID: user._id });
             
             if(!slips){
@@ -251,6 +291,7 @@ const slipController = {
                     }
                 }
             }
+            return res.status(500).json(err);            
             // res.status(200).json(slips);
         } catch (err){
             res.status(500).json(err);
