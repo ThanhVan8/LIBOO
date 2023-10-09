@@ -51,10 +51,10 @@ const Menu = () => {
   }
 
 
-  // const logout = () => {
-  //   logoutUser(dispatch, id, accessToken);
-  //   dispatch(setToggle());
-  // }
+  const logout = () => {
+    logoutUser(dispatch, id, accessToken);
+    dispatch(setToggle());
+  }
 
   return(
     <div className={`fixed z-50 h-full ${location.pathname === '/Auth' ? 'hidden' : ''}`}>
@@ -83,8 +83,8 @@ const Menu = () => {
             </ul>
 
             <div className='w-full pl-8'>
-              {/* <button onClick={logout} className='flex gap-2 rounded-l-3xl'> */}
-              <button className='flex gap-2 rounded-l-3xl'>
+              <button onClick={logout} className='flex gap-2 rounded-l-3xl'>
+              {/* <button className='flex gap-2 rounded-l-3xl'> */}
                 <BiLogOut color='white' size='1.5rem' />
                 <span className='text-white text-base'>Logout</span>
               </button>
