@@ -7,10 +7,10 @@ const userController = {
         try{
             const query = { admin: false };
             const users = await User.find(query);
-            res.status(200).json(users);
             if(!users){
                 return res.status(500).json(err);            
             }
+            res.status(200).json(users);
         }catch(err){
             res.status(500).json(err);
         }
@@ -21,7 +21,6 @@ const userController = {
         try{
             const newUser = new User(req.body);
             if(req.file){
-                
                 newUser.imageUrl = req.file.filename;
             }
             const savedUser = await newUser.save();
@@ -34,11 +33,15 @@ const userController = {
     //UPDATE user
     updateUser: async (req, res) => {
         try{
-            const user = await User.findByIdAndUpdate(req.params.id, {$set: req.body});
-            res.status(200).json('The user has been updated');
+            const user = await User.findByIdAndUpdate(req.params.id, req.body);
+            if(req.file){
+                user.imageUrl = req.file.filename;
+                user.save();
+            }
             if(!user){
                 return res.status(500).json(err);            
             }
+            res.status(200).json(user);
         }catch(err){
             res.status(500).json(err);
         }
@@ -48,6 +51,9 @@ const userController = {
     deleteUser: async (req, res) => {
         try{
             const user = await User.findByIdAndDelete(req.params.id);
+            if(!user){
+                res.status(500).json(err);
+            }
             res.status(200).json('The user has been deleted');
         }catch(err){
             res.status(500).json(err);

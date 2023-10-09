@@ -21,7 +21,7 @@ router.get('/', middlewareController.verifyAdminToken, userController.getAllUser
 router.post('/', upload.single('imageUrl'), middlewareController.verifyAdminToken, userController.addUser);
 
 //UPDATE user
-router.put('/:id', middlewareController.verifyAdminToken, userController.updateUser);
+router.put('/:id', upload.single('imageUrl'), middlewareController.verifyAdminToken, userController.updateUser);
 
 //DELETE user
 router.delete('/:id', middlewareController.verifyAdminToken, userController.deleteUser);

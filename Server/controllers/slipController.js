@@ -32,10 +32,10 @@ const slipController = {
                 await Book.findOneAndUpdate(query, {borrowed: n});
 
             }
-            res.status(200).json(slip);
             if (!slip){
                 res.status(500).json(err);
             }
+            res.status(200).json(slip);
         } catch (err) {
           res.status(500).json(err);
         }
@@ -60,7 +60,7 @@ const slipController = {
                 }
             }
             if(!user){
-                res.status(500).json(err);
+                return res.status(500).json(err);
             }
             let cnt = 0;
             for (let i = 0; i < slips.length; i++){
@@ -102,7 +102,6 @@ const slipController = {
                 accepted: true,
               });
             const savedSlip = await newSlip.save();
-            // console.log(week)
             res.status(200).json(savedSlip);
         }catch (err) {
             res.status(500).json(err);
@@ -115,10 +114,10 @@ const slipController = {
             const slips = await Slip.find()
             .populate({path: 'UserID', select: 'name email address'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
-            res.status(200).json(slips);
             if(!slips){
                 return res.status(500).json(err);            
             }
+            res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
         }
@@ -131,10 +130,10 @@ const slipController = {
             const slips = await Slip.find(query)
             .populate({path: 'UserID', select: 'name email address username'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
-            res.status(200).json(slips);
             if(!slips){
                 return res.status(500).json(err);            
             }
+            res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
         }
@@ -147,10 +146,10 @@ const slipController = {
             const slips = await Slip.find(query)
             .populate({path: 'UserID', select: 'name email address username'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
-            res.status(200).json(slips);
             if(!slips){
                 return res.status(500).json(err);            
             }
+            res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
         }
@@ -163,11 +162,10 @@ const slipController = {
             const slips = await Slip.find(query)
             .populate({path: 'UserID', select: 'name email address'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
-            res.status(200).json(slips);
             if(!slips){
                 return res.status(500).json(err);            
-
             }
+            res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
         }
