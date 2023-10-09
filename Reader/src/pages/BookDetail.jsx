@@ -5,57 +5,61 @@ import SearchBar from '../components/SearchBar'
 import CustomButton from '../components/CustomButton'
 import {BiChevronUp, BiChevronDown} from 'react-icons/bi'
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
 
-const data = [
-  {
-    _id: '1',
-    ISBN: '9783161484100',
-    name: 'Tôi thấy hoa vàng trên cỏ xanh',
-    photo: book,
-  },
-  {
-    _id: '2',
-    ISBN: '9783161484101',
-    name: 'Mắt biếc',
-    photo: book,
-  },
-  {
-    _id: '3',
-    ISBN: '9783161484102',
-    name: 'Pháp luật đại cương',
-    photo: book,
-  },
-  {
-    _id: '4',
-    ISBN: '9783161484100',
-    name: 'Tôi thấy hoa vàng trên cỏ xanhhhhhhhhh',
-    photo: book,
-  },
-  {
-    _id: '5',
-    ISBN: '9783161484101',
-    name: 'Mắt biếc',
-    photo: book,
-  },
-  {
-    _id: '6',
-    ISBN: '9783161484102',
-    name: 'Pháp luật đại cương',
-    photo: book,
-  },
-  {
-    _id: '7',
-    ISBN: '9783161484100',
-    name: 'Tôi thấy hoa vàng trên cỏ xanh',
-    photo: book,
-  },
-  {
-    _id: '8',
-    ISBN: '9783161484101',
-    name: 'Mắt biếccc',
-    photo: book,
-  },
-]
+
+
+
+// const data = [
+//   {
+//     _id: '1',
+//     ISBN: '9783161484100',
+//     name: 'Tôi thấy hoa vàng trên cỏ xanh',
+//     photo: book,
+//   },
+//   {
+//     _id: '2',
+//     ISBN: '9783161484101',
+//     name: 'Mắt biếc',
+//     photo: book,
+//   },
+//   {
+//     _id: '3',
+//     ISBN: '9783161484102',
+//     name: 'Pháp luật đại cương',
+//     photo: book,
+//   },
+//   {
+//     _id: '4',
+//     ISBN: '9783161484100',
+//     name: 'Tôi thấy hoa vàng trên cỏ xanhhhhhhhhh',
+//     photo: book,
+//   },
+//   {
+//     _id: '5',
+//     ISBN: '9783161484101',
+//     name: 'Mắt biếc',
+//     photo: book,
+//   },
+//   {
+//     _id: '6',
+//     ISBN: '9783161484102',
+//     name: 'Pháp luật đại cương',
+//     photo: book,
+//   },
+//   {
+//     _id: '7',
+//     ISBN: '9783161484100',
+//     name: 'Tôi thấy hoa vàng trên cỏ xanh',
+//     photo: book,
+//   },
+//   {
+//     _id: '8',
+//     ISBN: '9783161484101',
+//     name: 'Mắt biếccc',
+//     photo: book,
+//   },
+// ]
 
 const bookDetail =
 {
@@ -78,6 +82,7 @@ const bookDetail =
 }
 
 const BookDetail = () => {
+  const data = useSelector((state) => state.book.books?.allBooks);
   const { id } = useParams();
   const [expanded, setExpanded] = useState(false);
 

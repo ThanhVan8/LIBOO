@@ -52,13 +52,6 @@ const slipController = {
             const week = getWeek(new Date());
             const slips = await Slip.find({UserID: user._id});
             let bookList = [];
-            // for (let i = 0; i < req.body.borrowList.length - 1; i++){
-            //     for (let j = i + 1; j < req.body.borrowList.length; j++){
-            //         if (req.body.borrowList[i].ISBN == req.body.borrowList[j].ISBN){
-            //             return res.status(500).json(err);
-            //         }
-            //     }
-            // }
             let cnt = 0;
             for (let i = 0; i < slips.length; i++){
                 if (getWeek(slips[i].borrowDate) == week){
