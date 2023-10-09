@@ -1,12 +1,13 @@
 import React from 'react';
 import {Route, Routes} from 'react-router-dom'
+import {useSelector} from 'react-redux';
 import PrivateRoute from './routers/PrivateRoute';
 import Auth from './pages/Auth'
 import Home from './pages/Home';
 import Menu from './components/Menu'
 import Catalog from './pages/Catalog';
 import BookDetail from './pages/BookDetail';
-import {useSelector} from 'react-redux';
+import Borrow from './pages/Borrow';
 
 const App = () => {
   const toggle = useSelector(state => state.menu.toggle);
@@ -20,6 +21,9 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/Catalog" element={<Catalog />} />
             <Route path="/Catalog/:id" element={<BookDetail />} />
+            <Route path='/Borrow' element={<Borrow />}>
+              <Route path='/Borrow/:id' element={<Borrow />} />
+            </Route>
           </Route>
         </Routes>
       </div>

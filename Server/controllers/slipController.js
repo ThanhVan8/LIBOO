@@ -46,28 +46,23 @@ const slipController = {
         try{
             const query = {username: req.params.username};
             const user = await User.findOne(query);
-            const week = getWeek(new Date());
-            const slips = await Slip.find();
-            if(!slips){
-                return res.status(500).json(err);            
-            }
-            let bookList = [];
-            for (let i = 0; i < req.body.borrowList.length - 1; i++){
-                for (let j = i + 1; j < req.body.borrowList.length; j++){
-                    if (req.body.borrowList[i].ISBN == req.body.borrowList[j].ISBN){
-                        return res.status(500).json(err);
-                    }
-                }
-            }
             if(!user){
-                return res.status(500).json(err);
+                return res.status(500).json('User not found');
             }
+            const week = getWeek(new Date());
+            const slips = await Slip.find({UserID: user._id});
+            let bookList = [];
+            // for (let i = 0; i < req.body.borrowList.length - 1; i++){
+            //     for (let j = i + 1; j < req.body.borrowList.length; j++){
+            //         if (req.body.borrowList[i].ISBN == req.body.borrowList[j].ISBN){
+            //             return res.status(500).json(err);
+            //         }
+            //     }
+            // }
             let cnt = 0;
             for (let i = 0; i < slips.length; i++){
-                if (String(slips[i].UserID) == String(user._id)){
-                    if (getWeek(slips[i].borrowDate) == week){
-                        cnt++;
-                    }
+                if (getWeek(slips[i].borrowDate) == week){
+                    cnt++;
                 }
             }
             for (let i = 0; i < req.body.borrowList.length; i++){
@@ -75,18 +70,17 @@ const slipController = {
                 const book = await Book.findOne(query);
                 let n = book.borrowed + 1;
                 if (!book){
-                    return res.status(500).json(err);
+                    return res.status(500).json('Book not found');
                 }
                 else{
                     if(cnt >= 2){
-                        return res.status(500).json(err);
+                        return res.status(500).json('User borrow too much books in this week');
                     }
                     else{
-                        const slipsList = await Slip.find({UserID: user._id});
                         for (let i = 0; i < slips.length; i++){
                             for (let j = 0; j < slips[i].borrowList.length; j++){
                                 if (String(slips[i].borrowList[j].book) == String(book._id)){
-                                    return res.status(200).json(err);
+                                    return res.status(500).json('User already borrow one of these books');
                                 }
                             }
                         }
@@ -240,13 +234,15 @@ const slipController = {
             let n = book1.borrowed - 1;
             const query = { UserID: user._id };
             const slips = await Slip.find(query);
-            if(!slips){
-                return res.status(500).json(err);            
+            if(slips.length == 0){
+                return res.status(500).json('User not borrow any book');            
             }
             for (let i = 0; i < slips.length; i++) {
                 for (let j = 0; j < slips[i].borrowList.length; j++){
                     if (String(slips[i].borrowList[j].book) == String(book1._id)){
                         const book1 = await Book.findOneAndUpdate({ ISBN: req.params.isbn }, {borrowed: n});
+                        if (!book1) 
+                            return res.status(500).json(err);
                         slips[i].borrowList.splice(j, 1);
                         slips[i].save();
                         if(slips[i].borrowList.length == 0){
@@ -257,7 +253,7 @@ const slipController = {
                     }
                 }
             }
-            return res.status(500).json(err);            
+            return res.status(500).json('User not borrow this book');            
         } catch (err) {
             res.status(500).json(err);
         }
@@ -285,7 +281,7 @@ const slipController = {
             for (let i = 0; i < slips.length; i++) {
                 for (let j = 0; j < slips[i].borrowList.length; j++){
                     if (String(slips[i].borrowList[j].book) == String(book._id)){
-                        res.status(200).json(slips[i].borrowList[j]);
+                        return res.status(200).json(slips[i].borrowList[j]);
                     }
                 }
             }

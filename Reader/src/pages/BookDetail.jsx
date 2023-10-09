@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import book from '../assets/book.png'
 import SearchBar from '../components/SearchBar'
 import CustomButton from '../components/CustomButton'
+import {BiChevronUp, BiChevronDown} from 'react-icons/bi'
+import { useNavigate } from "react-router-dom";
 
 const data = [
   {
@@ -77,16 +79,21 @@ const bookDetail =
 
 const BookDetail = () => {
   const { id } = useParams();
-  // const book = data.find(book => book._id === id)
   const [expanded, setExpanded] = useState(false);
 
+  const navigate = useNavigate();
+
+  const gotoBorrow = () => {
+    navigate(`/Borrow/${id}`)
+  }
+
   return (
-    <div className='w-full'>
+    <div className='w-full h-full space-y-3'>
       <div className='flex justify-end'>
         <SearchBar data={data} />
       </div>
-      <div className='flex'>
-        <img src={bookDetail.photo} alt="book" className='w-40 h-auto object-contain place-self-start' />
+      <div className='w-full flex gap-4 h-fit'>
+        <img src={bookDetail.photo} alt="book" className='w-40 h-auto object-contain place-self-start shrink-0' />
         
         {/* Detail */}
         <div className='space-y-2'>
@@ -99,24 +106,26 @@ const BookDetail = () => {
           <p> Price: {bookDetail.price} VND </p>
           <div>
             <p className='font-medium'>Description:</p>
-            <p>{bookDetail.description}</p>
+            <p className={`text-justify ${expanded ? 'line-clamp-none' : 'line-clamp-4'}`}>{bookDetail.description}</p>
             <button
               onClick={() => setExpanded(!expanded)}
+              className='space-x-1'
             >
               <span className='text-red'>{expanded ? 'Read less' : 'Read more'}</span>
+              {expanded ? <BiChevronUp size='1rem' color='var(--my-red)' className='inline-block' /> : <BiChevronDown size='1rem' color='var(--my-red)' className='inline-block' />}
             </button>
           </div>
         </div>
 
         {/* Note */}
-        <div className='w-full h-fit border border-lightGrey rounded-md px-4 py-2'>
+        <div className='w-full h-fit border-2 border-lightGrey rounded-md px-4 py-2 space-y-3'>
           <p className='text-lg font-medium'>{bookDetail.borrowed < bookDetail.quantity ? 
             <span className='text-available'>Available</span> : 
             <span className='text-unavailable'>Not available</span>}
           </p>
           <p>Amount: <span className='font-medium'>{bookDetail.quantity}</span></p>
           <p>Available: <span className='font-medium'>{bookDetail.quantity - bookDetail.borrowed}</span></p>
-          <CustomButton label='Borrow' classes='self-center w-[12rem]' />
+          <CustomButton label='Borrow' classes='self-center w-[12rem]' disabled={bookDetail.borrowed >= bookDetail.quantity} onClick={gotoBorrow} />
         </div>
       </div>
     </div>

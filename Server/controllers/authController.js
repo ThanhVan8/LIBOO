@@ -2,7 +2,6 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt'); 
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
-const format =  require ('date-fns');
 let refreshTokens = [];
 
 dotenv.config();
