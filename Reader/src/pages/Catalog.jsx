@@ -59,7 +59,7 @@ const Catalog = () => {
         <h1 className='text-2xl font-semibold'>CATALOG</h1>
         <div className='grid grid-cols-6 gap-4 max-w-fit'>
           {records?.map((item) => (
-            <Link key={item._id} to={`/Catalog/${item._id}`}>
+            <Link key={item._id} to={`/Catalog/${item.ISBN}`}>
               <div className='flex flex-col items-center gap-2'>
                 <div className='relative'>
                   <img src={item.photo} alt='book' className='peer' />
