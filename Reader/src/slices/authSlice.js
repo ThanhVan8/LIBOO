@@ -1,21 +1,22 @@
 import {createSlice} from '@reduxjs/toolkit'
 
+const initialState = {
+    currentAction: 'Sign In',
+    login: {
+        currentUser: null,
+        isFetching: false,
+        error: false,
+    },
+    register: {
+        isFetching: false,
+        error: false,
+        success: false,
+    },
+  };
+
 const authSlice = createSlice({
     name: 'auth',
-    initialState: {
-        currentAction: 'Sign In',
-        login: {
-            currentUser: null,
-            isFetching: false,
-            error: false
-        },
-
-        register: {
-            isFetching: false,
-            error: false,
-            success: false
-        }
-    },
+    initialState,
     reducers: {
         setCurrentAction: (state, action) => {
             state.currentAction = action.payload
@@ -84,7 +85,6 @@ export const {
     logoutBegin,
     logoutSuccess,
     logoutFailure
-
 } = authSlice.actions
 
-export default authSlice.reducer 
+export default authSlice.reducer
