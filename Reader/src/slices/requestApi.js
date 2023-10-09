@@ -1,5 +1,7 @@
 import axios from "axios";
-import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess } from './authSlice'
+import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess, logoutBegin, logoutFailure, logoutSuccess } from './authSlice'
+
+import { getBookBegin, getBookFailure, getBookSuccess } from './bookSlice'
 
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,6 +34,33 @@ export const registerUser = async (user, dispatch) => {
     }
 }
 
-//book
-//GET all books
-// export const getAllBooks = async (accessToken,dispatch) => {}
+export const logoutUser = async (dispatch, id, accessToken) => {
+    dispatch(logoutBegin());
+    try{
+        const res = await axios.post(`http://localhost:8000/api/auth/logout/${id}`, {}, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        })
+        dispatch(logoutSuccess(res.data));
+    } catch (err) {
+        console.log(err.response.data);
+        dispatch(logoutFailure());
+    }
+}
+
+// book
+// GET all books
+export const getAllBooks = async (accessToken, dispatch) => {
+    dispatch(getBookBegin());
+    try{
+        const res = await axios.get('http://localhost:8000/api/book',{
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(getBookSuccess(res.data));
+    }catch(err){
+        dispatch(getBookFailure());
+    }
+}

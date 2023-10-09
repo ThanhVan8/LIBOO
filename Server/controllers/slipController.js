@@ -32,10 +32,10 @@ const slipController = {
                 await Book.findOneAndUpdate(query, {borrowed: n});
 
             }
-            res.status(200).json(slip);
             if (!slip){
                 res.status(500).json(err);
             }
+            res.status(200).json(slip);
         } catch (err) {
           res.status(500).json(err);
         }
@@ -108,10 +108,10 @@ const slipController = {
             const slips = await Slip.find()
             .populate({path: 'UserID', select: 'name email address'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
-            res.status(200).json(slips);
             if(!slips){
                 return res.status(500).json(err);            
             }
+            res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
         }
@@ -124,10 +124,10 @@ const slipController = {
             const slips = await Slip.find(query)
             .populate({path: 'UserID', select: 'name email address username'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
-            res.status(200).json(slips);
             if(!slips){
                 return res.status(500).json(err);            
             }
+            res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
         }
@@ -140,10 +140,10 @@ const slipController = {
             const slips = await Slip.find(query)
             .populate({path: 'UserID', select: 'name email address username'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
-            res.status(200).json(slips);
             if(!slips){
                 return res.status(500).json(err);            
             }
+            res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
         }
@@ -156,11 +156,10 @@ const slipController = {
             const slips = await Slip.find(query)
             .populate({path: 'UserID', select: 'name email address'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
-            res.status(200).json(slips);
             if(!slips){
                 return res.status(500).json(err);            
-
             }
+            res.status(200).json(slips);
         }catch(err){
             res.status(500).json(err);
         }
@@ -291,6 +290,11 @@ const slipController = {
         } catch (err){
             res.status(500).json(err);
         }
+    },
+
+    //UPLOAD image
+    addImage: async (req, res, next) => {
+
     }
 };
 

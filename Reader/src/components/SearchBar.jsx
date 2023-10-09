@@ -11,56 +11,6 @@ import {
 import book from '../assets/book.png'
 import { Link } from "react-router-dom";
 
-const data = [
-  {
-    _id: '1',
-    ISBN: '9783161484100',
-    name: 'Tôi thấy hoa vàng trên cỏ xanh',
-    photo: book,
-  },
-  {
-    _id: '2',
-    ISBN: '9783161484101',
-    name: 'Mắt biếc',
-    photo: book,
-  },
-  {
-    _id: '3',
-    ISBN: '9783161484102',
-    name: 'Pháp luật đại cương',
-    photo: book,
-  },
-  {
-    _id: '4',
-    ISBN: '9783161484100',
-    name: 'Tôi thấy hoa vàng trên cỏ xanhhhhhhhhh',
-    photo: book,
-  },
-  {
-    _id: '5',
-    ISBN: '9783161484101',
-    name: 'Mắt biếc',
-    photo: book,
-  },
-  {
-    _id: '6',
-    ISBN: '9783161484102',
-    name: 'Pháp luật đại cương',
-    photo: book,
-  },
-  {
-    _id: '7',
-    ISBN: '9783161484100',
-    name: 'Tôi thấy hoa vàng trên cỏ xanh',
-    photo: book,
-  },
-  {
-    _id: '8',
-    ISBN: '9783161484101',
-    name: 'Mắt biếccc',
-    photo: book,
-  },
-]
 
 const SearchBar = ({data}) => {
   const filters = ['ISBN', 'name']
