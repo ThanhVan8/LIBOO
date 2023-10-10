@@ -88,7 +88,7 @@ const BookDetail = () => {
   }
 
   return (
-    <div className='w-full h-full space-y-3'>
+    <div className='w-full h-full space-y-3 py-2 pr-4 pl-3'>
       <div className='flex justify-end'>
         <SearchBar data={data} />
       </div>

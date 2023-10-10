@@ -14,7 +14,7 @@ const App = () => {
   return (
     <div className="w-screen h-screen flex overflow-auto">
       <Menu />
-      <div className={`${toggle ? 'ml-[12.875rem]' : ''} w-full h-full my-2 mr-4 pl-3`}>
+      <div className={`${toggle ? 'ml-[12.875rem]' : ''} w-full h-full`}>
         <Routes>
           <Route path="/Auth" element={<Auth />} />
           <Route element={<PrivateRoute />} >

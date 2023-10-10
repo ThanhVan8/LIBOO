@@ -24,7 +24,7 @@ const Borrow = () => {
   }
 
   return (
-    <div className='pt-12 pl-2'>
+    <div className='pt-12 pb-2 pr-4 pl-5'>
       {/* Borrow */}
       <form className='space-y-6' onSubmit={handleBorrow}>
         <h1 className='text-2xl font-semibold'>BORROW BOOK</h1>
