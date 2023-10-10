@@ -18,6 +18,18 @@ const slipController = {
             if(!book){
                 return res.status(500).json(err);
             }
+            const slips = await Slip.find({UserID: user._id});
+            if(!slips){
+                return res.status(500).json(err);
+            }
+            for (let i = 0; i < slips.length; i++){
+                for (let j = 0; j < slips[i].borrowList.length; j++){
+                    if (String(slips[i].borrowList[j].book) == String(book._id)){
+                        return res.status(500).json(`User already borrow ${book.name}`);
+                    }
+                }
+            }
+
             var bookList = []
             tmp = {book: book._id};
             bookList.push(tmp);
@@ -84,7 +96,7 @@ const slipController = {
                         for (let i = 0; i < slips.length; i++){
                             for (let j = 0; j < slips[i].borrowList.length; j++){
                                 if (String(slips[i].borrowList[j].book) == String(book._id)){
-                                    return res.status(500).json('User already borrow one of these books');
+                                    return res.status(500).json(`User already borrow ${book.name}`);
                                 }
                             }
                         }
