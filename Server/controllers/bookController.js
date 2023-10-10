@@ -32,10 +32,10 @@ const bookController = {
     getBookByISBN: async (req, res) => {
         try{
             const book = await Book.findOne({ISBN: req.params.isbn});
-            res.status(200).json(book);
             if(!book){
                 return res.status(500).json(err);            
             }
+            res.status(200).json(book);
         }catch(err){
             res.status(500).json(err);
         }
