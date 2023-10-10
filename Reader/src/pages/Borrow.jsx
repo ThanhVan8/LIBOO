@@ -6,23 +6,25 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addSlip } from '../slices/requestApi';
 import {BiRefresh, BiMessageAltError} from 'react-icons/bi'
 import Modal from '../components/Modal';
+import { getOneBook, getSlipsOfUser } from '../slices/requestApi';
+
 
 const EXPIRATION = 7;
 
 const TABLE_HEAD = ['ISBN', 'Borrowing date' , 'Due date', '']
 
-const records = [
-  {
-    isbn: '123456789',
-    borrowDate: '2023-10-08T08:22:01.276+00:00',
-    dueDate: '2023-10-14T17:00:00.000+00:00'
-  },
-  {
-    isbn: '987654321',
-    borrowDate: '2023-10-08T08:22:01.276+00:00',
-    dueDate: '2023-10-14T17:00:00.000+00:00'
-  },
-]
+// const records = [
+//   {
+//     isbn: '123456789',
+//     borrowDate: '2023-10-08T08:22:01.276+00:00',
+//     dueDate: '2023-10-14T17:00:00.000+00:00'
+//   },
+//   {
+//     isbn: '987654321',
+//     borrowDate: '2023-10-08T08:22:01.276+00:00',
+//     dueDate: '2023-10-14T17:00:00.000+00:00'
+//   },
+// ]
 
 const bookDetail =
 {
@@ -47,6 +49,7 @@ const Borrow = () => {
   const {id} = useParams()
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.login?.currentUser)
+
   
 
   const [slip, setSlip] = useState({username: user.username, isbn: id ? id : '', borrowDate: new Date().toISOString().split('T')[0], dueDate: ''})
@@ -72,6 +75,23 @@ const Borrow = () => {
   const [toggleReport, setToggleReport] = useState(false)
 
   const [selectedBorrow, setSelectedBorrow] = useState({isbn: '', borrowDate: '', dueDate: ''})
+  const bookDetail = useSelector((state) => state.book.book?.currentBook);
+  
+  // check record's format
+  const records = useSelector((state) => state.slip.slips?.allSlips);
+
+  useEffect(() => {
+    if(user?.accessToken){
+      getSlipsOfUser(user?.accessToken, user?._id, dispatch)
+      console.log(records)
+    }
+  }, [])
+
+  useEffect(() => {
+    if(user?.accessToken){
+      getOneBook(user?.accessToken, selectedBorrow.isbn, dispatch);
+    }
+  }, [selectedBorrow])
 
   const handleRenew = (e) => {
     e.preventDefault();
@@ -136,7 +156,7 @@ const Borrow = () => {
             {records?.map((record, index) => (
               <tr key={index} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2">
-                  <p>{record.isbn}</p>
+                  <p>{record?.borrowList?.ISBN}</p>
                 </td>
                 <td className="p-2">
                   <p>{formatDate(record.borrowDate)}</p>

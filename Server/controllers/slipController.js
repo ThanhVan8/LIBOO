@@ -153,10 +153,10 @@ const slipController = {
         }
     },
 
-    //GET all slips of 1 reader 
+    //GET all accepted slips of 1 reader 
     getAllSlipsOfReader: async (req, res) => {
         try{
-            const query = { UserID: req.params.id };
+            const query = { UserID: req.params.id, accepted: true };
             const slips = await Slip.find(query)
             .populate({path: 'UserID', select: 'name email address'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});

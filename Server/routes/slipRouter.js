@@ -21,7 +21,7 @@ router.get(`/unaccepted`,middlewareController.verifyAdminToken, slipController.g
 // GET all accepted slips
 router.get(`/accepted`,middlewareController.verifyAdminToken, slipController.getAllAcceptedSlips);
 
-//GET all slip of 1 user
+//GET all accepted slip of 1 user
 router.get('/:id',middlewareController.verifyToken ,slipController.getAllSlipsOfReader);
 
 //GET slip by username and isbn
