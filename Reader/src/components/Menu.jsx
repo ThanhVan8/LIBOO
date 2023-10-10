@@ -77,7 +77,7 @@ const Menu = () => {
               {items.map((item, index) => {
                 return (
                   <Link key={index} to={item.path}>
-                    <MenuItem icon={item.icon} text={item.text} active={location.pathname === item.path}/>
+                    <MenuItem icon={item.icon} text={item.text} active={(location.pathname.lastIndexOf('/') === 0 ? location.pathname : location.pathname.slice(0,  location.pathname.lastIndexOf('/'))) === item.path}/>
                   </Link>
                 )
               })}

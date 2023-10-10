@@ -18,6 +18,18 @@ const slipController = {
             if(!book){
                 return res.status(500).json(err);
             }
+            const slips = await Slip.find({UserID: user._id});
+            if(!slips){
+                return res.status(500).json(err);
+            }
+            for (let i = 0; i < slips.length; i++){
+                for (let j = 0; j < slips[i].borrowList.length; j++){
+                    if (String(slips[i].borrowList[j].book) == String(book._id)){
+                        return res.status(500).json(`User already borrow ${book.name}`);
+                    }
+                }
+            }
+
             var bookList = []
             tmp = {book: book._id};
             bookList.push(tmp);
@@ -84,7 +96,7 @@ const slipController = {
                         for (let i = 0; i < slips.length; i++){
                             for (let j = 0; j < slips[i].borrowList.length; j++){
                                 if (String(slips[i].borrowList[j].book) == String(book._id)){
-                                    return res.status(500).json('User already borrow one of these books');
+                                    return res.status(500).json(`User already borrow ${book.name}`);
                                 }
                             }
                         }
@@ -153,10 +165,10 @@ const slipController = {
         }
     },
 
-    //GET all slips of 1 reader 
+    //GET all accepted slips of 1 reader 
     getAllSlipsOfReader: async (req, res) => {
         try{
-            const query = { UserID: req.params.id };
+            const query = { UserID: req.params.id, accepted: true };
             const slips = await Slip.find(query)
             .populate({path: 'UserID', select: 'name email address'})
             .populate({path: 'borrowList.book', select: 'ISBN name author'});
@@ -191,21 +203,31 @@ const slipController = {
     //UPDATE dueDate of 1 book in 1 slip
     updateExpSlip: async (req, res) => {
         try{
-            const slip = await Slip.findById(req.params.id1);
+            const slip = await Slip.findById(req.params.id);
+            const book1 = await Book.findOne({ ISBN: req.params.isbn });
             if(!slip){
                 return res.status(500).json(err);            
             }
+            if(!book1){
+                return res.status(500).json(err);            
+            }
             if (slip.accepted){
+                const week = getWeek(slip.borrowDate);
                 for (let book of slip.borrowList){
-                    if (book.book == req.params.id2){
-                        book.DueDate = new Date(book.DueDate.getFullYear(), book.DueDate.getMonth(), book.DueDate.getDate() + 7);
-                        slip.save();
-                        res.status(200).json(slip);
+                    if (String(book.book) == String(book1._id)){
+                        if (getWeek(book.DueDate) - week >= 2){
+                            return res.status(500).json(err);
+                        }
+                        else{
+                            book.DueDate = new Date(book.DueDate.getFullYear(), book.DueDate.getMonth(), book.DueDate.getDate() + 7);
+                            slip.save();
+                            return res.status(200).json(slip);
+                        }
                     }
                 }            
-                res.status(200).json('The slip has been renewed');
+                return res.status(200).json('The slip has been renewed');
             }
-            return res.status(300).json('The slip is invalid');
+            // return res.status(300).json('The slip is invalid');
         }catch(err){
             res.status(500).json(err);
         }

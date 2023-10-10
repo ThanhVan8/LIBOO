@@ -6,50 +6,52 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addSlip } from '../slices/requestApi';
 import {BiRefresh, BiMessageAltError} from 'react-icons/bi'
 import Modal from '../components/Modal';
+import { getOneBook, getSlipsOfUser } from '../slices/requestApi';
+
 
 const EXPIRATION = 7;
 
 const TABLE_HEAD = ['ISBN', 'Borrowing date' , 'Due date', '']
 
-const records = [
-  {
-    isbn: '123456789',
-    borrowDate: '2023-10-08T08:22:01.276+00:00',
-    dueDate: '2023-10-14T17:00:00.000+00:00'
-  },
-  {
-    isbn: '987654321',
-    borrowDate: '2023-10-08T08:22:01.276+00:00',
-    dueDate: '2023-10-14T17:00:00.000+00:00'
-  },
-]
+// const records = [
+//   {
+//     isbn: '123456789',
+//     borrowDate: '2023-10-08T08:22:01.276+00:00',
+//     dueDate: '2023-10-14T17:00:00.000+00:00'
+//   },
+//   {
+//     isbn: '987654321',
+//     borrowDate: '2023-10-08T08:22:01.276+00:00',
+//     dueDate: '2023-10-14T17:00:00.000+00:00'
+//   },
+// ]
 
-const bookDetail =
-{
-  "_id": "651e43952dac9ea3a6b6e93a",
-  "ISBN": "1234567890001",
-  "name": "Kính vạn hoa",
-  "author": "Nguyễn Nhật Ánh",
-  "publisher": "NXB Kim Đồng ",
-  "publishYear": 2000,
-  "description": "\"Tôi thấy hoa vàng trên cỏ xanh\" truyện dài mới nhất của nhà văn vừa nhận giải văn chương ASEAN Nguyễn Nhật Ánh - đã được Nhà xuất bản Trẻ mua tác quyền và giới thiệu đến độc giả cả nước. Cuốn sách viết về tuổi thơ nghèo khó ở một làng quê, bên cạnh đề tài tình yêu quen thuộc, lần đầu tiên Nguyễn Nhật Ánh đưa vào tác phẩm của mình những nhân vật phản diện và đặt ra vấn đề đạo đức như sự vô tâm, cái ác. 81 chương ngắn là 81 câu chuyện nhỏ của những đứa trẻ xảy ra ở một ngôi làng: chuyện về con cóc Cậu trời, chuyện ma, chuyện công chúa và hoàng tử, bên cạnh chuyện đói ăn, cháy nhà, lụt lội,... “Tôi thấy hoa vàng trên cỏ xanh” hứa hẹn đem đến những điều thú vị với cả bạn đọc nhỏ tuổi và người lớn bằng giọng văn trong sáng, hồn nhiên, giản dị của trẻ con cùng nhiều tình tiết thú vị, bất ngờ và cảm động trong suốt hơn 300 trang sách. Cuốn sách, vì thế có sức ám ảnh, thu hút, hấp dẫn không thể bỏ qua.",
-  "genre": [
-    "Truyện ngắn",
-    "Tình cảm"
-  ],
-  "price": 200000,
-  "quantity": 20,
-  "borrowed": 18,
-  "__v": 0,
-}
+// const bookDetail =
+// {
+//   "_id": "651e43952dac9ea3a6b6e93a",
+//   "ISBN": "1234567890001",
+//   "name": "Kính vạn hoa",
+//   "author": "Nguyễn Nhật Ánh",
+//   "publisher": "NXB Kim Đồng ",
+//   "publishYear": 2000,
+//   "description": "\"Tôi thấy hoa vàng trên cỏ xanh\" truyện dài mới nhất của nhà văn vừa nhận giải văn chương ASEAN Nguyễn Nhật Ánh - đã được Nhà xuất bản Trẻ mua tác quyền và giới thiệu đến độc giả cả nước. Cuốn sách viết về tuổi thơ nghèo khó ở một làng quê, bên cạnh đề tài tình yêu quen thuộc, lần đầu tiên Nguyễn Nhật Ánh đưa vào tác phẩm của mình những nhân vật phản diện và đặt ra vấn đề đạo đức như sự vô tâm, cái ác. 81 chương ngắn là 81 câu chuyện nhỏ của những đứa trẻ xảy ra ở một ngôi làng: chuyện về con cóc Cậu trời, chuyện ma, chuyện công chúa và hoàng tử, bên cạnh chuyện đói ăn, cháy nhà, lụt lội,... “Tôi thấy hoa vàng trên cỏ xanh” hứa hẹn đem đến những điều thú vị với cả bạn đọc nhỏ tuổi và người lớn bằng giọng văn trong sáng, hồn nhiên, giản dị của trẻ con cùng nhiều tình tiết thú vị, bất ngờ và cảm động trong suốt hơn 300 trang sách. Cuốn sách, vì thế có sức ám ảnh, thu hút, hấp dẫn không thể bỏ qua.",
+//   "genre": [
+//     "Truyện ngắn",
+//     "Tình cảm"
+//   ],
+//   "price": 200000,
+//   "quantity": 20,
+//   "borrowed": 18,
+//   "__v": 0,
+// }
 
 const Borrow = () => {
   const {id} = useParams()
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.login?.currentUser)
-  
 
-  const [slip, setSlip] = useState({username: user.username, isbn: id ? id : '', borrowDate: new Date().toISOString().split('T')[0], dueDate: ''})
+  const today = new Date();
+  const [slip, setSlip] = useState({username: user.username, isbn: id ? id : '', borrowDate: today.toISOString().split('T')[0], dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + EXPIRATION).toISOString().split('T')[0]})
   
   const handleChangeInfo = (e) => {
     e.preventDefault();
@@ -61,7 +63,6 @@ const Borrow = () => {
   const handleBorrow = (e) => {
     e.preventDefault();
     addSlip(user.accessToken, slip.username, slip.isbn, dispatch)
-    console.log(slip)
   }
 
   const formatDate = (dateString) => {
@@ -72,6 +73,30 @@ const Borrow = () => {
   const [toggleReport, setToggleReport] = useState(false)
 
   const [selectedBorrow, setSelectedBorrow] = useState({isbn: '', borrowDate: '', dueDate: ''})
+  const bookDetail = useSelector((state) => state.book.book?.currentBook);
+
+  // check record's format
+  const records = useSelector((state) => state.slip.slips?.allSlips);
+  
+
+  let borrowBooks = []
+  records?.forEach(record => {
+    record.borrowList?.forEach(borrow => {
+      borrowBooks.push({isbn: borrow.book.ISBN, borrowDate: record.borrowDate, dueDate: borrow.DueDate})
+    })
+  })
+
+  useEffect(() => {
+    if(user?.accessToken){
+      getSlipsOfUser(user?.accessToken, user?._id, dispatch)
+    }
+  }, [])
+
+  useEffect(() => {
+    if(user?.accessToken){
+      getOneBook(user?.accessToken, selectedBorrow.isbn, dispatch);
+    }
+  }, [selectedBorrow])
 
   const handleRenew = (e) => {
     e.preventDefault();
@@ -133,10 +158,10 @@ const Borrow = () => {
             </tr>
           </thead>
           <tbody>
-            {records?.map((record, index) => (
+            {borrowBooks?.map((record, index) => (
               <tr key={index} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2">
-                  <p>{record.isbn}</p>
+                  <p>{record?.isbn}</p>
                 </td>
                 <td className="p-2">
                   <p>{formatDate(record.borrowDate)}</p>
