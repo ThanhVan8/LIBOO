@@ -43,15 +43,13 @@ const BookDetail = () => {
       getOneBook(user?.accessToken, id, dispatch);
     }
   }, [id])
-
   
-
   const gotoBorrow = () => {
     navigate(`/Borrow/${id}`)
   }
 
   return (
-    <div className='w-full h-full space-y-3'>
+    <div className='w-full h-full space-y-3 py-2 pr-4 pl-3'>
       <div className='flex justify-end'>
         <SearchBar data={data} />
       </div>
@@ -59,13 +57,13 @@ const BookDetail = () => {
         <img src={currentBook?.photo} alt="book" className='w-40 h-auto object-contain place-self-start shrink-0' />
         
         {/* Detail */}
-        <div className='space-y-2'>
+        <div className='w-full space-y-2'>
           <h1 className='text-2xl font-semibold'>{currentBook?.name}</h1>
           <p className='text-lg'>ISBN: <span className='font-medium text-red'>{currentBook?.ISBN}</span></p>
           <p> Author: {currentBook?.author} </p>
           <p> Publisher: {currentBook?.publisher} </p>
           <p> Publish year: {currentBook?.publishYear} </p>
-          <p> Genre: {currentBook?.genre.join(', ')} </p>
+          <p> Genre: {currentBook?.genre?.join(', ')} </p>
           <p> Price: {currentBook?.price} VND </p>
           <div>
             <p className='font-medium'>Description:</p>
@@ -81,7 +79,7 @@ const BookDetail = () => {
         </div>
 
         {/* Note */}
-        <div className='w-full h-fit border-2 border-lightGrey rounded-md px-4 py-2 space-y-3'>
+        <div className='w-fit h-fit border-2 border-lightGrey rounded-md px-4 py-2 space-y-3'>
           <p className='text-lg font-medium'>{currentBook?.borrowed < currentBook?.quantity ? 
             <span className='text-available'>Available</span> : 
             <span className='text-unavailable'>Not available</span>}

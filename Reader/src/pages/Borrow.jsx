@@ -50,9 +50,8 @@ const Borrow = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.login?.currentUser)
 
-  
-
-  const [slip, setSlip] = useState({username: user.username, isbn: id ? id : '', borrowDate: new Date().toISOString().split('T')[0], dueDate: ''})
+  const today = new Date();
+  const [slip, setSlip] = useState({username: user.username, isbn: id ? id : '', borrowDate: today.toISOString().split('T')[0], dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + EXPIRATION).toISOString().split('T')[0]})
   
   const handleChangeInfo = (e) => {
     e.preventDefault();
@@ -64,7 +63,6 @@ const Borrow = () => {
   const handleBorrow = (e) => {
     e.preventDefault();
     addSlip(user.accessToken, slip.username, slip.isbn, dispatch)
-    console.log(slip)
   }
 
   const formatDate = (dateString) => {
@@ -79,11 +77,18 @@ const Borrow = () => {
 
   // check record's format
   const records = useSelector((state) => state.slip.slips?.allSlips);
+  
+
+  let borrowBooks = []
+  records?.forEach(record => {
+    record.borrowList?.forEach(borrow => {
+      borrowBooks.push({isbn: borrow.book.ISBN, borrowDate: record.borrowDate, dueDate: borrow.DueDate})
+    })
+  })
 
   useEffect(() => {
     if(user?.accessToken){
       getSlipsOfUser(user?.accessToken, user?._id, dispatch)
-      console.log(records)
     }
   }, [])
 
@@ -153,7 +158,7 @@ const Borrow = () => {
             </tr>
           </thead>
           <tbody>
-            {records?.map((record, index) => (
+            {borrowBooks?.map((record, index) => (
               <tr key={index} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2">
                   <p>{record?.isbn}</p>
