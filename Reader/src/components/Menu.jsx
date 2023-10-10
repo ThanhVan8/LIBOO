@@ -1,13 +1,14 @@
 import React from "react";
 import logo from "../assets/logo.png";
 import { Link, useLocation } from "react-router-dom"
-import { LiaTimesSolid, LiaUserSolid, LiaChartBarSolid } from "react-icons/lia";
+import { LiaTimesSolid } from "react-icons/lia";
 import { GoBook, GoArrowRight, GoArrowLeft } from "react-icons/go";
 import { BiLogOut, BiMenu } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
 import { setToggle } from '../slices/menuSlice';
 import { motion } from "framer-motion";
 import {logoutUser} from "../slices/requestApi"
+import {FaFacebookSquare, FaInstagram} from "react-icons/fa"
 
 const items = [
   {
@@ -82,12 +83,24 @@ const Menu = () => {
               })}
             </ul>
 
-            <div className='w-full pl-8'>
-              <button onClick={logout} className='flex gap-2 rounded-l-3xl'>
-              {/* <button className='flex gap-2 rounded-l-3xl'> */}
+            <div className='w-full pl-8 text-base space-y-3'>
+              <hr className='mr-4' />
+              <button onClick={logout} className='flex gap-2'>
                 <BiLogOut color='white' size='1.5rem' />
-                <span className='text-white text-base'>Logout</span>
+                <span className='text-white'>Logout</span>
               </button>
+              <hr className='mr-4' />
+              <Link to='/rules'>
+                <p className='font-medium text-white pt-2'>LIBOO rules</p>
+              </Link>
+              <div className="flex gap-3">
+                <a href="https://www.facebook.com/profile.php?id=100011493965643" target="_blank" rel="noreferrer">
+                  <FaFacebookSquare color="white" size='1.5rem' />
+                </a>
+                <a href="#">
+                  <FaInstagram color="white" size='1.5rem' />
+                </a>
+              </div>
             </div>
           </div>
         </motion.div>

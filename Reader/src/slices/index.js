@@ -6,8 +6,9 @@ import bookSlice from "./bookSlice";
 
 const rootReducer = combineReducers({
     menu: menuSlice,
-    auth: authSlice,
     book: bookSlice,
+    auth: authSlice,
+
 });
 
 export default rootReducer;

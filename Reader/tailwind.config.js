@@ -5,6 +5,7 @@ module.exports = withMT({
   theme: {
     backgroundImage: {
       'bg1': "url('./assets/bg1.png')",
+      'bgHome': "url('./assets/bgHome.png')",
     },
     extend: {
       colors: {

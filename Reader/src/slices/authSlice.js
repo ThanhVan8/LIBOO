@@ -12,6 +12,10 @@ const initialState = {
         error: false,
         success: false,
     },
+    logout: {
+        isFetching: false,
+        error: false,
+    }
   };
 
 const authSlice = createSlice({
