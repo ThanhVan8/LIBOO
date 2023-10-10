@@ -191,21 +191,31 @@ const slipController = {
     //UPDATE dueDate of 1 book in 1 slip
     updateExpSlip: async (req, res) => {
         try{
-            const slip = await Slip.findById(req.params.id1);
+            const slip = await Slip.findById(req.params.id);
+            const book1 = await Book.findOne({ ISBN: req.params.isbn });
             if(!slip){
                 return res.status(500).json(err);            
             }
+            if(!book1){
+                return res.status(500).json(err);            
+            }
             if (slip.accepted){
+                const week = getWeek(slip.borrowDate);
                 for (let book of slip.borrowList){
-                    if (book.book == req.params.id2){
-                        book.DueDate = new Date(book.DueDate.getFullYear(), book.DueDate.getMonth(), book.DueDate.getDate() + 7);
-                        slip.save();
-                        res.status(200).json(slip);
+                    if (String(book.book) == String(book1._id)){
+                        if (getWeek(book.DueDate) - week >= 2){
+                            return res.status(500).json(err);
+                        }
+                        else{
+                            book.DueDate = new Date(book.DueDate.getFullYear(), book.DueDate.getMonth(), book.DueDate.getDate() + 7);
+                            slip.save();
+                            return res.status(200).json(slip);
+                        }
                     }
                 }            
-                res.status(200).json('The slip has been renewed');
+                return res.status(200).json('The slip has been renewed');
             }
-            return res.status(300).json('The slip is invalid');
+            // return res.status(300).json('The slip is invalid');
         }catch(err){
             res.status(500).json(err);
         }

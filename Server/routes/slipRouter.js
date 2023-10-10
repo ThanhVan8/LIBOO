@@ -31,7 +31,7 @@ router.get('/:username/:isbn',middlewareController.verifyAdminToken, slipControl
 router.put('/:id',middlewareController.verifyAdminToken, slipController.updateStatusSlip);
 
 //UPDATE renewExp slip
-router.put('/:id1/:id2',middlewareController.verifyAdminToken, slipController.updateExpSlip);
+router.put('/:id/:isbn',middlewareController.verifyToken, slipController.updateExpSlip);
 
 //DELETE slip
 router.delete('/:id',middlewareController.verifyAdminToken, slipController.deleteSlip);
