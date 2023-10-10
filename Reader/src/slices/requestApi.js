@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess, logoutBegin, logoutFailure, logoutSuccess } from './authSlice'
 
-import { getBookBegin, getBookFailure, getBookSuccess } from './bookSlice'
+import { getBookBegin, getBookFailure, getBookSuccess, getOneBookBegin, getOneBookSuccess, getOneBookFailure } from './bookSlice'
 
 import {addSlipBegin, addSlipSuccess, addSlipFailure} from './slipSlice'
 
@@ -53,6 +53,7 @@ export const logoutUser = async (dispatch, id, accessToken) => {
 
 // book
 // GET all books
+//books
 export const getAllBooks = async (accessToken, dispatch) => {
     dispatch(getBookBegin());
     try{
@@ -64,6 +65,20 @@ export const getAllBooks = async (accessToken, dispatch) => {
         dispatch(getBookSuccess(res.data));
     }catch(err){
         dispatch(getBookFailure());
+    }
+}
+// GET one book by ISBN
+export const getOneBook = async (accessToken, isbn, dispatch) => {
+    dispatch(getOneBookBegin());
+    try{
+        const res = await axios.get(`http://localhost:8000/api/book/${isbn}`,{
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(getOneBookSuccess(res.data));
+    } catch(err){
+        dispatch(getOneBookFailure());
     }
 }
 
