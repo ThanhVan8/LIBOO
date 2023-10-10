@@ -1,8 +1,9 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import rootReducer from './slices/index'
 import {
   persistStore,
   persistReducer,
+  createMigrate,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -12,10 +13,27 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
+const migrations = {
+  0: (state) => {
+    // migration clear out device state
+    return {
+      ...state,
+      device: undefined   
+    }
+  },
+  1: (state) => {
+    // migration to keep only device state
+    return {
+      device: state.device
+    }
+  }
+}
+
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
+  migrate: createMigrate(migrations, { debug: false }),
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
