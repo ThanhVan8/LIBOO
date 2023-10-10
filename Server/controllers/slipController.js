@@ -7,12 +7,23 @@ const  getWeek = require('date-fns/getWeek')
 
 
 const slipController = {
-    //ADD slip for reader
+    //ADD slip for reader by username and isbn
     addSlipReader: async (req, res) => {
         try{
+            const user = await User.findOne({username: req.params.username});
+            if(!user){
+                return res.status(500).json(err);
+            }
+            const book = await Book.findOne({ISBN: req.params.isbn});
+            if(!book){
+                return res.status(500).json(err);
+            }
+            var bookList = []
+            tmp = {book: book._id};
+            bookList.push(tmp);
             const newSlip = new Slip({
-                UserID: req.params.id,
-                borrowList: req.body.borrowList,
+                UserID: user._id,
+                borrowList: bookList,
             })
             const savedSlip = await newSlip.save();
             res.status(200).json(savedSlip);

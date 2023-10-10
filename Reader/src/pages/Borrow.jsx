@@ -3,16 +3,18 @@ import {Input} from "@material-tailwind/react";
 import {useParams} from 'react-router-dom'
 import CustomButton from '../components/CustomButton';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addSlip } from '../slices/requestApi';
 
 const EXPIRATION = 7;
 
 const Borrow = () => {
   const {id} = useParams()
+  const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.login?.currentUser)
   
 
-  const [slip, setSlip] = useState({_id:'', username: user.username, isbn: id ? id : '', borrowDate: '', dueDate: ''})
+  const [slip, setSlip] = useState({username: user.username, isbn: id ? id : '', borrowDate: '', dueDate: ''})
   
   const handleChangeInfo = (e) => {
     e.preventDefault();
@@ -23,6 +25,7 @@ const Borrow = () => {
 
   const handleBorrow = (e) => {
     e.preventDefault();
+    addSlip(user.accessToken, slip.username, slip.isbn, dispatch)
     console.log(slip)
   }
 

@@ -3,8 +3,8 @@ const slipController = require('../controllers/slipController');
 
 const router = require('express').Router();
 
-//ADD slip for reader
-router.post('/reader/:id',middlewareController.verifyToken, slipController.addSlipReader);
+//ADD slip for reader by username and isbn
+router.post('/reader/:username/:isbn',middlewareController.verifyToken, slipController.addSlipReader);
 
 //ADD slip for manager by id
 router.post('/manager/id/:id',middlewareController.verifyAdminToken, slipController.addSlipManagerById);
