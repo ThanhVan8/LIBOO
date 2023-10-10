@@ -3,13 +3,18 @@ import {Input} from "@material-tailwind/react";
 import {useParams} from 'react-router-dom'
 import CustomButton from '../components/CustomButton';
 import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addSlip } from '../slices/requestApi';
 
 const EXPIRATION = 7;
 
 const Borrow = () => {
   const {id} = useParams()
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.auth.login?.currentUser)
+  
 
-  const [slip, setSlip] = useState({_id:'', username:'vann26', isbn: id ? id : '', borrowDate: '', dueDate: ''})
+  const [slip, setSlip] = useState({username: user.username, isbn: id ? id : '', borrowDate: '', dueDate: ''})
   
   const handleChangeInfo = (e) => {
     e.preventDefault();
@@ -20,11 +25,12 @@ const Borrow = () => {
 
   const handleBorrow = (e) => {
     e.preventDefault();
+    addSlip(user.accessToken, slip.username, slip.isbn, dispatch)
     console.log(slip)
   }
 
   return (
-    <div className='pt-12 pl-2'>
+    <div className='pt-12 pb-2 pr-4 pl-5'>
       {/* Borrow */}
       <form className='space-y-6' onSubmit={handleBorrow}>
         <h1 className='text-2xl font-semibold'>BORROW BOOK</h1>
@@ -66,7 +72,9 @@ const Borrow = () => {
       </form>
 
       {/* Return */}
-      <div></div>
+      <div>
+        <p className='text-2xl font-semibold'>BOOKS YOU HAVE BORROWED</p>
+      </div>
     </div>
   )
 }

@@ -3,6 +3,8 @@ import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin
 
 import { getBookBegin, getBookFailure, getBookSuccess } from './bookSlice'
 
+import {addSlipBegin, addSlipSuccess, addSlipFailure} from './slipSlice'
+
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -62,5 +64,21 @@ export const getAllBooks = async (accessToken, dispatch) => {
         dispatch(getBookSuccess(res.data));
     }catch(err){
         dispatch(getBookFailure());
+    }
+}
+
+
+//slip
+export const addSlip = async (accessToken, username, isbn, dispatch) => {
+    dispatch(addSlipBegin());
+    try{
+        const res = await axios.post(`http://localhost:8000/api/slip/reader/${username}/${isbn}`, {}, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        });
+        dispatch(addSlipSuccess(res.data));
+    } catch(err){
+        dispatch(addSlipFailure());
     }
 }
