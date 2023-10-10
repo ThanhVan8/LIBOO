@@ -66,7 +66,9 @@ const Borrow = () => {
       </form>
 
       {/* Return */}
-      <div></div>
+      <div>
+        <p className='text-2xl font-semibold'>BOOKS YOU HAVE BORROWED</p>
+      </div>
     </div>
   )
 }
