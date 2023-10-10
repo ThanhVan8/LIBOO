@@ -8,6 +8,7 @@ import Menu from './components/Menu'
 import Catalog from './pages/Catalog';
 import BookDetail from './pages/BookDetail';
 import Borrow from './pages/Borrow';
+import Profile from './pages/Profile';
 
 const App = () => {
   const toggle = useSelector(state => state.menu.toggle);
@@ -24,6 +25,7 @@ const App = () => {
             <Route path='/Borrow' element={<Borrow />}>
               <Route path='/Borrow/:id' element={<Borrow />} />
             </Route>
+            <Route path='/Myaccount' element={<Profile />} />
           </Route>
         </Routes>
       </div>
