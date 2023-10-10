@@ -21,7 +21,7 @@ router.get(`/unaccepted`,middlewareController.verifyAdminToken, slipController.g
 // GET all accepted slips
 router.get(`/accepted`,middlewareController.verifyAdminToken, slipController.getAllAcceptedSlips);
 
-//GET all slip of 1 user
+//GET all accepted slip of 1 user
 router.get('/:id',middlewareController.verifyToken ,slipController.getAllSlipsOfReader);
 
 //GET slip by username and isbn
@@ -31,7 +31,7 @@ router.get('/:username/:isbn',middlewareController.verifyAdminToken, slipControl
 router.put('/:id',middlewareController.verifyAdminToken, slipController.updateStatusSlip);
 
 //UPDATE renewExp slip
-router.put('/:id1/:id2',middlewareController.verifyAdminToken, slipController.updateExpSlip);
+router.put('/:id/:isbn',middlewareController.verifyToken, slipController.updateExpSlip);
 
 //DELETE slip
 router.delete('/:id',middlewareController.verifyAdminToken, slipController.deleteSlip);

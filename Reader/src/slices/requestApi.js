@@ -3,7 +3,9 @@ import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin
 
 import { getBookBegin, getBookFailure, getBookSuccess, getOneBookBegin, getOneBookSuccess, getOneBookFailure } from './bookSlice'
 
-import {addSlipBegin, addSlipSuccess, addSlipFailure} from './slipSlice'
+import {addSlipBegin, addSlipSuccess, addSlipFailure, getSlipBegin, getSlipSuccess, getSlipFailure,
+    renewSlipBegin, renewSlipSuccess, renewSlipFailure
+} from './slipSlice'
 
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -84,6 +86,7 @@ export const getOneBook = async (accessToken, isbn, dispatch) => {
 
 
 //slip
+//ADD slip
 export const addSlip = async (accessToken, username, isbn, dispatch) => {
     dispatch(addSlipBegin());
     try{
@@ -95,5 +98,34 @@ export const addSlip = async (accessToken, username, isbn, dispatch) => {
         dispatch(addSlipSuccess(res.data));
     } catch(err){
         dispatch(addSlipFailure());
+    }
+}
+
+// GET all accepted slips of 1 users
+export const getSlipsOfUser = async (accessToken, id, dispatch) => {
+    dispatch(getSlipBegin());
+    try{
+        const res = await axios.get(`http://localhost:8000/api/slip/${id}`,{
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        })
+        dispatch(getSlipSuccess(res.data));
+    } catch(err){
+        dispatch(getSlipFailure());
+    }
+}
+
+// Renew dueDate for 1 book
+export const renewDueDate = async (accessToken, slipId, isbn, dispatch) => {
+    dispatch(renewSlipBegin());
+    try{
+        const res = await axios.put(`http://localhost:8000/api/slip/${slipId}/${isbn}`, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        })
+    } catch(err){
+        dispatch(renewSlipFailure());
     }
 }
