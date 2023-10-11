@@ -120,11 +120,12 @@ export const getSlipsOfUser = async (accessToken, id, dispatch) => {
 export const renewDueDate = async (accessToken, slipId, isbn, dispatch) => {
     dispatch(renewSlipBegin());
     try{
-        const res = await axios.put(`http://localhost:8000/api/slip/${slipId}/${isbn}`, {
+        const res = await axios.put(`http://localhost:8000/api/slip/${slipId}/${isbn}`,{} ,{
             headers: {
                 token: `Bearer ${accessToken}`
             }
         })
+    dispatch(renewSlipSuccess(res.data))
     } catch(err){
         dispatch(renewSlipFailure());
     }

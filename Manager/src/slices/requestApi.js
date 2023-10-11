@@ -12,7 +12,7 @@ import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBo
 } from "./bookSlice";
 
 import {getSlipsBegin, getSlipsSuccess, getSlipsFailure, addSlipBegin, addSlipSuccess, addSlipFailure, returnBookBegin, returnBookSuccess, returnBookFailure,
-    getSlipBegin, getSlipFailure, getSlipSuccess
+    getSlipBegin, getSlipFailure, getSlipSuccess, deleteSlipBegin, deleteSlipSuccess, deleteSlipFailure
 } from "./slipSlice"
 
 import { toast } from "react-toastify";
@@ -291,8 +291,8 @@ export const deleteBookFromSlip = async (username, isbn, accessToken, dispatch) 
 
 // get slip by username and isbn
 export const getSlipByUsernameAndISBN = async (username, isbn, accessToken, dispatch) => {
+    dispatch(getSlipBegin())
     try{
-        dispatch(getSlipBegin())
         const res = await axios.get(`http://localhost:8000/api/slip/${username}/${isbn}`, {
             headers: {
                 token: `Bearer ${accessToken}`
@@ -301,6 +301,22 @@ export const getSlipByUsernameAndISBN = async (username, isbn, accessToken, disp
         dispatch(getSlipSuccess(res.data));
     }catch(err) {
         dispatch(getSlipFailure())
+        console.log(err.response.data);
+    }
+}
+
+//delete slip
+export const deleteSlip = async (accessToken, slipId, dispatch) => {
+    dispatch(deleteSlipBegin());
+    try{
+        const res = await axios.delete(`http://localhost:8000/api/slip/${slipId}`, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            },
+        })
+        dispatch(deleteSlipSuccess(res.data));
+    } catch(err) {
+        dispatch(deleteSlipFailure())
         console.log(err.response.data);
     }
 }
