@@ -1,5 +1,7 @@
 import axios from "axios";
-import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess, logoutBegin, logoutFailure, logoutSuccess } from './authSlice'
+import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess,
+     logoutBegin, logoutFailure, logoutSuccess, updateInfoBegin, updateInfoFailure, updateInfoSuccess
+} from './authSlice'
 
 import { getBookBegin, getBookFailure, getBookSuccess, getOneBookBegin, getOneBookSuccess, getOneBookFailure } from './bookSlice'
 
@@ -50,6 +52,21 @@ export const logoutUser = async (dispatch, id, accessToken) => {
     } catch (err) {
         console.log(err.response.data);
         dispatch(logoutFailure());
+    }
+}
+
+export const updateInfo = async (dispatch, id, accessToken, user) => {
+    dispatch(updateInfoBegin());
+    try{
+        const res = await axios.put(`http://localhost:8000/api/user/${id}`, user, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        })
+        dispatch(updateInfoSuccess(res.data));
+    } catch (err) {
+        console.log(err.response.data);
+        dispatch(updateInfoFailure());
     }
 }
 
