@@ -8,28 +8,12 @@ import CustomButton from "../components/CustomButton";
 import { useSelector, useDispatch } from 'react-redux'
 import {updateInfo} from "../slices/requestApi"
 
-// const user =
-// {
-//   "_id": "651f7e12d0aeecf563a5617a",
-//   "username": "vann26",
-//   "password": "$2b$10$Z5QKriVZ4QFD.Kda5t9dN.GnqglygkO7sccm7xq4LeAHEaxxRwW3C",
-//   "admin": false,
-//   "name": "Trần Thị Thanh Vân",
-//   "id": "123456789012",
-//   "birthday": "2003-01-01T00:00:00.000Z",
-//   "sex": "Female",
-//   "email": "van@gmail.com",
-//   "address": "123 Vườn Lài",
-//   "makingDay": "2023-10-06T03:25:06.003Z",
-//   "invalidDay": "2025-10-05T17:00:00.000Z",
-//   "__v": 0,
-//   "photo": "",
-// }
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const dispatch = useDispatch();
   const [account, setAccount] = useState(user);
+
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -44,23 +28,30 @@ const Profile = () => {
   const handleUpdateProfile = (e) => {
     e.preventDefault();
     updateInfo(dispatch, account?._id, account?.accessToken, account);
-    // console.log(account);
   }
 
   const changePhoto = (e) => {
     e.preventDefault();
-    const file = e.target.files[0];
-    console.log(file);
+    var reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      console.log(reader.result);
+      setAccount({...account, image: reader?.result});
+      updateInfo(dispatch, account._id, user?.accessToken , {...account, image: reader?.result});
+    }
+    reader.onerror = (error) => {
+      console.log('Error: ', error);
+    };
   }
 
   return (
     <div className="w-full flex gap-8 pt-12 pb-2 pr-4 pl-3">
       <div className="relative w-32 h-32 shrink-0">
-        {!user.photo ? (
+        {!user?.image ? (
           <BiUserCircle className="w-full h-full" />
         ) : (
           <img
-            src={user.photo}
+            src={user?.image}
             alt="upload"
             className="object-cover w-full h-full rounded-full"
           />

@@ -211,17 +211,17 @@ const slipController = {
             const slip = await Slip.findById(req.params.id);
             const book1 = await Book.findOne({ ISBN: req.params.isbn });
             if(!slip){
-                return res.status(500).json(err);            
+                return res.status(500).json('Data not found');            
             }
             if(!book1){
-                return res.status(500).json(err);            
+                return res.status(500).json('Book not found');            
             }
             if (slip.accepted){
                 const week = getWeek(slip.borrowDate);
                 for (let book of slip.borrowList){
                     if (String(book.book) == String(book1._id)){
                         if (getWeek(book.DueDate) - week >= 2){
-                            return res.status(500).json(err);
+                            return res.status(500).json('You have exceeded the times allowed to renew');
                         }
                         else{
                             book.DueDate = new Date(book.DueDate.getFullYear(), book.DueDate.getMonth(), book.DueDate.getDate() + 7);

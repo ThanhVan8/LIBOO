@@ -8,25 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { getOneBook } from '../slices/requestApi';
 
-const bookDetail =
-{
-  "_id": "651e43952dac9ea3a6b6e93a",
-  "ISBN": "1234567890001",
-  "name": "Kính vạn hoa",
-  "author": "Nguyễn Nhật Ánh",
-  "publisher": "NXB Kim Đồng ",
-  "publishYear": 2000,
-  "description": "\"Tôi thấy hoa vàng trên cỏ xanh\" truyện dài mới nhất của nhà văn vừa nhận giải văn chương ASEAN Nguyễn Nhật Ánh - đã được Nhà xuất bản Trẻ mua tác quyền và giới thiệu đến độc giả cả nước. Cuốn sách viết về tuổi thơ nghèo khó ở một làng quê, bên cạnh đề tài tình yêu quen thuộc, lần đầu tiên Nguyễn Nhật Ánh đưa vào tác phẩm của mình những nhân vật phản diện và đặt ra vấn đề đạo đức như sự vô tâm, cái ác. 81 chương ngắn là 81 câu chuyện nhỏ của những đứa trẻ xảy ra ở một ngôi làng: chuyện về con cóc Cậu trời, chuyện ma, chuyện công chúa và hoàng tử, bên cạnh chuyện đói ăn, cháy nhà, lụt lội,... “Tôi thấy hoa vàng trên cỏ xanh” hứa hẹn đem đến những điều thú vị với cả bạn đọc nhỏ tuổi và người lớn bằng giọng văn trong sáng, hồn nhiên, giản dị của trẻ con cùng nhiều tình tiết thú vị, bất ngờ và cảm động trong suốt hơn 300 trang sách. Cuốn sách, vì thế có sức ám ảnh, thu hút, hấp dẫn không thể bỏ qua.",
-  "genre": [
-    "Truyện ngắn",
-    "Tình cảm"
-  ],
-  "price": 200000,
-  "quantity": 20,
-  "borrowed": 18,
-  "__v": 0,
-  "photo": book,
-}
 
 const BookDetail = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
@@ -54,7 +35,7 @@ const BookDetail = () => {
         <SearchBar data={data} />
       </div>
       <div className='w-full flex gap-4 h-fit'>
-        <img src={currentBook?.photo} alt="book" className='w-40 h-auto object-contain place-self-start shrink-0' />
+        <img src={currentBook?.image} alt="book" className='w-40 h-auto object-contain place-self-start shrink-0' />
         
         {/* Detail */}
         <div className='w-full space-y-2'>

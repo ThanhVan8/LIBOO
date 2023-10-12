@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
         type: Date
     },
 
-    imageUrl: {
+    image: {
         type: String,
     }
 });

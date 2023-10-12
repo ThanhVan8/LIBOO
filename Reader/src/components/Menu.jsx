@@ -40,9 +40,7 @@ const MenuItem = ({icon, text, active}) => {
 const Menu = () => {
   const location = useLocation();
   const {toggle} = useSelector(state => state.menu);
-  const user = useSelector((state) => state.auth.login.currentUser);
-  const accessToken = user?.accessToken;
-  const id = user?._id;
+  const user = useSelector((state) => state.auth.login?.currentUser);
 
   const dispatch = useDispatch();
 
@@ -53,7 +51,8 @@ const Menu = () => {
 
 
   const logout = () => {
-    logoutUser(dispatch, id, accessToken);
+    console.log(user);
+    logoutUser(dispatch, user?._id, user?.accessToken);
     dispatch(setToggle());
   }
 

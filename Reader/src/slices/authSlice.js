@@ -20,7 +20,16 @@ const initialState = {
         isFetching: false,
         error: false,
         success: false,
-        currentUser: null
+    },
+    upload:{
+        isFetching: false,
+        error: false,
+        success: false,
+    },
+    getImage: {
+        isFetching: false,
+        error: false,
+        success: false,
     }
   };
 
@@ -87,11 +96,42 @@ const authSlice = createSlice({
             state.update.isFetching = false
             state.update.success = true
             state.update.error = false
+            state.login.currentUser = action.payload
         },
         updateInfoFailure: (state) => {
             state.update.isFetching = false
             state.update.error = true
             state.update.success = false
+        },
+
+        //upload
+        uploadBegin: (state) => {
+            state.upload.isFetching = true
+        },
+        uploadSuccess: (state) => {
+            state.upload.isFetching = false
+            state.upload.success = true
+            state.upload.error = false
+        },
+        uploadFailure: (state) => {
+            state.upload.isFetching = false
+            state.upload.error = true
+            state.upload.success = false
+        },
+
+        //get image
+        getImageBegin: (state) => {
+            state.getImage.isFetching = true
+        },
+        getImageSuccess: (state) => {
+            state.getImage.isFetching = false
+            state.getImage.success = true
+            state.getImage.error = false
+        },
+        getImageFailure: (state) => {
+            state.getImage.isFetching = false
+            state.getImage.error = true
+            state.getImage.success = false
         }
     }
 })
@@ -113,7 +153,15 @@ export const {
 
     updateInfoBegin,
     updateInfoSuccess,
-    updateInfoFailure
+    updateInfoFailure,
+    
+    uploadBegin,
+    uploadSuccess,
+    uploadFailure,
+
+    getImageBegin,
+    getImageSuccess,
+    getImageFailure,
 
 } = authSlice.actions
 

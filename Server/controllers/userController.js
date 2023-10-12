@@ -7,6 +7,7 @@ const userController = {
         try{
             const query = { admin: false };
             const users = await User.find(query);
+
             if(!users){
                 return res.status(500).json(err);            
             }
@@ -20,9 +21,6 @@ const userController = {
     addUser: async (req, res) => {
         try{
             const newUser = new User(req.body);
-            if(req.file){
-                newUser.imageUrl = req.file.filename;
-            }
             const savedUser = await newUser.save();
             res.status(200).json(savedUser);
         }catch(err){
@@ -34,10 +32,6 @@ const userController = {
     updateUser: async (req, res) => {
         try{
             const user = await User.findByIdAndUpdate(req.params.id, req.body);
-            if(req.file){
-                user.imageUrl = req.file.filename;
-                user.save();
-            }
             if(!user){
                 return res.status(500).json(err);            
             }

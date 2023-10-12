@@ -1,7 +1,9 @@
 import axios from "axios";
 import { loginBegin, loginFailure, loginSuccess, logoutBegin, logoutFailure, logoutSuccess} from './authSlice'
-import { getUserBegin, getUserSuccess, getUserFailure, addReaderBegin, addReaderSuccess, addReaderFailure, updateReaderBegin, updateReaderSuccess, updateReaderFailure,
-    deleteReaderBegin, deleteReaderSuccess, deleteReaderFailure 
+import { getUserBegin, getUserSuccess, getUserFailure,
+     addReaderBegin, addReaderSuccess, addReaderFailure, 
+     updateReaderBegin, updateReaderSuccess, updateReaderFailure,
+    deleteReaderBegin, deleteReaderSuccess, deleteReaderFailure,
 } from './readerSlice'
 
 import { addBookBegin, addBookFailure, addBookSuccess, deleteBookBegin, deleteBookFailure, deleteBookSuccess, getBookBegin, getBookFailure, getBookSuccess, 
@@ -87,10 +89,10 @@ export const addReader = async (reader, accessToken, dispatch) => {
     }
 }
 
-export const updateReader = async (user, id, accessToken, dispatch) => {
+export const updateReader = async (reader, id, accessToken, dispatch) => {
     dispatch(updateReaderBegin());
     try{
-        const res = await axios.put('http://localhost:8000/api/user/'+ id, user, {
+        const res = await axios.put('http://localhost:8000/api/user/'+ id, reader, {
             headers: {
                 token: `Bearer ${accessToken}`
             }
@@ -120,7 +122,6 @@ export const deleteReader = async (accessToken, dispatch, id) => {
         toast.error('Delete reader failed!');
     }
 }
-
 
 //books
 export const getAllBooks = async (accessToken, dispatch) => {

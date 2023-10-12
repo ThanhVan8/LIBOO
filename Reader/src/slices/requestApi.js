@@ -1,6 +1,6 @@
 import axios from "axios";
 import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess,
-     logoutBegin, logoutFailure, logoutSuccess, updateInfoBegin, updateInfoSuccess, updateInfoFailure
+     logoutBegin, logoutFailure, logoutSuccess, updateInfoBegin, updateInfoSuccess, updateInfoFailure,
 } from './authSlice'
 
 import { getBookBegin, getBookFailure, getBookSuccess, getOneBookBegin, getOneBookSuccess, getOneBookFailure } from './bookSlice'
@@ -49,26 +49,42 @@ export const logoutUser = async (dispatch, id, accessToken) => {
             }
         })
         dispatch(logoutSuccess(res.data));
+        toast.success('Logout successfully!');
     } catch (err) {
         console.log(err.response.data);
         dispatch(logoutFailure());
+        toast.error(err.response.data);
     }
 }
 
 //user
+export const refreshToken = async() => {
+    try {
+        const res = await axios.put('http://localhost:8000/api/auth/refresh', {
+            withCredentials: true,
+        });
+        return res.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 //update info
 export const updateInfo = async (dispatch, id, accessToken, user) => {
     dispatch(updateInfoBegin());
     try{
-        const res = await axios.put(`http://localhost:8000/api/user/${id}`, user, {
+        const res = await axios.put(`http://localhost:8000/api/auth/${id}`, user, {
             headers: {
                 token: `Bearer ${accessToken}`
             }
         })
-        dispatch(updateInfoSuccess(res.data));
+        dispatch(updateInfoSuccess());
+        dispatch(loginSuccess(res.data));
+        toast.success('Update profile successfully!');
     } catch (err) {
         console.log(err.response.data);
         dispatch(updateInfoFailure());
+        toast.error('Update profile failed!');
     }
 }
 
@@ -115,8 +131,10 @@ export const addSlip = async (accessToken, username, isbn, dispatch) => {
             }
         });
         dispatch(addSlipSuccess(res.data));
+        toast.success('Borrow book successfully!');
     } catch(err){
         dispatch(addSlipFailure());
+        toast.error(`Borrow book failed! (${err.response.data})`);
     }
 }
 
@@ -145,7 +163,9 @@ export const renewDueDate = async (accessToken, slipId, isbn, dispatch) => {
             }
         })
     dispatch(renewSlipSuccess(res.data))
+    toast.success('Renew book successfully!');
     } catch(err){
         dispatch(renewSlipFailure());
+        toast.error('Renew book failed!');
     }
 }
