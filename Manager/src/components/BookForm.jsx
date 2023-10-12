@@ -18,9 +18,9 @@ const BookForm = () => {
       name: '',
       author: '',
       publisher: '',
-      publishYear: 0,
+      publishYear: '',
       genre: [],
-      price: 0,
+      price: '',
       quantity: 1,
       borrowed: 0,
       image: '',
@@ -47,15 +47,8 @@ const BookForm = () => {
     var reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
     reader.onload = () => {
-      console.log(reader.result);
       setBook({...book, image: reader.result});
-      if(showAddBook){
-        addBook({...book, image: reader.result}, user?.accessToken, dispatch);
-      }
-      if(showUpdateBook){
-        updateBook({...book, image: reader.result}, book._id, user?.accessToken, dispatch);
-      }
-      console.log(book.image);
+      updateBook({...book, image: reader.result}, book._id, user?.accessToken, dispatch);
     }
     reader.onerror = (error) => {
       console.log('Error: ', error);
@@ -105,7 +98,7 @@ const BookForm = () => {
             <img src={book.image} alt="upload" className="object-cover w-full h-full rounded-full" />
             }
             <div
-              className="absolute bottom-2 right-1 w-5 h-5 rounded-full bg-red flex items-center justify-center"
+              className="absolute bottom-1 -right-0.5 w-5 h-5 rounded-full bg-red flex items-center justify-center"
             >
               <input type="file" accept="image/png,image/jpeg" className="hidden" onChange={changePhoto} />
               <MdEdit className="text-white hover:cursor-pointer" onClick={() => document.querySelector('input[type="file"]').click()} />

@@ -47,20 +47,20 @@ const Profile = () => {
   return (
     <div className="w-full flex gap-8 pt-12 pb-2 pr-4 pl-3">
       <div className="relative w-32 h-32 shrink-0">
-        {!user?.image ? (
+        {!account?.image ? (
           <BiUserCircle className="w-full h-full" />
         ) : (
           <img
-            src={user?.image}
+            src={account?.image}
             alt="upload"
             className="object-cover w-full h-full rounded-full"
           />
         )}
         <div
-          className="absolute bottom-3 right-6 w-6 h-6 rounded-full bg-red flex items-center justify-center"
+          className="absolute bottom-3 right-2 w-7 h-7 p-1 rounded-full bg-red flex items-center justify-center"
         >
           <input type="file" accept="image/png,image/jpeg" className="hidden" onChange={changePhoto} />
-          <MdEdit className="text-white text-center hover:cursor-pointer" onClick={() => document.querySelector('input[type="file"]').click()} />
+          <MdEdit className="text-white text-center hover:cursor-pointer w-full h-full" onClick={() => document.querySelector('input[type="file"]').click()} />
         </div>
       </div>
       <form className='w-full space-y-6' onSubmit={handleUpdateProfile}>

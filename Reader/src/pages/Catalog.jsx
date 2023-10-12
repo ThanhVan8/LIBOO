@@ -63,7 +63,7 @@ const Catalog = () => {
             <Link key={item._id} to={`/Catalog/${item.ISBN}`}>
               <div className='flex flex-col items-center gap-2'>
                 <div className='relative'>
-                  <img src={item.image} alt='book' className='peer' />
+                  <img src={item.image} alt='book' className='peer h-60 object-cover' />
                   <p className='hidden peer-hover:block peer-hover:absolute peer-hover:top-0 peer-hover:right-0 peer-hover:bg-red peer-hover:text-white peer-hover:px-2 peer-hover:py-1'>{item.ISBN}</p>
                 </div>
                 <p className='text-center text-sm'>{item.name}</p>

@@ -119,7 +119,7 @@ const Readers = () => {
                 <td className="p-2 w-12 h-12">
                   {!record.image ?
                   <BiUserCircle className='w-full h-full' /> :
-                  <img src={record.image} alt="logo" className="w-full h-full rounded-full object-contain" />
+                  <img src={record.image} alt="logo" className="w-full h-full rounded-full object-cover shrink-0" />
                   }
                 </td>
                 <td className="p-2">

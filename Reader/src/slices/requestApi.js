@@ -166,6 +166,6 @@ export const renewDueDate = async (accessToken, slipId, isbn, dispatch) => {
     toast.success('Renew book successfully!');
     } catch(err){
         dispatch(renewSlipFailure());
-        toast.error('Renew book failed!');
+        toast.error(err.response.data);
     }
 }

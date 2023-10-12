@@ -34,21 +34,22 @@ const BookDetail = () => {
       <div className='flex justify-end'>
         <SearchBar data={data} />
       </div>
+      {currentBook &&
       <div className='w-full flex gap-4 h-fit'>
-        <img src={currentBook?.image} alt="book" className='w-40 h-auto object-contain place-self-start shrink-0' />
+        <img src={currentBook.image} alt="book" className='w-40 h-auto object-contain place-self-start shrink-0' />
         
         {/* Detail */}
         <div className='w-full space-y-2'>
-          <h1 className='text-2xl font-semibold'>{currentBook?.name}</h1>
-          <p className='text-lg'>ISBN: <span className='font-medium text-red'>{currentBook?.ISBN}</span></p>
-          <p> Author: {currentBook?.author} </p>
-          <p> Publisher: {currentBook?.publisher} </p>
-          <p> Publish year: {currentBook?.publishYear} </p>
-          <p> Genre: {currentBook?.genre?.join(', ')} </p>
-          <p> Price: {currentBook?.price} VND </p>
+          <h1 className='text-2xl font-semibold'>{currentBook.name}</h1>
+          <p className='text-lg'>ISBN: <span className='font-medium text-red'>{currentBook.ISBN}</span></p>
+          <p> Author: {currentBook.author} </p>
+          <p> Publisher: {currentBook.publisher} </p>
+          <p> Publish year: {currentBook.publishYear} </p>
+          <p> Genre: {currentBook.genre?.join(', ')} </p>
+          <p> Price: {currentBook.price} VND </p>
           <div>
             <p className='font-medium'>Description:</p>
-            <p className={`text-justify ${expanded ? 'line-clamp-none' : 'line-clamp-4'}`}>{currentBook?.description}</p>
+            <p className={`text-justify ${expanded ? 'line-clamp-none' : 'line-clamp-4'}`}>{currentBook.description}</p>
             <button
               onClick={() => setExpanded(!expanded)}
               className='space-x-1'
@@ -61,15 +62,16 @@ const BookDetail = () => {
 
         {/* Note */}
         <div className='w-fit h-fit border-2 border-lightGrey rounded-md px-4 py-2 space-y-3'>
-          <p className='text-lg font-medium'>{currentBook?.borrowed < currentBook?.quantity ? 
+          <p className='text-lg font-medium'>{currentBook.borrowed < currentBook.quantity ? 
             <span className='text-available'>Available</span> : 
             <span className='text-unavailable'>Not available</span>}
           </p>
-          <p>Amount: <span className='font-medium'>{currentBook?.quantity}</span></p>
-          <p>Available: <span className='font-medium'>{currentBook?.quantity - currentBook?.borrowed}</span></p>
-          <CustomButton label='Borrow' classes='self-center w-[12rem]' disabled={currentBook?.borrowed >= currentBook?.quantity} onClick={gotoBorrow} />
+          <p>Amount: <span className='font-medium'>{currentBook.quantity}</span></p>
+          <p>Available: <span className='font-medium'>{currentBook.quantity - currentBook.borrowed}</span></p>
+          <CustomButton label='Borrow' classes='self-center w-[12rem]' disabled={currentBook.borrowed >= currentBook.quantity} onClick={gotoBorrow} />
         </div>
       </div>
+    }
     </div>
   )
 }
