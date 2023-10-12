@@ -26,7 +26,19 @@ const readerSlice = createSlice({
     },
     showDeleteReader: false,
     updatedReader: null,
+
+    upload:{
+      isFetching: false,
+      error: false,
+      success: false,
     },
+
+    getImage: {
+      isFetching: false,
+      error: false,
+      success: false,
+    }
+  },
 
   reducers: {
     setShowAddReader(state, action) {
@@ -102,12 +114,30 @@ const readerSlice = createSlice({
         state.deleteReader.isFetching = false
         state.deleteReader.error = true
         state.deleteReader.success = false
-    }
+    },
   },
 });
 const { actions, reducer } = readerSlice;
-export const { setShowAddReader, setShowUpdateReader, setUpdatedReader, setShowDeleteReader, getUserBegin, getUserSuccess, getUserFailure, 
-  addReaderBegin, addReaderSuccess, addReaderFailure, updateReaderBegin, updateReaderSuccess, updateReaderFailure, deleteReaderBegin, 
-  deleteReaderSuccess, deleteReaderFailure
+export const { 
+  setShowAddReader, 
+  setShowUpdateReader, 
+  setUpdatedReader, 
+  setShowDeleteReader, 
+  
+  getUserBegin, 
+  getUserSuccess, 
+  getUserFailure, 
+
+  addReaderBegin, 
+  addReaderSuccess, 
+  addReaderFailure, 
+  
+  updateReaderBegin, 
+  updateReaderSuccess, 
+  updateReaderFailure, 
+  
+  deleteReaderBegin, 
+  deleteReaderSuccess, 
+  deleteReaderFailure, 
 } = actions;
 export default reducer;

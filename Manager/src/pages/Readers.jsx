@@ -117,9 +117,9 @@ const Readers = () => {
             {records?.map((record) => (
               <tr key={record._id} className="even:bg-blue-gray-50/50 hover:bg-lightOrange/30">
                 <td className="p-2 w-12 h-12">
-                  {!record.Photo ?
+                  {!record.image ?
                   <BiUserCircle className='w-full h-full' /> :
-                  <img src={record.Photo} alt="logo" className="w-full h-full rounded-full object-contain" />
+                  <img src={record.image} alt="logo" className="w-full h-full rounded-full object-contain" />
                   }
                 </td>
                 <td className="p-2">

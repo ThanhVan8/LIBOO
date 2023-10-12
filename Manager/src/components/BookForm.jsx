@@ -23,13 +23,13 @@ const BookForm = () => {
       price: 0,
       quantity: 1,
       borrowed: 0,
-      photo: '',
+      image: '',
       description: '',
     } :
     updatedBook
   );
 
-  const [tempGenre, setTempGenre] = useState('');
+  const [tempGenre, setTempGenre] = useState(book.genre.join(', '));
 
   const dispatch = useDispatch();
 
@@ -44,7 +44,22 @@ const BookForm = () => {
 
   const changePhoto = (e) => {
     e.preventDefault();
-    
+    var reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      console.log(reader.result);
+      setBook({...book, image: reader.result});
+      if(showAddBook){
+        addBook({...book, image: reader.result}, user?.accessToken, dispatch);
+      }
+      if(showUpdateBook){
+        updateBook({...book, image: reader.result}, book._id, user?.accessToken, dispatch);
+      }
+      console.log(book.image);
+    }
+    reader.onerror = (error) => {
+      console.log('Error: ', error);
+    };
   }
 
   const handleChangeInfo = (e) => {
@@ -84,9 +99,9 @@ const BookForm = () => {
         </button>
         <h1 className="text-2xl font-semibold text-left">{showAddBook ? 'Add' : 'Update'} Book</h1>
         <div className="relative w-16 h-16">
-          {!book.photo ? 
+          {!book.image ? 
           <BiBookOpen className='w-full h-full' /> :
-          <img src={book.photo} alt="upload" className="object-cover w-full h-full rounded-full" />
+          <img src={book.image} alt="upload" className="object-cover w-full h-full rounded-full" />
           }
           <div
             className="absolute bottom-2 right-1 w-5 h-5 rounded-full bg-red flex items-center justify-center"

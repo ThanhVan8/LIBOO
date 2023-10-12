@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { BiX } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
 import { setShowAddReader, setShowUpdateReader, setUpdatedReader } from '../slices/readerSlice';
@@ -8,7 +8,7 @@ import { Input } from "@material-tailwind/react";
 import RadioButton from "./RadioButton";
 import CustomButton from "./CustomButton";
 import { FaInfoCircle } from "react-icons/fa";
-import { addReader, updateReader } from "../slices/requestApi";
+import { addReader, updateReader, uploadImage } from "../slices/requestApi";
 
 const EXPIRATION = 2;
 
@@ -34,7 +34,7 @@ const ReaderForm = () => {
           address: "",
           makingDay: today,
           invalidDay: exp,
-          photo: "",
+          image: "",
         }
       : updatedReader
   );
@@ -56,8 +56,22 @@ const ReaderForm = () => {
 
   const changePhoto = (e) => {
     e.preventDefault();
-    const file = e.target.files[0];
-    console.log(file);
+    var reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      console.log(reader.result);
+      setAccount({...account, image: reader.result});
+      if(showAddReader){
+        addReader({...account, image: reader.result}, user?.accessToken, dispatch);
+      }
+      if(showUpdateReader){
+        updateReader({...account, image: reader.result}, account._id, user?.accessToken, dispatch);
+      }
+      console.log(account.image);
+    }
+    reader.onerror = (error) => {
+      console.log('Error: ', error);
+    };
   }
 
   const handleChangeInfo = (e) => {
@@ -78,6 +92,10 @@ const ReaderForm = () => {
       closeForm();
   }
 
+  // useEffect(() => {
+
+  // })
+
   return (
     <div className="fixed top-0 left-0 bg-black bg-opacity-25 w-full h-full flex justify-center items-center z-50 overflow-auto ">
       <form
@@ -92,9 +110,9 @@ const ReaderForm = () => {
         </button>
         <h1 className="text-2xl font-semibold text-left">{showAddReader ? 'Add' : 'Update'} Reader</h1>
         <div className="relative w-16 h-16">
-          {!account.photo ? 
+          {!account.image ? 
           <BiUserCircle className='w-full h-full' /> :
-          <img src={account.photo} alt="upload" className="object-cover w-full h-full rounded-full" />
+          <img src={account?.image} alt="upload" className="object-cover w-full h-full rounded-full" />
           }
           <div
             className="absolute bottom-2 right-1 w-5 h-5 rounded-full bg-red flex items-center justify-center"

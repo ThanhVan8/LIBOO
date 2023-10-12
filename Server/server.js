@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('common'));
 app.use(cookieParser());
+app.use(express.static('images'));
 
 dotenv.config();
 
