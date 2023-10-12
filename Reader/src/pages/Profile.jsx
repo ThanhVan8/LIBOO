@@ -43,8 +43,14 @@ const Profile = () => {
 
   const handleUpdateProfile = (e) => {
     e.preventDefault();
-    updateInfo(dispatch, account?._id, account?.accessToken, account);
+    // updateInfo(dispatch, account?._id, account?.accessToken, account);
     // console.log(account);
+  }
+
+  const changePhoto = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    console.log(file);
   }
 
   return (
@@ -59,12 +65,12 @@ const Profile = () => {
             className="object-cover w-full h-full rounded-full"
           />
         )}
-        <button
+        <div
           className="absolute bottom-3 right-6 w-6 h-6 rounded-full bg-red flex items-center justify-center"
-          // onClick={changePhoto}
         >
-          <MdEdit className="text-white text-center" />
-        </button>
+          <input type="file" accept="image/png,image/jpeg" className="hidden" onChange={changePhoto} />
+          <MdEdit className="text-white text-center hover:cursor-pointer" onClick={() => document.querySelector('input[type="file"]').click()} />
+        </div>
       </div>
       <form className='w-full space-y-6' onSubmit={handleUpdateProfile}>
         <h1 className='text-2xl font-semibold text-center'>PROFILE</h1>
