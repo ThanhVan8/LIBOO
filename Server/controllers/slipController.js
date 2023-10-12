@@ -19,17 +19,22 @@ const slipController = {
                 return res.status(500).json(err);
             }
             const slips = await Slip.find({UserID: user._id});
-            if(!slips){
-                return res.status(500).json(err);
-            }
+            const week = getWeek(new Date());
+            var cnt = 0;
+
             for (let i = 0; i < slips.length; i++){
+                if (getWeek(slips[i].borrowDate) == week){
+                    cnt = cnt + slips[i].borrowList.length;
+                }
                 for (let j = 0; j < slips[i].borrowList.length; j++){
                     if (String(slips[i].borrowList[j].book) == String(book._id)){
                         return res.status(500).json(`User already borrow ${book.name}`);
                     }
                 }
             }
-
+            if (cnt >= 2){
+                return res.status(500).json('User borrow too much books in this week');
+            }
             var bookList = []
             tmp = {book: book._id};
             bookList.push(tmp);
@@ -78,7 +83,7 @@ const slipController = {
             let cnt = 0;
             for (let i = 0; i < slips.length; i++){
                 if (getWeek(slips[i].borrowDate) == week){
-                    cnt++;
+                    cnt = cnt + slips[i].borrowList.length;
                 }
             }
             for (let i = 0; i < req.body.borrowList.length; i++){

@@ -1,5 +1,7 @@
 import axios from "axios";
-import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess, logoutBegin, logoutFailure, logoutSuccess } from './authSlice'
+import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess,
+     logoutBegin, logoutFailure, logoutSuccess, updateInfoBegin, updateInfoSuccess, updateInfoFailure
+} from './authSlice'
 
 import { getBookBegin, getBookFailure, getBookSuccess, getOneBookBegin, getOneBookSuccess, getOneBookFailure } from './bookSlice'
 
@@ -50,6 +52,23 @@ export const logoutUser = async (dispatch, id, accessToken) => {
     } catch (err) {
         console.log(err.response.data);
         dispatch(logoutFailure());
+    }
+}
+
+//user
+//update info
+export const updateInfo = async (dispatch, id, accessToken, user) => {
+    dispatch(updateInfoBegin());
+    try{
+        const res = await axios.put(`http://localhost:8000/api/user/${id}`, user, {
+            headers: {
+                token: `Bearer ${accessToken}`
+            }
+        })
+        dispatch(updateInfoSuccess(res.data));
+    } catch (err) {
+        console.log(err.response.data);
+        dispatch(updateInfoFailure());
     }
 }
 
@@ -120,11 +139,12 @@ export const getSlipsOfUser = async (accessToken, id, dispatch) => {
 export const renewDueDate = async (accessToken, slipId, isbn, dispatch) => {
     dispatch(renewSlipBegin());
     try{
-        const res = await axios.put(`http://localhost:8000/api/slip/${slipId}/${isbn}`, {
+        const res = await axios.put(`http://localhost:8000/api/slip/${slipId}/${isbn}`,{} ,{
             headers: {
                 token: `Bearer ${accessToken}`
             }
         })
+    dispatch(renewSlipSuccess(res.data))
     } catch(err){
         dispatch(renewSlipFailure());
     }

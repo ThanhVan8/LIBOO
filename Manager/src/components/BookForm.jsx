@@ -88,12 +88,12 @@ const BookForm = () => {
           <BiBookOpen className='w-full h-full' /> :
           <img src={book.photo} alt="upload" className="object-cover w-full h-full rounded-full" />
           }
-          <button
+          <div
             className="absolute bottom-2 right-1 w-5 h-5 rounded-full bg-red flex items-center justify-center"
-            onClick={changePhoto}
           >
-            <MdEdit className="text-white" />
-          </button>
+            <input type="file" accept="image/png,image/jpeg" className="hidden" onChange={changePhoto} />
+            <MdEdit className="text-white hover:cursor-pointer" onClick={() => document.querySelector('input[type="file"]').click()} />
+          </div>
         </div>
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-4">
           <Input

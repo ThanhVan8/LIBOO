@@ -7,7 +7,7 @@ import { FaTrash } from 'react-icons/fa';
 import DeleteModal from "../components/DeleteModal";
 import {getAllSlips} from "../slices/requestApi"
 import { useDispatch, useSelector } from 'react-redux';
-import {addSlipById, addSlipByUsername} from '../slices/requestApi'
+import {addSlipById, addSlipByUsername, deleteSlip} from '../slices/requestApi'
 
 const EXPIRATION = 7;
 const TABLE_HEAD = ['Username', 'ISBN', 'Received date', ''];
@@ -50,10 +50,6 @@ const Borrow = () => {
     }
     if(!slip._id){
       addSlipByUsername(slip.username, slip.isbns ,user?.accessToken, dispatch);
-      // console.log(getWeek(today))
-      // console.log(new Date())
-      // console.log(today)
-      // console.log(getWeek(new Date(slip.borrowDate.getFullYear, slip.borrowDate.getMonth, slip.borrowDate.getDate)))
     }
   };
 
@@ -70,9 +66,11 @@ const Borrow = () => {
   const [toggleDelete, setToggleDelete] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const handleDelete = (e) => {
-    e.preventDefault();
-    console.log(selectedRequest);
-    setToggleDelete(false)
+    if(user?.accessToken){
+      e.preventDefault();
+      setToggleDelete(false)
+      deleteSlip(user?.accessToken, selectedRequest._id, dispatch)
+    }
   }
 
   const refreshBorrow = (e) => {

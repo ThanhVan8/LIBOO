@@ -5,26 +5,30 @@ import { Input } from "@material-tailwind/react";
 import { FaInfoCircle } from "react-icons/fa";
 import RadioButton from "../components/RadioButton";
 import CustomButton from "../components/CustomButton";
+import { useSelector, useDispatch } from 'react-redux'
+import {updateInfo} from "../slices/requestApi"
 
-const user =
-{
-  "_id": "651f7e12d0aeecf563a5617a",
-  "username": "vann26",
-  "password": "$2b$10$Z5QKriVZ4QFD.Kda5t9dN.GnqglygkO7sccm7xq4LeAHEaxxRwW3C",
-  "admin": false,
-  "name": "Trần Thị Thanh Vân",
-  "id": "123456789012",
-  "birthday": "2003-01-01T00:00:00.000Z",
-  "sex": "Female",
-  "email": "van@gmail.com",
-  "address": "123 Vườn Lài",
-  "makingDay": "2023-10-06T03:25:06.003Z",
-  "invalidDay": "2025-10-05T17:00:00.000Z",
-  "__v": 0,
-  "photo": "",
-}
+// const user =
+// {
+//   "_id": "651f7e12d0aeecf563a5617a",
+//   "username": "vann26",
+//   "password": "$2b$10$Z5QKriVZ4QFD.Kda5t9dN.GnqglygkO7sccm7xq4LeAHEaxxRwW3C",
+//   "admin": false,
+//   "name": "Trần Thị Thanh Vân",
+//   "id": "123456789012",
+//   "birthday": "2003-01-01T00:00:00.000Z",
+//   "sex": "Female",
+//   "email": "van@gmail.com",
+//   "address": "123 Vườn Lài",
+//   "makingDay": "2023-10-06T03:25:06.003Z",
+//   "invalidDay": "2025-10-05T17:00:00.000Z",
+//   "__v": 0,
+//   "photo": "",
+// }
 
 const Profile = () => {
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const dispatch = useDispatch();
   const [account, setAccount] = useState(user);
 
   const formatDate = (dateString) => {
@@ -39,7 +43,14 @@ const Profile = () => {
 
   const handleUpdateProfile = (e) => {
     e.preventDefault();
-    console.log(account);
+    updateInfo(dispatch, account?._id, account?.accessToken, account);
+    // console.log(account);
+  }
+
+  const changePhoto = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    console.log(file);
   }
 
   return (
@@ -54,12 +65,12 @@ const Profile = () => {
             className="object-cover w-full h-full rounded-full"
           />
         )}
-        <button
+        <div
           className="absolute bottom-3 right-6 w-6 h-6 rounded-full bg-red flex items-center justify-center"
-          // onClick={changePhoto}
         >
-          <MdEdit className="text-white text-center" />
-        </button>
+          <input type="file" accept="image/png,image/jpeg" className="hidden" onChange={changePhoto} />
+          <MdEdit className="text-white text-center hover:cursor-pointer" onClick={() => document.querySelector('input[type="file"]').click()} />
+        </div>
       </div>
       <form className='w-full space-y-6' onSubmit={handleUpdateProfile}>
         <h1 className='text-2xl font-semibold text-center'>PROFILE</h1>
