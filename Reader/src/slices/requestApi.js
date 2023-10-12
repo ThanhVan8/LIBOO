@@ -49,9 +49,11 @@ export const logoutUser = async (dispatch, id, accessToken) => {
             }
         })
         dispatch(logoutSuccess(res.data));
+        toast.success('Logout successfully!');
     } catch (err) {
         console.log(err.response.data);
         dispatch(logoutFailure());
+        toast.error(err.response.data);
     }
 }
 
@@ -78,9 +80,11 @@ export const updateInfo = async (dispatch, id, accessToken, user) => {
         })
         dispatch(updateInfoSuccess());
         dispatch(loginSuccess(res.data));
+        toast.success('Update profile successfully!');
     } catch (err) {
         console.log(err.response.data);
         dispatch(updateInfoFailure());
+        toast.error('Update profile failed!');
     }
 }
 
@@ -127,8 +131,10 @@ export const addSlip = async (accessToken, username, isbn, dispatch) => {
             }
         });
         dispatch(addSlipSuccess(res.data));
+        toast.success('Borrow book successfully!');
     } catch(err){
         dispatch(addSlipFailure());
+        toast.error(`Borrow book failed! (${err.response.data})`);
     }
 }
 
@@ -157,7 +163,9 @@ export const renewDueDate = async (accessToken, slipId, isbn, dispatch) => {
             }
         })
     dispatch(renewSlipSuccess(res.data))
+    toast.success('Renew book successfully!');
     } catch(err){
         dispatch(renewSlipFailure());
+        toast.error('Renew book failed!');
     }
 }
