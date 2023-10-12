@@ -32,6 +32,11 @@ const userController = {
     updateUser: async (req, res) => {
         try{
             const user = await User.findByIdAndUpdate(req.params.id, req.body);
+            console.log(user)
+            if(req.file){
+                user.imageUrl = req.file.filename;
+                user.save();
+            }
             if(!user){
                 return res.status(500).json(err);            
             }

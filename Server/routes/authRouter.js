@@ -15,5 +15,8 @@ router.post('/refresh', authController.requestRefreshToken);
 //Logout
 router.post('/logout/:id', middlewareController.verifyToken , authController.logout);
 
+//UPDATE user
+router.put('/:id', middlewareController.verifyToken, authController.update);
+
 
 module.exports = router;
