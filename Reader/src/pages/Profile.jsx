@@ -6,8 +6,9 @@ import { FaInfoCircle } from "react-icons/fa";
 import RadioButton from "../components/RadioButton";
 import CustomButton from "../components/CustomButton";
 import { useSelector, useDispatch } from 'react-redux'
-import {updateInfo} from "../slices/requestApi"
-
+import {updateInfo, refreshToken} from "../slices/requestApi"
+import { loginSuccess } from "../slices/authSlice";
+import axios from "axios";
 // const user =
 // {
 //   "_id": "651f7e12d0aeecf563a5617a",
@@ -41,10 +42,9 @@ const Profile = () => {
     setAccount({...account, [name]: value});
   }
 
-  const handleUpdateProfile = (e) => {
+  const handleUpdateProfile = async(e) => {
     e.preventDefault();
     updateInfo(dispatch, account?._id, account?.accessToken, account);
-    // console.log(account);
   }
 
   const changePhoto = (e) => {

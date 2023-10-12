@@ -56,16 +56,28 @@ export const logoutUser = async (dispatch, id, accessToken) => {
 }
 
 //user
+export const refreshToken = async() => {
+    try {
+        const res = await axios.put('http://localhost:8000/api/auth/refresh', {
+            withCredentials: true,
+        });
+        return res.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 //update info
 export const updateInfo = async (dispatch, id, accessToken, user) => {
     dispatch(updateInfoBegin());
     try{
-        const res = await axios.put(`http://localhost:8000/api/user/${id}`, user, {
+        const res = await axios.put(`http://localhost:8000/api/auth/${id}`, user, {
             headers: {
                 token: `Bearer ${accessToken}`
             }
         })
-        dispatch(updateInfoSuccess(res.data));
+        dispatch(updateInfoSuccess());
+        dispatch(loginSuccess(res.data));
     } catch (err) {
         console.log(err.response.data);
         dispatch(updateInfoFailure());

@@ -92,7 +92,7 @@ const authController = {
         if(!refreshToken){
             return res.status(401).json('You are not authenticated');
         }
-        if(! refreshTokens.includes(refreshToken)){
+        if(!refreshTokens.includes(refreshToken)){
             return res.status(403).json('Refresh token is not valid');
         }
         jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
@@ -122,7 +122,38 @@ const authController = {
             token => token !== req.cookies.refreshToken
         );
         res.status(200).json('Logged out');
-    }
+    },
+
+    //UPDATE user
+    update: async (req, res) => {
+        try{
+            const user = await User.findByIdAndUpdate(req.params.id, req.body);
+            const updatedUser = await User.findById(req.params.id);
+            if(req.file){
+                user.imageUrl = req.file.filename;
+                user.save();
+            }
+            if(!user){
+                return res.status(500).json(err);            
+            }
+            if(user){
+                const accessToken = authController.generateAccessToken(user);
+                const refreshToken = authController.generateRefreshToken(user);
+                refreshTokens.push(refreshToken);
+                //store refresh token in cookie
+                res.cookie('refreshToken', refreshToken, {
+                    httpOnly: true,
+                    secure: false,
+                    path: '/',
+                    sameSite: 'strict',
+                });
+                const {password, ...others} = updatedUser._doc;
+                res.status(200).json({...others, accessToken});
+            }
+        }catch(err){
+            res.status(500).json(err);
+        }
+    },
 };
 
 module.exports = authController;
