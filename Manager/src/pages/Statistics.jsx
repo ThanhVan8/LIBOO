@@ -81,7 +81,7 @@ const Statistics = () => {
 
     let res = [];
     slips?.forEach((slip) => {
-      let reader = readerList?.find((reader) => reader._id === slip.UserID._id);
+      let reader = readerList?.find((reader) => reader?._id === slip.UserID?._id);
       slip?.borrowList?.forEach((borrow) => {
         const diffDays = Math.round((today - new Date(borrow.DueDate)) / oneDay);
         if (diffDays > 0) {
