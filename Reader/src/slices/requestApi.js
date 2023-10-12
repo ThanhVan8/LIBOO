@@ -1,6 +1,6 @@
 import axios from "axios";
 import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess,
-     logoutBegin, logoutFailure, logoutSuccess, updateInfoBegin, updateInfoFailure, updateInfoSuccess
+     logoutBegin, logoutFailure, logoutSuccess, updateInfoBegin, updateInfoSuccess, updateInfoFailure
 } from './authSlice'
 
 import { getBookBegin, getBookFailure, getBookSuccess, getOneBookBegin, getOneBookSuccess, getOneBookFailure } from './bookSlice'
@@ -55,6 +55,8 @@ export const logoutUser = async (dispatch, id, accessToken) => {
     }
 }
 
+//user
+//update info
 export const updateInfo = async (dispatch, id, accessToken, user) => {
     dispatch(updateInfoBegin());
     try{

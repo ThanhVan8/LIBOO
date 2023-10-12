@@ -40,21 +40,23 @@ const Profile = () => {
     const {name, value} = e.target;
     setAccount({...account, [name]: value});
   }
-
+  
   const handleUpdateProfile = (e) => {
     e.preventDefault();
-    updateInfo(dispatch, account?._id, account?.accessToken, account);
-    // console.log(account);
+    updateInfo(dispatch, account?._id, user?.accessToken, account);
   }
+
+
+  // console.log(account);
 
   return (
     <div className="w-full flex gap-8 pt-12 pb-2 pr-4 pl-3">
       <div className="relative w-32 h-32 shrink-0">
-        {!user.photo ? (
+        {!user?.photo ? (
           <BiUserCircle className="w-full h-full" />
         ) : (
           <img
-            src={user.photo}
+            src={user?.photo}
             alt="upload"
             className="object-cover w-full h-full rounded-full"
           />
@@ -77,7 +79,7 @@ const Profile = () => {
               minLength={6}
               maxLength={20}
               name="username"
-              value={account.username}
+              value={account?.username}
               onChange={handleChangeInfo}
               readOnly
             />
@@ -92,7 +94,7 @@ const Profile = () => {
             required
             onChange={handleChangeInfo}
             name="name"
-            value={account.name}
+            value={account?.name}
           />
           <Input
             variant="standard"
@@ -107,7 +109,7 @@ const Profile = () => {
             maxLength={12}
             onChange={handleChangeInfo}
             name="id"
-            value={account.id}
+            value={account?.id}
           />
           <Input
             variant="standard"
@@ -116,7 +118,7 @@ const Profile = () => {
             type="date"
             onChange={handleChangeInfo}
             name="birthday"
-            value={account.birthday === '' ? '' : new Date(account.birthday).toISOString().slice(0, 10)}
+            value={account?.birthday === '' ? '' : new Date(account?.birthday).toISOString().slice(0, 10)}
           />
           <div className="flex gap-4 self-end"> 
             <RadioButton
@@ -124,14 +126,14 @@ const Profile = () => {
               onChange={handleChangeInfo}
               value="Male"
               name="sex"
-              checked={account.sex === "Male"}
+              checked={account?.sex === "Male"}
             />
             <RadioButton
               label="Female"
               onChange={handleChangeInfo}
               value="Female"
               name="sex"
-              checked={account.sex === "Female"}
+              checked={account?.sex === "Female"}
             />
           </div>
           <Input
@@ -148,14 +150,14 @@ const Profile = () => {
             label="Address"
             required
             onChange={handleChangeInfo}
-            value={account.address}
+            value={account?.address}
             name="address"
           />
           <Input
             variant="standard"
             label="Registration date"
             readOnly
-            value={formatDate(account.makingDay)}
+            value={formatDate(account?.makingDay)}
             name="makingDay"
             labelProps={{ className: "peer-disabled:text-textDisable" }}
           />
@@ -163,7 +165,7 @@ const Profile = () => {
             variant="standard"
             label="Expiration date"
             readOnly
-            value={formatDate(account.invalidDay)}
+            value={formatDate(account?.invalidDay)}
             name="invalidDay"
             labelProps={{ className: "peer-disabled:text-textDisable" }}
           />

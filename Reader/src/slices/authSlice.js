@@ -16,11 +16,11 @@ const initialState = {
         isFetching: false,
         error: false,
     },
-
     update: {
         isFetching: false,
         error: false,
         success: false,
+        currentUser: null
     }
   };
 
@@ -83,7 +83,7 @@ const authSlice = createSlice({
         updateInfoBegin: (state) => {
             state.update.isFetching = true
         },
-        updateInfoSuccess: (state) => {
+        updateInfoSuccess: (state, action) => {
             state.update.isFetching = false
             state.update.success = true
             state.update.error = false
@@ -114,6 +114,8 @@ export const {
     updateInfoBegin,
     updateInfoSuccess,
     updateInfoFailure
+
 } = authSlice.actions
+
 
 export default authSlice.reducer
