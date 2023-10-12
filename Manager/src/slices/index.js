@@ -7,8 +7,8 @@ import slipSlice from "./slipSlice";
 
 const rootReducer = combineReducers({
     menu: menuSlice,
-    auth: authSlice,
     reader: readerSlice,
+    auth: authSlice,
     book: bookSlice,
     slip: slipSlice
 });

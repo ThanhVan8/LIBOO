@@ -51,6 +51,7 @@ export const {
     loginBegin,
     loginSuccess,
     loginFailure,
+    
     logoutBegin,
     logoutSuccess,
     logoutFailure
