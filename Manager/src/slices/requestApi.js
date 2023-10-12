@@ -51,9 +51,11 @@ export const logoutUser = async (dispatch, id, accessToken) => {
             }
         })
         dispatch(logoutSuccess(res.data));
+        toast.success('Logout successfully!');
     } catch (err) {
         console.log(err.response.data);
         dispatch(logoutFailure());
+        toast.error('Logout failed!');
     }
 }
 
@@ -316,8 +318,10 @@ export const deleteSlip = async (accessToken, slipId, dispatch) => {
             },
         })
         dispatch(deleteSlipSuccess(res.data));
+        toast.success('Delete slip successfully!');
     } catch(err) {
         dispatch(deleteSlipFailure())
         console.log(err.response.data);
+        toast.success('Delete slip failed!');
     }
 }

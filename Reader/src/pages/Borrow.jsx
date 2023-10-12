@@ -50,7 +50,7 @@ const Borrow = () => {
   let borrowBooks = []
   records?.forEach(record => {
     record.borrowList?.forEach(borrow => {
-      borrowBooks.push({_id: record._id, isbn: borrow.book.ISBN, borrowDate: record.borrowDate, dueDate: borrow.DueDate})
+      borrowBooks.push({_id: record._id, isbn: borrow.book?.ISBN, borrowDate: record.borrowDate, dueDate: borrow.DueDate})
     })
   })
 
@@ -68,9 +68,8 @@ const Borrow = () => {
 
   const handleRenew = (e) => {
     e.preventDefault();
-    // console.log(selectedBorrow._id, selectedBorrow.isbn)
     renewDueDate(user?.accessToken, selectedBorrow?._id, selectedBorrow?.isbn, dispatch)
-    // console.log(selectedBorrow)
+    setToggleRenew(false);
   }
   return (
     <div className='pt-12 pb-2 pr-4 pl-5 space-y-8'>

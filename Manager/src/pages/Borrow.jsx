@@ -14,7 +14,6 @@ const TABLE_HEAD = ['Username', 'ISBN', 'Received date', ''];
 
 const Borrow = () => {
   const today = new Date()
-  // const exp = new Date(today.getFullYear(), today.getMonth(), today.getDate() + EXPIRATION)
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -24,8 +23,6 @@ const Borrow = () => {
     const objDue = new Date(objReceived.getFullYear(), objReceived.getMonth(), objReceived.getDate() + EXPIRATION)
     return formatDate(objDue)
   }
-
-  // const dueDate = formatDate(exp);
 
   const [slip, setSlip] = useState({_id:'', username:'', isbns: [], borrowDate: formatDate(today), dueDate: calcDueDate(today)})
   const [tempISBN, setTempISBN] = useState('');
@@ -51,12 +48,13 @@ const Borrow = () => {
     if(!slip._id){
       addSlipByUsername(slip.username, slip.isbns ,user?.accessToken, dispatch);
     }
+    setSlip({username:'', isbns: [], borrowDate: formatDate(today), dueDate: calcDueDate(today)})
   };
 
   const showDetailBorrow = (selectedRecord) => {
     setSlip({
       _id: selectedRecord._id,
-      username: selectedRecord.UserID.username,
+      username: selectedRecord?.UserID.username,
       isbns: selectedRecord?.borrowList?.map((b) => b.book?.ISBN),
       borrowDate: formatDate(selectedRecord.borrowDate),
       dueDate: formatDate(selectedRecord?.borrowList?.[0]?.DueDate),
@@ -95,6 +93,7 @@ const Borrow = () => {
       getAllSlips(user?.accessToken, dispatch);
     }
   }, [])
+  
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
   const numPage = Math.ceil(borrowData?.length / recordsPerPage);

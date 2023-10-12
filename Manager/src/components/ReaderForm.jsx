@@ -109,18 +109,20 @@ const ReaderForm = () => {
           <BiX size="1.5rem" />
         </button>
         <h1 className="text-2xl font-semibold text-left">{showAddReader ? 'Add' : 'Update'} Reader</h1>
-        <div className="relative w-16 h-16">
-          {!account.image ? 
-          <BiUserCircle className='w-full h-full' /> :
-          <img src={account?.image} alt="upload" className="object-cover w-full h-full rounded-full" />
-          }
-          <div
-            className="absolute bottom-2 right-1 w-5 h-5 rounded-full bg-red flex items-center justify-center"
-          >
-            <input type="file" accept="image/png,image/jpeg" className="hidden" onChange={changePhoto} />
-            <MdEdit className="text-white hover:cursor-pointer" onClick={() => document.querySelector('input[type="file"]').click()} />
+        {showUpdateReader &&
+          <div className="relative w-16 h-16">
+            {!account.image ? 
+            <BiUserCircle className='w-full h-full' /> :
+            <img src={account?.image} alt="upload" className="object-cover w-full h-full rounded-full" />
+            }
+            <div
+              className="absolute bottom-1 -right-0.5 w-5 h-5 rounded-full bg-red flex items-center justify-center"
+            >
+              <input type="file" accept="image/png,image/jpeg" className="hidden" onChange={changePhoto} />
+              <MdEdit className="text-white hover:cursor-pointer" onClick={() => document.querySelector('input[type="file"]').click()} />
+            </div>
           </div>
-        </div>
+        }
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-4">
           <div className='col-span-2'>
             <Input

@@ -74,10 +74,7 @@ const Books = () => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    console.log(user?.accessToken)
     deleteBook(user?.accessToken, dispatch, updatedBook._id);
-    console.log(updatedBook._id);
-    // console.log('Delete book: ', updatedBook);
     dispatch(setUpdatedBook(null));
     dispatch(setShowDeleteBook());
   }
@@ -125,7 +122,7 @@ const Books = () => {
                 <td className="p-2 w-12 h-12">
                   {!record.image ?
                   <BiBookOpen className='w-full h-full' /> :
-                  <img src={record.image} alt="logo" className="w-full h-full rounded-full object-contain" />
+                  <img src={record.image} alt="logo" className="w-full h-full object-contain" />
                   }
                 </td>
                 <td className="p-2">

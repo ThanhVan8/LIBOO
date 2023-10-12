@@ -8,23 +8,26 @@ const  getWeek = require('date-fns/getWeek')
 
 const slipController = {
     //ADD slip for reader by username and isbn
-    addSlipReader: async (req, res) => {
+    addSlipReader: async (req, res, next) => {
         try{
             const user = await User.findOne({username: req.params.username});
             if(!user){
-                return res.status(500).json(err);
+                return res.status(500).json('User not found');
             }
+            console.log(1)
             const book = await Book.findOne({ISBN: req.params.isbn});
             if(!book){
-                return res.status(500).json(err);
+                return res.status(500).json('Book not found');
             }
+            console.log(2)
             const slips = await Slip.find({UserID: user._id});
+            console.log(slips)
             const week = getWeek(new Date());
             var cnt = 0;
 
             for (let i = 0; i < slips.length; i++){
                 if (getWeek(slips[i].borrowDate) == week){
-                    cnt = cnt + slips[i].borrowList.length;
+                    cnt = cnt + slips[i].borrowList.length + req.body.borrowList.length;
                 }
                 for (let j = 0; j < slips[i].borrowList.length; j++){
                     if (String(slips[i].borrowList[j].book) == String(book._id)){
@@ -32,7 +35,8 @@ const slipController = {
                     }
                 }
             }
-            if (cnt >= 2){
+            console.log(cnt)
+            if (cnt > 2){
                 return res.status(500).json('User borrow too much books in this week');
             }
             var bookList = []
@@ -83,7 +87,7 @@ const slipController = {
             let cnt = 0;
             for (let i = 0; i < slips.length; i++){
                 if (getWeek(slips[i].borrowDate) == week){
-                    cnt = cnt + slips[i].borrowList.length;
+                    cnt = cnt + slips[i].borrowList.length + req.body.borrowList.length;
                 }
             }
             for (let i = 0; i < req.body.borrowList.length; i++){
@@ -94,7 +98,7 @@ const slipController = {
                     return res.status(500).json('Book not found');
                 }
                 else{
-                    if(cnt >= 2){
+                    if(cnt > 2){
                         return res.status(500).json('User borrow too much books in this week');
                     }
                     else{
@@ -229,9 +233,9 @@ const slipController = {
                             return res.status(200).json(slip);
                         }
                     }
-                }            
-                return res.status(200).json('The slip has been renewed');
+                } 
             }
+            return res.status(200).json('The slip has been renewed');
             // return res.status(300).json('The slip is invalid');
         }catch(err){
             res.status(500).json(err);

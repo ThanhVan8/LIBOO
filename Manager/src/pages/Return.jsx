@@ -73,6 +73,7 @@ const Return = () => {
   const handleReturn = (e) => {
     e.preventDefault();
     deleteBookFromSlip(slip.username, slip.isbn, user?.accessToken, dispatch)
+    setSlip({username:'', isbn: '', returningDate: formatDate(today), note: NOTE.ON_TIME, lost: false, fine: 0})
   }
 
   return (
