@@ -129,10 +129,6 @@ const authController = {
         try{
             const user = await User.findByIdAndUpdate(req.params.id, req.body);
             const updatedUser = await User.findById(req.params.id);
-            if(req.file){
-                user.imageUrl = req.file.filename;
-                user.save();
-            }
             if(!user){
                 return res.status(500).json(err);            
             }

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { setCurrentAction, loginBegin, loginFailure, loginSuccess, registerBegin, registerFailure, registerSuccess,
-     logoutBegin, logoutFailure, logoutSuccess, updateInfoBegin, updateInfoSuccess, updateInfoFailure, uploadBegin,
-     uploadFailure, uploadSuccess, getImageBegin, getImageFailure, getImageSuccess
+     logoutBegin, logoutFailure, logoutSuccess, updateInfoBegin, updateInfoSuccess, updateInfoFailure,
 } from './authSlice'
 
 import { getBookBegin, getBookFailure, getBookSuccess, getOneBookBegin, getOneBookSuccess, getOneBookFailure } from './bookSlice'
@@ -86,36 +85,6 @@ export const updateInfo = async (dispatch, id, accessToken, user) => {
         console.log(err.response.data);
         dispatch(updateInfoFailure());
         toast.error('Update profile failed!');
-    }
-}
-
-export const uploadImage = async (dispatch, UserId, accessToken, image) => {
-    dispatch(uploadBegin());
-    try{
-        const res = await axios.put(`http://localhost:8000/api/user/upload/${UserId}`, image, {
-            headers: {
-                token: `Bearer ${accessToken}`
-            }
-        })
-        dispatch(uploadSuccess(res.data));
-    } catch(err){
-        console.log(err.response.data);
-        dispatch(uploadFailure());
-    }
-}
-
-export const getImage = async (dispatch, UserId, accessToken) => {
-    dispatch(getImageBegin());
-    try{
-        const res = await axios.put(`http://localhost:8000/api/user/upload/${UserId}`, {
-            headers: {
-                token: `Bearer ${accessToken}`
-            }
-        })
-        dispatch(getImageSuccess(res.data));
-    } catch(err){
-        console.log(err.response.data);
-        dispatch(getImageFailure())
     }
 }
 

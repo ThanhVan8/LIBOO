@@ -32,11 +32,6 @@ const userController = {
     updateUser: async (req, res) => {
         try{
             const user = await User.findByIdAndUpdate(req.params.id, req.body);
-            console.log(user)
-            if(req.file){
-                user.imageUrl = req.file.filename;
-                user.save();
-            }
             if(!user){
                 return res.status(500).json(err);            
             }
@@ -45,36 +40,6 @@ const userController = {
             res.status(500).json(err);
         }
     },
-
-    //Upload image
-    // uploadImage: async(req, res) => {
-    //     try{
-    //         const user = await User.findById(req.params.id);
-    //         if(req.file){
-    //             user.image = req.file.buffer;
-    //             user.save();
-    //         }
-    //         if(!user){
-    //             return res.status(500).json(err);            
-    //         }
-    //         res.status(200).json(user);
-    //     } catch(err){
-    //         res.status(500).json(err);
-    //     }
-    // },
-
-    //Get image
-    // getImage: async(req, res) => {
-    //     try{
-    //         const user = await User.findById(req.params.id);
-    //         if(!user){
-    //             return res.status(500).json(err);            
-    //         }
-    //         res.status(200).json(user.image);
-    //     } catch(err){
-    //         res.status(500).json(err);
-    //     }
-    // },
 
     //DELETE user
     deleteUser: async (req, res) => {
