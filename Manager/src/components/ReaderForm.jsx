@@ -92,9 +92,6 @@ const ReaderForm = () => {
       closeForm();
   }
 
-  // useEffect(() => {
-
-  // })
 
   return (
     <div className="fixed top-0 left-0 bg-black bg-opacity-25 w-full h-full flex justify-center items-center z-50 overflow-auto ">
