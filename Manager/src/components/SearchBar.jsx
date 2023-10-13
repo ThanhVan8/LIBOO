@@ -37,7 +37,7 @@ const SearchBar = ({filters, onClick, onChange}) => {
                 className="flex items-center gap-2"
                 onClick={() => setSelectedFilter(item)}
               >
-                {item}
+                <p className='capitalize'>{item}</p>
               </MenuItem>
             );
           })}

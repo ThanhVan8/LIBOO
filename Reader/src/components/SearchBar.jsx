@@ -54,7 +54,7 @@ const SearchBar = ({data}) => {
                   className="flex items-center gap-2"
                   onClick={() => setSelectedFilter(item)}
                 >
-                  {item}
+                  <p className='capitalize'>{item}</p>
                 </MenuItem>
               );
             })}
