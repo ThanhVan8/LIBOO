@@ -5,9 +5,6 @@ const bookController = {
     addBook: async (req, res) => {
         try{
             const newBook = new Book(req.body);
-            if (req.file){
-                newBook.imageUrl = req.file.filename;
-            }
             const savedBook = await newBook.save();
             res.status(200).json(savedBook);
         }catch(err){
@@ -45,10 +42,6 @@ const bookController = {
     updateBook: async (req, res) => {
         try{
             const book = await Book.findByIdAndUpdate(req.params.id, req.body);
-            if(req.file){
-                book.imageUrl = req.file.filename;
-                book.save();
-            }
             if(!book){
                 return res.status(500).json(err);            
             }

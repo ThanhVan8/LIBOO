@@ -2,10 +2,8 @@ import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import SearchBar from '../components/SearchBar'
 import Pagination from '../components/Pagination'
-import book from '../assets/book.png'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAllBooks} from '../slices/requestApi';
-
 
 const Catalog = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,9 +11,7 @@ const Catalog = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const bookList = useSelector((state) => state.book.books?.allBooks);
 
-
   const dispatch = useDispatch();
-
 
   const [data, setData] = useState(bookList)
 
@@ -28,8 +24,6 @@ const Catalog = () => {
       getAllBooks(user?.accessToken, dispatch);
     }
   }, [])
-
-
 
   const recordsPerPage = 30;
   const numPage = Math.ceil(data?.length / recordsPerPage);

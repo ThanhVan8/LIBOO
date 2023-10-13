@@ -4,7 +4,7 @@ import { Input } from "@material-tailwind/react";
 import CustomButton from "../components/CustomButton";
 import { FaRegUser, FaLock } from "react-icons/fa6";
 import { loginUser } from "../slices/requestApi";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Auth = () => {

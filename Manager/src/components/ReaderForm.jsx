@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import { BiX } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
 import { setShowAddReader, setShowUpdateReader, setUpdatedReader } from '../slices/readerSlice';
@@ -8,7 +8,7 @@ import { Input } from "@material-tailwind/react";
 import RadioButton from "./RadioButton";
 import CustomButton from "./CustomButton";
 import { FaInfoCircle } from "react-icons/fa";
-import { addReader, updateReader, uploadImage } from "../slices/requestApi";
+import { addReader, updateReader } from "../slices/requestApi";
 
 const EXPIRATION = 2;
 
@@ -24,7 +24,6 @@ const ReaderForm = () => {
   const [account, setAccount] = useState(
     !updatedReader
       ? {
-          // _id: "",
           username: "",
           name: "",
           id: "",
@@ -61,13 +60,7 @@ const ReaderForm = () => {
     reader.onload = () => {
       console.log(reader.result);
       setAccount({...account, image: reader.result});
-      if(showAddReader){
-        addReader({...account, image: reader.result}, user?.accessToken, dispatch);
-      }
-      if(showUpdateReader){
-        updateReader({...account, image: reader.result}, account._id, user?.accessToken, dispatch);
-      }
-      console.log(account.image);
+      updateReader({...account, image: reader.result}, account._id, user?.accessToken, dispatch);
     }
     reader.onerror = (error) => {
       console.log('Error: ', error);
@@ -92,9 +85,6 @@ const ReaderForm = () => {
       closeForm();
   }
 
-  // useEffect(() => {
-
-  // })
 
   return (
     <div className="fixed top-0 left-0 bg-black bg-opacity-25 w-full h-full flex justify-center items-center z-50 overflow-auto ">

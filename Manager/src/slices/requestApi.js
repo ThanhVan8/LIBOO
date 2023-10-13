@@ -275,10 +275,10 @@ export const addSlipByUsername = async (username, isbns, accessToken, dispatch) 
 }
 
 //delete book from slip
-export const deleteBookFromSlip = async (username, isbn, accessToken, dispatch) => {
+export const deleteBookFromSlip = async (slip, username, isbn, accessToken, dispatch) => {
     dispatch(returnBookBegin());
     try{
-        const res = await axios.delete(`http://localhost:8000/api/slip/${username}/${isbn}`, {
+        const res = await axios.post(`http://localhost:8000/api/slip/${username}/${isbn}`,slip, {
             headers: {
                 token: `Bearer ${accessToken}`
             },
