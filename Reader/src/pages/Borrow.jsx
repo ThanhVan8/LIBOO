@@ -8,7 +8,6 @@ import {BiRefresh, BiMessageAltError} from 'react-icons/bi'
 import Modal from '../components/Modal';
 import { getOneBook, getSlipsOfUser, renewDueDate } from '../slices/requestApi';
 
-
 const EXPIRATION = 7;
 
 const TABLE_HEAD = ['ISBN', 'Borrowing date' , 'Due date', '']

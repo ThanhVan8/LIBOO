@@ -10,7 +10,6 @@ import {
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 
-
 const SearchBar = ({data}) => {
   const filters = ['ISBN', 'name']
 
@@ -75,7 +74,7 @@ const SearchBar = ({data}) => {
             <div className='z-50 w-full h-fit absolute top-12 space-y-2 bg-white border-blue-gray-200 border-[1.2px] rounded-md px-1.5 py-2 overflow-auto'>
               {bookList.map((item) => (
                 <div key={item._id} className='space-y-2'>
-                  <Link to={`/Catalog/${item._id}`} className='flex gap-2 w-full h-fit'>
+                  <Link to={`/Catalog/${item?.ISBN}`} className='flex gap-2 w-full h-fit'>
                     <img src={item.image} alt='book' className='w-10 h-10 object-cover' />
                     <p>{item.name}</p>
                   </Link>

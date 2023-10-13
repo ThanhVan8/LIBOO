@@ -1,9 +1,7 @@
 const Slip = require('../models/slip'); 
 const User = require('../models/user');
 const Book = require('../models/book');
-const { query } = require('express');
-const { where } = require('../models/book');
-const  getWeek = require('date-fns/getWeek')
+const getWeek = require('date-fns/getWeek')
 
 
 const slipController = {
@@ -242,7 +240,6 @@ const slipController = {
                 } 
             }
             return res.status(200).json('The slip has been renewed');
-            // return res.status(300).json('The slip is invalid');
         }catch(err){
             res.status(500).json(err);
         }
@@ -308,21 +305,8 @@ const slipController = {
     getSlipByUsernameAndISBN: async (req, res) => {
         try{
             const user = await User.findOne({ username: req.params.username });
-            // if(!user){
-            //     return res.status(500).json(err);            
-            // }
             const book = await Book.findOne({ ISBN: req.params.isbn });
-
-            // if(!book){
-            //     return res.status(500).json(err);            
-            // }
-
             const slips = await Slip.find({ UserID: user._id });
-            
-            // if(!slips){
-            //     return res.status(200).json('There are no slips');            
-            // }
-            
             for (let i = 0; i < slips.length; i++) {
                 for (let j = 0; j < slips[i].borrowList.length; j++){
                     if (String(slips[i].borrowList[j].book) == String(book._id)){
@@ -331,7 +315,6 @@ const slipController = {
                 }
             }
             return res.status(500).json(err);            
-            // res.status(200).json(slips);
         } catch (err){
             res.status(500).json(err);
         }

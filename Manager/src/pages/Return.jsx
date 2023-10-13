@@ -5,9 +5,6 @@ import {deleteBookFromSlip} from "../slices/requestApi"
 import { useSelector, useDispatch } from 'react-redux';
 import {getBookByISBN, getSlipByUsernameAndISBN} from '../slices/requestApi'
 
-
-
-
 const NOTE = {
   ON_TIME: 'On time',
   OVERDUE: 'Overdue',
@@ -68,8 +65,6 @@ const Return = () => {
     }
 
   }, [slip.lost]);
-
-
 
   const handleReturn = (e) => {
     e.preventDefault();

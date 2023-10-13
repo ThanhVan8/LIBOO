@@ -31,8 +31,6 @@ const Books = () => {
     }
   }, [])
   
-
-
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
   const numPage = Math.ceil(bookData?.length / recordsPerPage);

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import { useParams } from "react-router-dom";
-import book from '../assets/book.png'
 import SearchBar from '../components/SearchBar'
 import CustomButton from '../components/CustomButton'
 import {BiChevronUp, BiChevronDown} from 'react-icons/bi'
