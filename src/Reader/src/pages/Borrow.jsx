@@ -71,7 +71,7 @@ const Borrow = () => {
     setToggleRenew(false);
   }
   return (
-    <div className='pt-12 pb-2 pr-4 pl-5 space-y-8'>
+    <div className='pt-12 pb-2 pr-4 pl-5'>
       {/* Borrow */}
       <form className='space-y-6' onSubmit={handleBorrow}>
         <h1 className='text-2xl font-semibold'>BORROW BOOK</h1>
@@ -113,7 +113,7 @@ const Borrow = () => {
       </form>
 
       {/* Return */}
-      <div className='space-y-6'>
+      <div className='space-y-6 mt-8'>
         <p className='text-2xl font-semibold'>BOOKS YOU HAVE BORROWED</p>
         <table className="w-full min-w-max table-auto text-left">
           <thead className='sticky top-0'>
@@ -149,6 +149,7 @@ const Borrow = () => {
             ))}
           </tbody>
       </table>
+      </div>
       {toggleRenew && 
         <Modal 
           onConfirm={handleRenew} 
@@ -167,7 +168,6 @@ const Borrow = () => {
           content={<span>You will be fined <span className='text-red'>{bookDetail.price*2}</span> VND for losing it.</span>}
          />
       }
-      </div>
     </div>
   )
 }

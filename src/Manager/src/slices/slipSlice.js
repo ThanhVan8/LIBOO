@@ -12,15 +12,15 @@ const slipSlice = createSlice({
       error: false,
       success: false
     },
-    returnSlip:{
-      isFetching: false,
-      error: false,
-      success: false
-    },
     slip:{
       currentSlip: null,
       isFetching: false,
       error: false
+    },
+    returnSlip:{
+      isFetching: false,
+      error: false,
+      success: false
     },
     deleteSlip: {
       isFetching: false,
